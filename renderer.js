@@ -14,7 +14,7 @@ function cambiarSeccion(idDeSeccion, botonPresionado) {
     todasLasSecciones.forEach(seccionActual => {
         seccionActual.classList.remove('activa');
     });
-    // probando el commit desde la rama de desarrollo cuacua
+    // probando el commit desde la rama de desarrollo
     // 2. Buscamos la sección específica que el usuario quiere ver y le ponemos la clase 'activa'
     const seccionAMostrar = document.getElementById(idDeSeccion);
     seccionAMostrar.classList.add('activa');
