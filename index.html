@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Calistenia IA</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+    <div class="barra-lateral">
+        <h2>Calistenia IA</h2>
+        <button class="boton-nav activo" onclick="cambiarSeccion('resumen', this)">Resumen</button>
+        <button class="boton-nav" onclick="cambiarSeccion('rutinas', this)">Generador IA</button>
+        <button class="boton-nav" onclick="cambiarSeccion('atletas', this)">Gestión de Atletas</button>
+    </div>
+
+    <div class="contenido-principal">
+        
+        <div id="resumen" class="seccion activa">
+            <h1>Bienvenido de vuelta</h1>
+            <div class="tarjeta">
+                <h3>Estadísticas de hoy</h3>
+                <p>Usuarios activos: <strong>14</strong></p>
+                <p>Rutinas completadas: <strong>8</strong></p>
+                <p>Aquí luego podrás inyectar datos reales desde tu base de datos PostgreSQL.</p>
+            </div>
+        </div>
+
+        <div id="rutinas" class="seccion">
+            <h1>Generador de Rutinas IA</h1>
+            <div class="tarjeta">
+                <h3>Crear rutina personalizada</h3>
+                <p>Selecciona el nivel y el grupo muscular para que la IA genere el circuito.</p>
+                <select style="padding: 5px; margin-right: 10px;">
+                    <option>Principiante</option>
+                    <option>Intermedio</option>
+                    <option>Avanzado (Front Lever, Muscle Up)</option>
+                </select>
+                <button class="boton-ia" id="boton-generar">Generar con IA</button>
+                
+                <div id="resultado-ia" class="resultado-oculto">
+                    </div>
+            </div>
+        </div>
+
+        <div id="atletas" class="seccion">
+            <h1>Gestión de Atletas</h1>
+            <div class="tarjeta">
+                <h3>Listado</h3>
+                <p>Interfaz lista para que construyas tu tabla de usuarios, conectes el backend y manejes perfiles, pesos y progresiones.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="./renderer.js"></script>
+</body>
+</html>

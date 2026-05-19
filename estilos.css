@@ -1,0 +1,109 @@
+/* =========================================
+   estilos.css
+   ========================================= */
+
+/* Estilos generales y fondo de la aplicación */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    background-color: #1e1e2e; /* Color oscuro moderno de fondo */
+    color: #cdd6f4; /* Color de texto principal claro */
+}
+
+/* ----- BARRA LATERAL ----- */
+.barra-lateral {
+    width: 250px;
+    background-color: #181825;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+}
+
+.barra-lateral h2 {
+    text-align: center;
+    color: #89b4fa; /* Acento azul para el título */
+    margin-bottom: 30px;
+}
+
+/* Botones de navegación del menú */
+.boton-nav {
+    background: none;
+    border: none;
+    color: #a6adc8;
+    padding: 15px 20px;
+    text-align: left;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-left: 4px solid transparent; /* Borde invisible por defecto para la animación */
+}
+
+/* Efecto al pasar el ratón sobre los botones */
+.boton-nav:hover {
+    background-color: #313244;
+    color: #cdd6f4;
+}
+
+/* Estilo para el botón de la sección actual (la que estamos viendo) */
+.boton-nav.activo {
+    background-color: #313244;
+    color: #89b4fa;
+    border-left: 4px solid #89b4fa; /* Indicador visual en el borde izquierdo */
+    font-weight: bold;
+}
+
+/* ----- CONTENIDO PRINCIPAL ----- */
+.contenido-principal {
+    flex: 1; /* Ocupa todo el resto del espacio disponible en pantalla */
+    padding: 40px;
+    overflow-y: auto; /* Permite hacer scroll si el contenido es muy largo */
+}
+
+/* Comportamiento de las diferentes pantallas (secciones) */
+.seccion {
+    display: none; /* Ocultamos todas las secciones por defecto */
+    animation: aparecer 0.3s ease-in-out; /* Animación suave al cambiar de pantalla */
+}
+
+/* Clase que hace visible una sección específica */
+.seccion.activa {
+    display: block; 
+}
+
+/* Diseño de las tarjetas para organizar la información */
+.tarjeta {
+    background-color: #313244;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Botón específico para llamar a la IA */
+.boton-ia {
+    background-color: #a6e3a1; /* Verde menta para destacar */
+    color: #1e1e2e;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Contenedor del resultado de la IA (oculto por defecto) */
+.resultado-oculto {
+    margin-top: 20px; 
+    display: none; 
+    padding: 15px; 
+    background: #1e1e2e; 
+    border-radius: 5px;
+}
+
+/* Animación para que las pantallas entren suavemente de abajo hacia arriba */
+@keyframes aparecer {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
