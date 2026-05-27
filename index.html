@@ -15,99 +15,94 @@
     </div>
 
     <div class="contenido-principal">
-      <div id="resumen" class="seccion activa">
-        <h1>Bienvenido de vuelta</h1>
-        <div class="tarjeta">
-          <h3>Estadísticas de hoy</h3>
-          <p>Usuarios activos: <strong>14</strong></p>
-          <p>Rutinas completadas: <strong>8</strong></p>
-          <p>
-            <div style="background-color: #1e293b; padding: 25px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); max-width: 500px; margin: 20px auto; font-family: sans-serif; color: #f8fafc;">
-    
-    <h3 style="color: #38bdf8; margin-top: 0; margin-bottom: 20px; font-size: 1.4rem;">🏋️ Registrar Nuevo Ejercicio</h3>
-    
-    <div style="margin-bottom: 15px;">
-        <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem;">Nombre del Ejercicio:</label>
-        <input type="text" id="nombreEjercicio" placeholder="Ej. Dominadas, Fondos, Flexiones" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #475569; background-color: #0f172a; color: #fff; box-sizing: border-box;">
+        <div id="resumen" class="seccion activa">
+            <h1>Bienvenido de vuelta</h1>
+            <div class="tarjeta">
+                <h3>Estadísticas de hoy</h3>
+                <p>Usuarios activos: <strong>14</strong></p>
+                <p>Rutinas completadas: <strong>8</strong></p>
+                
+                <div class="formulario-ejercicio">
+                    <h3 class="formulario-titulo">🏋️ Registrar Nuevo Ejercicio</h3>
+                    
+                    <div class="grupo-input">
+                        <label class="label-ejercicio">Nombre del Ejercicio:</label>
+                        <input type="text" id="nombreEjercicio" class="input-ejercicio" placeholder="Ej. Dominadas, Fondos, Flexiones">
+                    </div>
+
+                    <div class="fila-inputs">
+                        <div class="columna-input">
+                            <label class="label-ejercicio">Grupo Muscular:</label>
+                            <select id="grupoMuscular" class="select-ejercicio">
+                                <option value="Pecho">Pecho (Empuje)</option>
+                                <option value="Espalda">Espalda (Tirón)</option>
+                                <option value="Piernas">Piernas</option>
+                                <option value="Hombros">Hombros</option>
+                                <option value="Core">Core / Abdomen</option>
+                            </select>
+                        </div>
+                        
+                        <div class="columna-input">
+                            <label class="label-ejercicio">Dificultad:</label>
+                            <select id="dificultadEjercicio" class="select-ejercicio">
+                                <option value="Principiante">Principiante</option>
+                                <option value="Intermedio">Intermedio</option>
+                                <option value="Avanzado">Avanzado</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="fila-inputs mb-25">
+                        <div class="columna-input">
+                            <label class="label-ejercicio">Series:</label>
+                            <input type="number" id="series" class="input-ejercicio" value="4" min="1">
+                        </div>
+                        
+                        <div class="columna-input">
+                            <label class="label-ejercicio">Repeticiones:</label>
+                            <input type="number" id="repeticiones" class="input-ejercicio" value="10" min="1">
+                        </div>
+                    </div>
+
+                    <button onclick="capturarNuevoEjercicio()" class="btn-guardar-ejercicio">
+                        💾 Guardar en Rutina IA
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="rutinas" class="seccion">
+            <h1>Generador de Rutinas IA</h1>
+            <div class="tarjeta">
+                <h3>Crear rutina personalizada</h3>
+                <p>
+                    Selecciona el nivel y el grupo muscular para que la IA genere el circuito.
+                </p>
+                <select style="padding: 5px; margin-right: 10px">
+                    <option>Principiante</option>
+                    <option>Intermedio</option>
+                    <option>Avanzado (Front Lever, Muscle Up)</option>
+                </select>
+                <button class="boton-ia" id="boton-generar">Generar con IA</button>
+
+                <div id="resultado-ia" class="resultado-oculto"></div>
+            </div>
+        </div>
+
+        <div id="atletas" class="seccion">
+            <h1>Gestión de Atletas</h1>
+            <div class="tarjeta">
+                <h3>Listado</h3>
+                <p>
+                    Interfaz lista para que construyas tu tabla de usuarios, conectes el
+                    backend y manejes perfiles, pesos y progresiones.
+                </p>
+            </div>
+        </div>
     </div>
 
-    <div style="display: flex; gap: 15px; margin-bottom: 15px;">
-        <div style="flex: 1;">
-            <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem;">Grupo Muscular:</label>
-            <select id="grupoMuscular" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #475569; background-color: #0f172a; color: #fff;">
-                <option value="Pecho">Pecho (Empuje)</option>
-                <option value="Espalda">Espalda (Tirón)</option>
-                <option value="Piernas">Piernas</option>
-                <option value="Hombros">Hombros</option>
-                <option value="Core">Core / Abdomen</option>
-            </select>
-        </div>
-        
-        <div style="flex: 1;">
-            <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem;">Dificultad:</label>
-            <select id="dificultadEjercicio" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #475569; background-color: #0f172a; color: #fff;">
-                <option value="Principiante">Principiante</option>
-                <option value="Intermedio">Intermedio</option>
-                <option value="Avanzado">Avanzado</option>
-            </select>
-        </div>
-    </div>
-
-    <div style="display: flex; gap: 15px; margin-bottom: 25px;">
-        <div style="flex: 1;">
-            <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem;">Series:</label>
-            <input type="number" id="series" value="4" min="1" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #475569; background-color: #0f172a; color: #fff; box-sizing: border-box;">
-        </div>
-        
-        <div style="flex: 1;">
-            <label style="display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem;">Repeticiones:</label>
-            <input type="number" id="repeticiones" value="10" min="1" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #475569; background-color: #0f172a; color: #fff; box-sizing: border-box;">
-        </div>
-    </div>
-
-    <button onclick="capturarNuevoEjercicio()" style="width: 100%; background-color: #0284c7; color: white; padding: 12px; border: none; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: background 0.2s;">
-        💾 Guardar en Rutina IA
-    </button>
-</div>
-          </p>
-        </div>
-      </div>
-
-      <div id="rutinas" class="seccion">
-        <h1>Generador de Rutinas IA</h1>
-        <div class="tarjeta">
-          <h3>Crear rutina personalizada</h3>
-          <p>
-            Selecciona el nivel y el grupo muscular para que la IA genere el
-            circuito.
-          </p>
-          <select style="padding: 5px; margin-right: 10px">
-            <option>Principiante</option>
-            <option>Intermedio</option>
-            <option>Avanzado (Front Lever, Muscle Up)</option>
-          </select>
-          <button class="boton-ia" id="boton-generar">Generar con IA</button>
-
-          <div id="resultado-ia" class="resultado-oculto"></div>
-        </div>
-      </div>
-
-      <div id="atletas" class="seccion">
-        <h1>Gestión de Atletas</h1>
-        <div class="tarjeta">
-          <h3>Listado</h3>
-          <p>
-            Interfaz lista para que construyas tu tabla de usuarios, conectes el
-            backend y manejes perfiles, pesos y progresiones.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <script src="./renderer.js"></script>
-  </body>
-</html>
-<script src="clases.js"></script>
-<script src="clases.js"></script>
+    <script src="clases.js"></script>
     <script src="app.js"></script>
+    <script src="renderer.js"></script>
 </body>
+</html>
