@@ -7,102 +7,218 @@
 </head>
 <body>
 
-    <div class="barra-lateral">
-        <h2>Wellness</h2>
-        <button class="boton-nav activo" onclick="cambiarSeccion('resumen', this)">Resumen</button>
-        <button class="boton-nav" onclick="cambiarSeccion('rutinas', this)">Generador IA</button>
-        <button class="boton-nav" onclick="cambiarSeccion('atletas', this)">Gestión de Atletas</button>
-    </div>
+    <!-- ============================================================
+    PANTALLA DE LOGIN / REGISTRO
+    ================================================================
+    Esta pantalla aparece al abrir la app. Tiene DOS modos:
+      1) Login  → muestra todos los usuarios guardados para elegir
+      2) Registro → formulario para crear un usuario nuevo
+    
+    Mientras no elijas o crees un usuario, no podes usar la app.
+    ================================================================ -->
+    <div id="pantalla-auth" class="overlay-auth">
 
-    <div class="contenido-principal">
-        <div id="resumen" class="seccion activa">
-            <h1>Bienvenido de vuelta</h1>
-            <div class="tarjeta">
-                <h3>Estadísticas de hoy</h3>
-                <p>Usuarios activos: <strong>14</strong></p>
-                <p>Rutinas completadas: <strong>8</strong></p>
-                
-                <div class="formulario-ejercicio">
-                    <h3 class="formulario-titulo">🏋️ Registrar Nuevo Ejercicio</h3>
-                    
-                    <div class="grupo-input">
-                        <label class="label-ejercicio">Nombre del Ejercicio:</label>
-                        <input type="text" id="nombreEjercicio" class="input-ejercicio" placeholder="Ej. Dominadas, Fondos, Flexiones">
-                    </div>
+        <!-- MODO LOGIN: lista de usuarios para elegir -->
+        <div id="modo-login" class="modal-auth">
+            <h1>👋 Bienvenido a Wellness</h1>
+            <p>Elegí tu usuario para empezar</p>
 
-                    <div class="fila-inputs">
-                        <div class="columna-input">
-                            <label class="label-ejercicio">Grupo Muscular:</label>
-                            <select id="grupoMuscular" class="select-ejercicio">
-                                <option value="Pecho">Pecho (Empuje)</option>
-                                <option value="Espalda">Espalda (Tirón)</option>
-                                <option value="Piernas">Piernas</option>
-                                <option value="Hombros">Hombros</option>
-                                <option value="Core">Core / Abdomen</option>
-                            </select>
-                        </div>
-                        
-                        <div class="columna-input">
-                            <label class="label-ejercicio">Dificultad:</label>
-                            <select id="dificultadEjercicio" class="select-ejercicio">
-                                <option value="Principiante">Principiante</option>
-                                <option value="Intermedio">Intermedio</option>
-                                <option value="Avanzado">Avanzado</option>
-                            </select>
-                        </div>
-                    </div>
+            <!-- Aca se cargan automaticamente las tarjetas de usuarios -->
+            <div id="lista-usuarios" class="lista-usuarios"></div>
 
-                    <div class="fila-inputs mb-25">
-                        <div class="columna-input">
-                            <label class="label-ejercicio">Series:</label>
-                            <input type="number" id="series" class="input-ejercicio" value="4" min="1">
-                        </div>
-                        
-                        <div class="columna-input">
-                            <label class="label-ejercicio">Repeticiones:</label>
-                            <input type="number" id="repeticiones" class="input-ejercicio" value="10" min="1">
-                        </div>
-                    </div>
+            <button onclick="mostrarRegistro()" class="btn-link">
+                ➕ Crear usuario nuevo
+            </button>
+        </div>
 
-                    <button onclick="capturarNuevoEjercicio()" class="btn-guardar-ejercicio">
-                        💾 Guardar en Rutina IA
+        <!-- MODO REGISTRO: formulario para crear usuario -->
+        <div id="modo-registro" class="modal-auth" style="display: none;">
+            <h1>🆕 Crear usuario</h1>
+
+            <div class="form-registro">
+                <label>Nombre</label>
+                <input type="text" id="reg-nombre" class="input-auth" placeholder="Ej: Usuario">
+
+                <label>Nivel</label>
+                <div class="opciones-nivel">
+                    <button onclick="elegirNivelReg('Principiante')" class="boton-nivel" data-nivel="Principiante">
+                        <span class="icono-nivel">🌱</span>
+                        <span class="texto-nivel">
+                            <strong>Principiante</strong>
+                            <small>Apenas empezando</small>
+                        </span>
+                    </button>
+                    <button onclick="elegirNivelReg('Intermedio')" class="boton-nivel" data-nivel="Intermedio">
+                        <span class="icono-nivel">💪</span>
+                        <span class="texto-nivel">
+                            <strong>Intermedio</strong>
+                            <small>Ya haces dominadas y fondos</small>
+                        </span>
+                    </button>
+                    <button onclick="elegirNivelReg('Experto')" class="boton-nivel" data-nivel="Experto">
+                        <span class="icono-nivel">🔥</span>
+                        <span class="texto-nivel">
+                            <strong>Experto</strong>
+                            <small>Muscle up, front lever</small>
+                        </span>
                     </button>
                 </div>
+
+                <div class="fila-datos">
+                    <div class="columna-dato">
+                        <label>Peso (kg)</label>
+                        <input type="number" id="reg-peso" class="input-auth" placeholder="70" step="0.1">
+                    </div>
+                    <div class="columna-dato">
+                        <label>Altura (cm)</label>
+                        <input type="number" id="reg-altura" class="input-auth" placeholder="175">
+                    </div>
+                </div>
+
+                <button onclick="crearUsuarioClick()" class="btn-principal">
+                    ✅ Crear usuario
+                </button>
+            </div>
+
+            <button onclick="mostrarLogin(obtenerUsuarios())" class="btn-link">
+                ← Volver
+            </button>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    BARRA LATERAL (menu de la izquierda)
+    ================================================================
+    Aca esta el menu para navegar entre las secciones y la info
+    del usuario que esta logueado.
+    ================================================================ -->
+    <div class="barra-lateral" id="barra-lateral">
+        <h2>Wellness</h2>
+
+        <!-- Datos del usuario (se muestra despues de iniciar sesion) -->
+        <div id="info-usuario" class="info-usuario" style="display: none;">
+            <div class="avatar-usuario" id="avatar-usuario">👤</div>
+            <div class="datos-usuario">
+                <span id="user-nombre" class="user-nombre"></span>
+                <span id="user-nivel" class="user-nivel"></span>
             </div>
         </div>
 
+        <!-- Botones de navegacion -->
+        <button class="boton-nav activo" onclick="cambiarSeccion('resumen', this)">Resumen</button>
+        <button class="boton-nav" onclick="cambiarSeccion('rutinas', this)">Generador IA</button>
+        <button class="boton-nav" onclick="cambiarSeccion('atletas', this)">Gestion de Atletas</button>
+
+        <!-- Boton para cerrar sesion y volver al login -->
+        <button onclick="cerrarSesion()" class="boton-cambiar-usuario" id="btn-cambiar-usuario" style="display: none;">
+            🔄 Cambiar usuario
+        </button>
+    </div>
+
+    <!-- ============================================================
+    CONTENIDO PRINCIPAL (la parte de la derecha)
+    ================================================================
+    Aca se muestran las diferentes pantallas de la app.
+    Se oculta hasta que inicias sesion.
+    ================================================================ -->
+    <div class="contenido-principal" id="contenido-principal" style="display: none;">
+
+        <!-- SECCION: Resumen (inicio) -->
+        <div id="resumen" class="seccion activa">
+            <h1>Bienvenido de vuelta</h1>
+
+            <!-- Tarjeta de bienvenida personalizada -->
+            <div class="tarjeta" id="tarjeta-bienvenida"></div>
+
+            <!-- Formulario para cargar ejercicios -->
+            <div class="formulario-ejercicio">
+                <h3 class="formulario-titulo">🏋️ Registrar Nuevo Ejercicio</h3>
+
+                <div class="grupo-input">
+                    <label class="label-ejercicio">Nombre del Ejercicio:</label>
+                    <input type="text" id="nombreEjercicio" class="input-ejercicio" placeholder="Ej. Dominadas, Fondos, Flexiones">
+                </div>
+
+                <div class="fila-inputs">
+                    <div class="columna-input">
+                        <label class="label-ejercicio">Grupo Muscular:</label>
+                        <select id="grupoMuscular" class="select-ejercicio">
+                            <option value="Pecho">Pecho (Empuje)</option>
+                            <option value="Espalda">Espalda (Tiron)</option>
+                            <option value="Piernas">Piernas</option>
+                            <option value="Hombros">Hombros</option>
+                            <option value="Core">Core / Abdomen</option>
+                        </select>
+                    </div>
+                    <div class="columna-input">
+                        <label class="label-ejercicio">Dificultad:</label>
+                        <select id="dificultadEjercicio" class="select-ejercicio">
+                            <option value="Principiante">Principiante</option>
+                            <option value="Intermedio">Intermedio</option>
+                            <option value="Avanzado">Avanzado</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="fila-inputs mb-25">
+                    <div class="columna-input">
+                        <label class="label-ejercicio">Series:</label>
+                        <input type="number" id="series" class="input-ejercicio" value="4" min="1">
+                    </div>
+                    <div class="columna-input">
+                        <label class="label-ejercicio">Repeticiones:</label>
+                        <input type="number" id="repeticiones" class="input-ejercicio" value="10" min="1">
+                    </div>
+                </div>
+
+                <button onclick="capturarNuevoEjercicio()" class="btn-guardar-ejercicio">
+                    💾 Guardar en Rutina IA
+                </button>
+            </div>
+        </div>
+
+        <!-- SECCION: Generador IA (simulacion) -->
         <div id="rutinas" class="seccion">
             <h1>Generador de Rutinas IA</h1>
             <div class="tarjeta">
                 <h3>Crear rutina personalizada</h3>
-                <p>
-                    Selecciona el nivel y el grupo muscular para que la IA genere el circuito.
-                </p>
-                <select style="padding: 5px; margin-right: 10px">
+                <p>Selecciona el nivel y el grupo muscular para que la IA genere el circuito.</p>
+                <select id="select-nivel-ia" style="padding: 5px; margin-right: 10px">
                     <option>Principiante</option>
                     <option>Intermedio</option>
                     <option>Avanzado (Front Lever, Muscle Up)</option>
                 </select>
                 <button class="boton-ia" id="boton-generar">Generar con IA</button>
-
                 <div id="resultado-ia" class="resultado-oculto"></div>
             </div>
         </div>
 
+        <!-- SECCION: Gestion de Atletas (pendiente) -->
         <div id="atletas" class="seccion">
-            <h1>Gestión de Atletas</h1>
+            <h1>Gestion de Atletas</h1>
             <div class="tarjeta">
                 <h3>Listado</h3>
-                <p>
-                    Interfaz lista para que construyas tu tabla de usuarios, conectes el
-                    backend y manejes perfiles, pesos y progresiones.
-                </p>
+                <p>Interfaz lista para que construyas tu tabla de usuarios, conectes el backend y manejes perfiles, pesos y progresiones.</p>
             </div>
         </div>
     </div>
 
+    <!-- ============================================================
+    SCRIPTS (se cargan en este orden)
+    ================================================================
+    El orden importa:
+      1. clases.js     → los moldes (Ejercicio, Rutina)
+      2. database.js   → la base de datos
+      3. app.js        → el corazon de la app
+      4. auth.js       → login y registro
+      5. ejercicios.js → capturar ejercicios
+      6. renderer.js   → navegacion y la IA
+    ================================================================ -->
     <script src="clases.js"></script>
+    <script src="database.js"></script>
     <script src="app.js"></script>
+    <script src="auth.js"></script>
+    <script src="ejercicios.js"></script>
     <script src="renderer.js"></script>
 </body>
 </html>

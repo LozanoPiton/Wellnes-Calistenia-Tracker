@@ -1,34 +1,48 @@
-/* =========================================
-   estilos.css
-   ========================================= */
+/* ============================================================
+   estilos.css  —  LA PINTA DE LA APP
+   ============================================================
+   Aca esta todo lo que hace que la app se vea linda:
+   colores, tamaños, animaciones, etc.
 
-/* Estilos generales y fondo de la aplicación */
+   TEMA OSCURO (Catppuccin-like)
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   ESTILOS GENERALES
+   ------------------------------------------------------------ */
+
+/* El fondo de toda la app y la letra */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     display: flex;
     height: 100vh;
-    background-color: #1e1e2e; /* Color oscuro moderno de fondo */
-    color: #cdd6f4; /* Color de texto principal claro */
+    background-color: #1e1e2e;
+    color: #cdd6f4;
 }
 
-/* ----- BARRA LATERAL ----- */
+
+/* ------------------------------------------------------------
+   BARRA LATERAL (menu izquierdo)
+   ------------------------------------------------------------ */
+
 .barra-lateral {
     width: 250px;
     background-color: #181825;
     padding: 20px 0;
     display: flex;
     flex-direction: column;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
 }
 
 .barra-lateral h2 {
     text-align: center;
-    color: #89b4fa; /* Acento azul para el título */
+    color: #89b4fa;
     margin-bottom: 30px;
 }
 
-/* Botones de navegación del menú */
+/* Botones del menu (Resumen, Generador IA, Gestion) */
 .boton-nav {
     background: none;
     border: none;
@@ -37,86 +51,107 @@ body {
     text-align: left;
     font-size: 16px;
     cursor: pointer;
-    transition: all 0.2s;
-    border-left: 4px solid transparent; /* Borde invisible por defecto para la animación */
+    border-left: 4px solid transparent;
+    font-family: inherit;
 }
 
-/* Efecto al pasar el ratón sobre los botones */
 .boton-nav:hover {
     background-color: #313244;
     color: #cdd6f4;
 }
 
-/* Estilo para el botón de la sección actual (la que estamos viendo) */
+/* Boton resaltado (el que esta activo) */
 .boton-nav.activo {
     background-color: #313244;
     color: #89b4fa;
-    border-left: 4px solid #89b4fa; /* Indicador visual en el borde izquierdo */
+    border-left: 4px solid #89b4fa;
     font-weight: bold;
 }
 
-/* ----- CONTENIDO PRINCIPAL ----- */
+
+/* ------------------------------------------------------------
+   CONTENIDO PRINCIPAL (lado derecho)
+   ------------------------------------------------------------ */
+
 .contenido-principal {
-    flex: 1; /* Ocupa todo el resto del espacio disponible en pantalla */
+    flex: 1;
     padding: 40px;
-    overflow-y: auto; /* Permite hacer scroll si el contenido es muy largo */
+    overflow-y: auto;
 }
 
-/* Comportamiento de las diferentes pantallas (secciones) */
+/* Las secciones ocultas por defecto */
 .seccion {
-    display: none; /* Ocultamos todas las secciones por defecto */
-    animation: aparecer 0.3s ease-in-out; /* Animación suave al cambiar de pantalla */
+    display: none;
+    animation: aparecer 0.3s ease-in-out;
 }
 
-/* Clase que hace visible una sección específica */
+/* La seccion activa es la unica que se ve */
 .seccion.activa {
-    display: block; 
+    display: block;
 }
 
-/* Diseño de las tarjetas para organizar la información */
+/* Animacion cuando cambias de pantalla */
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ------------------------------------------------------------
+   TARJETAS (cards donde va la info)
+   ------------------------------------------------------------ */
+
 .tarjeta {
     background-color: #313244;
     padding: 20px;
     border-radius: 10px;
     margin-bottom: 20px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Botón específico para llamar a la IA */
+
+/* ------------------------------------------------------------
+   BOTON DE IA (Generador de Rutinas)
+   ------------------------------------------------------------ */
+
 .boton-ia {
-    background-color: #a6e3a1; /* Verde menta para destacar */
+    background-color: #a6e3a1;
     color: #1e1e2e;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
     font-weight: bold;
     cursor: pointer;
+    font-family: inherit;
 }
 
-/* Contenedor del resultado de la IA (oculto por defecto) */
+/* Contenedor del resultado de la IA (oculto hasta que genera) */
 .resultado-oculto {
-    margin-top: 20px; 
-    display: none; 
-    padding: 15px; 
-    background: #1e1e2e; 
+    margin-top: 20px;
+    display: none;
+    padding: 15px;
+    background: #1e1e2e;
     border-radius: 5px;
 }
 
-/* Animación para que las pantallas entren suavemente de abajo hacia arriba */
-@keyframes aparecer {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
 
-/* --- Formulario de Registro de Ejercicio --- */
+/* ------------------------------------------------------------
+   FORMULARIO DE REGISTRO DE EJERCICIO
+   ------------------------------------------------------------ */
+
 .formulario-ejercicio {
     background-color: #1e293b;
     padding: 25px;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     max-width: 500px;
     margin: 20px auto;
-    font-family: sans-serif;
     color: #f8fafc;
 }
 
@@ -161,6 +196,7 @@ body {
     background-color: #0f172a;
     color: #fff;
     box-sizing: border-box;
+    font-family: inherit;
 }
 
 .btn-guardar-ejercicio {
@@ -173,9 +209,348 @@ body {
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
-    transition: background 0.2s;
+    font-family: inherit;
 }
 
 .btn-guardar-ejercicio:hover {
-    background-color: #0369a1; /* Azul más oscuro al pasar el ratón */
+    background-color: #0369a1;
+}
+
+
+/* ============================================================
+   PANTALLA DE LOGIN / REGISTRO
+   ============================================================ */
+
+/* Fondo oscuro detras del cartel */
+.overlay-auth {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: aparecer 0.3s ease-in-out;
+}
+
+/* El cartel blanco del medio */
+.modal-auth {
+    background-color: #1e293b;
+    padding: 40px;
+    border-radius: 16px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    border: 1px solid #334155;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-auth h1 {
+    color: #38bdf8;
+    margin-top: 0;
+    font-size: 1.8rem;
+}
+
+.modal-auth p {
+    color: #94a3b8;
+    margin-bottom: 25px;
+}
+
+
+/* ---- Botones de nivel (Principiante, Intermedio, Experto) ---- */
+
+.opciones-nivel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.boton-nivel {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: #0f172a;
+    border: 2px solid #334155;
+    border-radius: 12px;
+    padding: 14px 20px;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    color: #f8fafc;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+.boton-nivel:hover {
+    border-color: #38bdf8;
+    background-color: #1e293b;
+}
+
+/* Cuando el nivel esta elegido, se resalta */
+.boton-nivel.seleccionado {
+    border-color: #38bdf8;
+    background-color: #1e293b;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+}
+
+.icono-nivel {
+    font-size: 2rem;
+    width: 50px;
+    text-align: center;
+}
+
+.texto-nivel {
+    display: flex;
+    flex-direction: column;
+}
+
+.texto-nivel strong {
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+}
+
+.texto-nivel small {
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+
+/* ---- Formulario de registro ---- */
+
+.form-registro {
+    text-align: left;
+    margin: 20px 0;
+}
+
+.form-registro label {
+    display: block;
+    color: #94a3b8;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.input-auth {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #475569;
+    background-color: #0f172a;
+    color: #fff;
+    font-size: 1rem;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.input-auth:focus {
+    outline: none;
+    border-color: #38bdf8;
+}
+
+.fila-datos {
+    display: flex;
+    gap: 15px;
+    margin-top: 5px;
+}
+
+.columna-dato {
+    flex: 1;
+}
+
+/* Boton azul de "Crear usuario" */
+.btn-principal {
+    width: 100%;
+    background-color: #0284c7;
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    font-family: inherit;
+}
+
+.btn-principal:hover {
+    background-color: #0369a1;
+}
+
+/* Boton de texto tipo link (Crear usuario, Volver) */
+.btn-link {
+    background: none;
+    border: none;
+    color: #38bdf8;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 15px;
+    font-family: inherit;
+}
+
+.btn-link:hover {
+    text-decoration: underline;
+}
+
+
+/* ---- Tarjetas de usuarios en el login ---- */
+
+.lista-usuarios {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.tarjeta-usuario {
+    display: flex;
+    align-items: center;
+    background-color: #0f172a;
+    border: 2px solid #334155;
+    border-radius: 12px;
+    width: 100%;
+    color: #f8fafc;
+    font-family: inherit;
+    font-size: inherit;
+    overflow: hidden;
+}
+
+.tarjeta-usuario:hover {
+    border-color: #38bdf8;
+    background-color: #1e293b;
+}
+
+/* La parte clickeable de la tarjeta (entra al usuario) */
+.tu-info-clickeable {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 16px 20px;
+    cursor: pointer;
+    flex: 1;
+    text-align: left;
+    color: #f8fafc;
+    font-family: inherit;
+    font-size: inherit;
+    background: none;
+    border: none;
+}
+
+.tu-info-clickeable:hover {
+    transform: translateY(-2px);
+}
+
+.tu-icono {
+    font-size: 2rem;
+    width: 50px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.tu-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.tu-info small {
+    color: #64748b;
+    font-size: 0.85rem;
+    margin-top: 2px;
+}
+
+.tu-flecha {
+    color: #64748b;
+    font-size: 1.2rem;
+}
+
+/* Boton rojo para eliminar usuario */
+.btn-eliminar-usuario {
+    background: none;
+    border: none;
+    border-left: 1px solid #334155;
+    color: #ef4444;
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 16px 18px;
+    font-family: inherit;
+    align-self: stretch;
+}
+
+.btn-eliminar-usuario:hover {
+    background-color: rgba(239, 68, 68, 0.15);
+    color: #fca5a5;
+}
+
+
+/* ============================================================
+   INFO DEL USUARIO EN LA BARRA LATERAL
+   ============================================================ */
+
+.info-usuario {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 20px;
+    border-bottom: 1px solid #313244;
+    margin-bottom: 10px;
+}
+
+/* Circulo con la inicial del nombre */
+.avatar-usuario {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #89b4fa;
+    color: #1e1e2e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.datos-usuario {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.user-nombre {
+    font-weight: bold;
+    color: #cdd6f4;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-nivel {
+    font-size: 0.8rem;
+    color: #89b4fa;
+}
+
+/* Boton de "Cambiar usuario" al fondo de la barra */
+.boton-cambiar-usuario {
+    background: none;
+    border: none;
+    color: #a6adc8;
+    padding: 12px 20px;
+    text-align: left;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: auto;
+    border-top: 1px solid #313244;
+    font-family: inherit;
+}
+
+.boton-cambiar-usuario:hover {
+    background-color: #313244;
+    color: #cdd6f4;
 }
