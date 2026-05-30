@@ -68,6 +68,8 @@ function mostrarEjercicioGuardado(nombre, series, repes, grupo) {
 
     // Buscamos un contenedor para el mensaje
     // Si no existe, lo creamos sobre la marcha
+    // (no esta en el HTML fijo porque solo aparece
+    // cuando guardas un ejercicio por primera vez)
     var contenedor = document.getElementById('resultado-ejercicio');
 
     if (!contenedor) {

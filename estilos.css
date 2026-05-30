@@ -554,3 +554,109 @@ body {
     background-color: #313244;
     color: #cdd6f4;
 }
+
+
+/* ------------------------------------------------------------
+   SELECTOR DE IDIOMA
+   ------------------------------------------------------------ */
+
+.selector-idioma {
+    padding: 15px 20px;
+    margin-top: auto;
+    border-top: 1px solid #252538;
+}
+
+.selector-idioma .etiqueta-idioma {
+    color: #a0a0b5;
+    font-size: 13px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.selector-idioma select {
+    background: #252538;
+    color: #fff;
+    border: 1px solid #3e3e5a;
+    border-radius: 4px;
+    padding: 5px;
+    width: 100%;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+
+/* ============================================================
+   DISEÑO ADAPTATIVO (RESPONSIVE)
+   ============================================================
+   La app tiene un ancho mínimo de 850px (configurado en
+   main.js), pero igual se adapta si la ventana es angosta.
+   ============================================================ */
+
+/* Pantallas menores a 1000px */
+@media (max-width: 1000px) {
+
+    .barra-lateral {
+        width: 180px;
+    }
+
+    .contenido-principal {
+        padding: 25px 30px;
+    }
+
+    .formulario-ejercicio {
+        max-width: none;
+        margin: 15px 0;
+    }
+
+}
+
+/* Pantallas menores a 850px (solo si se fuerza el tamaño) */
+@media (max-width: 850px) {
+
+    .barra-lateral {
+        width: 50px;
+        padding: 10px 0;
+        align-items: center;
+    }
+
+    .barra-lateral h2,
+    .info-usuario .datos-usuario,
+    .selector-idioma,
+    .boton-cambiar-usuario {
+        display: none;
+    }
+
+    .boton-nav {
+        padding: 15px 0;
+        text-align: center;
+        font-size: 0;
+        width: 100%;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+    }
+
+    .boton-nav.activo {
+        border-left: none;
+        border-bottom: 3px solid #89b4fa;
+    }
+
+    .boton-nav::before {
+        font-size: 20px;
+    }
+
+    #menu-resumen::before { content: "📊"; }
+    #menu-generador::before { content: "🤖"; }
+    #menu-gestion::before { content: "👥"; }
+
+    .info-usuario {
+        justify-content: center;
+        padding: 10px 0;
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+
+    .contenido-principal {
+        padding: 20px;
+    }
+
+}

@@ -4,8 +4,10 @@ const path = require("path");
 function crearVentana() {
   // Configura las dimensiones de la ventana de escritorio de la App
   const ventana = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1000,
+    height: 650,
+    minWidth: 850,
+    minHeight: 500,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,

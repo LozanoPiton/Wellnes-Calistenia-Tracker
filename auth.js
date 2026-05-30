@@ -112,7 +112,10 @@ function mostrarRegistro() {
     document.getElementById('modo-login').style.display = 'none';
 
     // RECREAMOS el formulario de registro desde cero
-    // Esto evita problemas de estado del DOM al mostrar/ocultar
+    // ATENCION: esto reemplaza TODO el contenido de #modo-registro
+    // que estaba en el HTML original. El HTML estatico de index.html
+    // para #modo-registro solo sirve como plantilla inicial.
+    // Si queres cambiar el formulario, edita ACA y no en el HTML.
     var modoRegistro = document.getElementById('modo-registro');
     modoRegistro.style.display = 'block';
 
@@ -120,7 +123,7 @@ function mostrarRegistro() {
         '<h1>🆕 Crear usuario</h1>' +
         '<div class="form-registro">' +
             '<label>Nombre</label>' +
-            '<input type="text" id="reg-nombre" class="input-auth" placeholder="Ej: LILI">' +
+            '<input type="text" id="reg-nombre" class="input-auth" placeholder="Ej: Usuario">' +
 
             '<label>Nivel</label>' +
             '<div class="opciones-nivel">' +

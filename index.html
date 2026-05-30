@@ -6,7 +6,16 @@
     <link rel="stylesheet" href="estilos.css" />
   </head>
   <body>
+
+    <!-- ============================================================
+         PANTALLA DE LOGIN / REGISTRO
+         ============================================================
+         Esta pantalla aparece primero. El usuario elige su perfil
+         o crea uno nuevo. Despues entra a la app.
+         ============================================================ -->
     <div id="pantalla-auth" class="overlay-auth">
+
+      <!-- ---- MODO LOGIN: lista de usuarios existentes ---- -->
       <div id="modo-login" class="modal-auth">
         <h1>👋 Bienvenido a Wellness</h1>
         <p>Elegí tu usuario para empezar</p>
@@ -18,6 +27,7 @@
         </button>
       </div>
 
+      <!-- ---- MODO REGISTRO: formulario para crear usuario ---- -->
       <div id="modo-registro" class="modal-auth" style="display: none">
         <h1>🆕 Crear usuario</h1>
 
@@ -100,6 +110,12 @@
       </div>
     </div>
 
+    <!-- ============================================================
+         BARRA LATERAL (menú izquierdo)
+         ============================================================
+         Navegación principal: Resumen, Generador IA, Gestión.
+         También muestra el usuario actual y selector de idioma.
+         ============================================================ -->
     <div class="barra-lateral" id="barra-lateral">
       <h2 id="app-titulo">Wellness</h2>
 
@@ -133,35 +149,9 @@
         Gestion de Atletas
       </button>
 
-      <div
-        class="selector-idioma"
-        style="
-          padding: 15px 20px;
-          margin-top: auto;
-          border-top: 1px solid #252538;
-        "
-      >
-        <span
-          style="
-            color: #a0a0b5;
-            font-size: 13px;
-            display: block;
-            margin-bottom: 5px;
-          "
-          >🌐 Idioma / Language:</span
-        >
-        <select
-          id="select-lang"
-          style="
-            background: #252538;
-            color: #fff;
-            border: 1px solid #3e3e5a;
-            border-radius: 4px;
-            padding: 5px;
-            width: 100%;
-            cursor: pointer;
-          "
-        >
+      <div class="selector-idioma">
+        <span class="etiqueta-idioma">🌐 Idioma / Language:</span>
+        <select id="select-lang">
           <option value="es">Español</option>
           <option value="en">English</option>
         </select>
@@ -177,11 +167,19 @@
       </button>
     </div>
 
+    <!-- ============================================================
+         CONTENIDO PRINCIPAL (lado derecho)
+         ============================================================
+         Las 3 secciones de la app. Solo se muestra una a la vez
+         según qué botón del menú esté activo.
+         ============================================================ -->
     <div
       class="contenido-principal"
       id="contenido-principal"
       style="display: none"
     >
+
+      <!-- ---- SECCIÓN: Resumen (inicio) ---- -->
       <div id="resumen" class="seccion activa">
         <h1 id="txt-bienvenida">Bienvenido de vuelta</h1>
 
@@ -271,6 +269,7 @@
         </div>
       </div>
 
+      <!-- ---- SECCIÓN: Generador IA ---- -->
       <div id="rutinas" class="seccion">
         <h1 id="ia-titulo-seccion">Generador de Rutinas IA</h1>
         <div class="tarjeta">
@@ -291,6 +290,7 @@
         </div>
       </div>
 
+      <!-- ---- SECCIÓN: Gestión de Atletas ---- -->
       <div id="atletas" class="seccion">
         <h1>Gestion de Atletas</h1>
         <div class="tarjeta">
@@ -303,11 +303,26 @@
       </div>
     </div>
 
+    <!-- ============================================================
+         SCRIPTS (orden de carga importante)
+         ============================================================
+         El orden importa: cada archivo puede usar lo que declara
+         el anterior.
+
+           clases.js    → define las clases (Ejercicio, Rutina)
+           database.js  → funciones de base de datos SQLite
+           app.js       → variables globales, arranque de la app
+           auth.js      → login, registro, selección de usuario
+           ejercicios.js → capturar y guardar ejercicios
+           idiomas.js   → sistema de traducción (i18n)
+           renderer.js  → navegación entre secciones, simulación IA
+         ============================================================ -->
     <script src="clases.js"></script>
     <script src="database.js"></script>
     <script src="app.js"></script>
     <script src="auth.js"></script>
     <script src="ejercicios.js"></script>
+    <script src="idiomas.js"></script>
     <script src="renderer.js"></script>
   </body>
 </html>
