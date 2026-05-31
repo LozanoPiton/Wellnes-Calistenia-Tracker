@@ -1,0 +1,47 @@
+/* ============================================================
+   layout.css  —  ESTRUCTURA DE LA PAGINA
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   BARRA LATERAL (menu izquierdo)
+   ------------------------------------------------------------ */
+
+.barra-lateral {
+    width: 250px;
+    background-color: #181825;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0;
+}
+
+.barra-lateral h2 {
+    text-align: center;
+    color: #89b4fa;
+    margin-bottom: 30px;
+}
+
+/* ------------------------------------------------------------
+   CONTENIDO PRINCIPAL (lado derecho)
+   ------------------------------------------------------------ */
+
+.contenido-principal {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+    min-width: 0;
+}
+
+/* ------------------------------------------------------------
+   SECCIONES (se muestran de a una)
+   ------------------------------------------------------------ */
+
+.seccion {
+    display: none;
+    animation: aparecer 0.3s ease-in-out;
+}
+
+.seccion.activa {
+    display: block;
+}

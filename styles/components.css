@@ -1,0 +1,238 @@
+/* ============================================================
+   components.css  —  BOTONES, TARJETAS, FORMULARIOS, ETC
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   BOTONES DE NAVEGACION (menu lateral)
+   ------------------------------------------------------------ */
+
+.boton-nav {
+    background: none;
+    border: none;
+    color: #a6adc8;
+    padding: 15px 20px;
+    text-align: left;
+    font-size: 16px;
+    cursor: pointer;
+    border-left: 4px solid transparent;
+    font-family: inherit;
+}
+
+.boton-nav:hover {
+    background-color: #313244;
+    color: #cdd6f4;
+}
+
+.boton-nav.activo {
+    background-color: #313244;
+    color: #89b4fa;
+    border-left: 4px solid #89b4fa;
+    font-weight: bold;
+}
+
+/* ------------------------------------------------------------
+   TARJETAS (cards donde va la info)
+   ------------------------------------------------------------ */
+
+.tarjeta {
+    background-color: #313244;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* ------------------------------------------------------------
+   BOTON DE IA (Generador de Rutinas)
+   ------------------------------------------------------------ */
+
+.boton-ia {
+    background-color: #a6e3a1;
+    color: #1e1e2e;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.resultado-oculto {
+    margin-top: 20px;
+    display: none;
+    padding: 15px;
+    background: #1e1e2e;
+    border-radius: 5px;
+}
+
+/* ------------------------------------------------------------
+   FORMULARIO DE REGISTRO DE EJERCICIO
+   ------------------------------------------------------------ */
+
+.formulario-ejercicio {
+    background-color: #1e293b;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    max-width: 500px;
+    margin: 20px auto;
+    color: #f8fafc;
+}
+
+.formulario-titulo {
+    color: #38bdf8;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+.grupo-input {
+    margin-bottom: 15px;
+}
+
+.fila-inputs {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.fila-inputs.mb-25 {
+    margin-bottom: 25px;
+}
+
+.columna-input {
+    flex: 1;
+}
+
+.label-ejercicio {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.input-ejercicio,
+.select-ejercicio {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #475569;
+    background-color: #0f172a;
+    color: #fff;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.btn-guardar-ejercicio {
+    width: 100%;
+    background-color: #0284c7;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.btn-guardar-ejercicio:hover {
+    background-color: #0369a1;
+}
+
+/* ------------------------------------------------------------
+   INFO DEL USUARIO EN LA BARRA LATERAL
+   ------------------------------------------------------------ */
+
+.info-usuario {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 20px;
+    border-bottom: 1px solid #313244;
+    margin-bottom: 10px;
+}
+
+.avatar-usuario {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #89b4fa;
+    color: #1e1e2e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.datos-usuario {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.user-nombre {
+    font-weight: bold;
+    color: #cdd6f4;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-nivel {
+    font-size: 0.8rem;
+    color: #89b4fa;
+}
+
+/* ------------------------------------------------------------
+   BOTON CAMBIAR USUARIO
+   ------------------------------------------------------------ */
+
+.boton-cambiar-usuario {
+    background: none;
+    border: none;
+    color: #a6adc8;
+    padding: 12px 20px;
+    text-align: left;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: auto;
+    border-top: 1px solid #313244;
+    font-family: inherit;
+}
+
+.boton-cambiar-usuario:hover {
+    background-color: #313244;
+    color: #cdd6f4;
+}
+
+/* ------------------------------------------------------------
+   SELECTOR DE IDIOMA
+   ------------------------------------------------------------ */
+
+.selector-idioma {
+    padding: 15px 20px;
+    margin-top: auto;
+    border-top: 1px solid #252538;
+}
+
+.selector-idioma .etiqueta-idioma {
+    color: #a0a0b5;
+    font-size: 13px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.selector-idioma select {
+    background: #252538;
+    color: #fff;
+    border: 1px solid #3e3e5a;
+    border-radius: 4px;
+    padding: 5px;
+    width: 100%;
+    cursor: pointer;
+    font-family: inherit;
+}

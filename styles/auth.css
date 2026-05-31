@@ -1,0 +1,273 @@
+/* ============================================================
+   auth.css  —  LOGIN / REGISTRO
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   PANTALLA COMPLETA (overlay detras del modal)
+   ------------------------------------------------------------ */
+
+.overlay-auth {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: aparecer 0.3s ease-in-out;
+}
+
+/* ------------------------------------------------------------
+   MODAL (cartel del medio)
+   ------------------------------------------------------------ */
+
+.modal-auth {
+    background-color: #1e293b;
+    padding: 40px;
+    border-radius: 16px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    border: 1px solid #334155;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-auth h1 {
+    color: #38bdf8;
+    margin-top: 0;
+    font-size: 1.8rem;
+}
+
+.modal-auth p {
+    color: #94a3b8;
+    margin-bottom: 25px;
+}
+
+/* ------------------------------------------------------------
+   BOTONES DE NIVEL (Principiante, Intermedio, Experto)
+   ------------------------------------------------------------ */
+
+.opciones-nivel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.boton-nivel {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: #0f172a;
+    border: 2px solid #334155;
+    border-radius: 12px;
+    padding: 14px 20px;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    color: #f8fafc;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+.boton-nivel:hover {
+    border-color: #38bdf8;
+    background-color: #1e293b;
+}
+
+.boton-nivel.seleccionado {
+    border-color: #38bdf8;
+    background-color: #1e293b;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+}
+
+.icono-nivel {
+    font-size: 2rem;
+    width: 50px;
+    text-align: center;
+}
+
+.texto-nivel {
+    display: flex;
+    flex-direction: column;
+}
+
+.texto-nivel strong {
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+}
+
+.texto-nivel small {
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+/* ------------------------------------------------------------
+   FORMULARIO DE REGISTRO
+   ------------------------------------------------------------ */
+
+.form-registro {
+    text-align: left;
+    margin: 20px 0;
+}
+
+.form-registro label {
+    display: block;
+    color: #94a3b8;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.input-auth {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #475569;
+    background-color: #0f172a;
+    color: #fff;
+    font-size: 1rem;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.input-auth:focus {
+    outline: none;
+    border-color: #38bdf8;
+}
+
+.fila-datos {
+    display: flex;
+    gap: 15px;
+    margin-top: 5px;
+}
+
+.columna-dato {
+    flex: 1;
+}
+
+.btn-principal {
+    width: 100%;
+    background-color: #0284c7;
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    font-family: inherit;
+}
+
+.btn-principal:hover {
+    background-color: #0369a1;
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    color: #38bdf8;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 15px;
+    font-family: inherit;
+}
+
+.btn-link:hover {
+    text-decoration: underline;
+}
+
+/* ------------------------------------------------------------
+   LISTA DE USUARIOS (tarjetas en el login)
+   ------------------------------------------------------------ */
+
+.lista-usuarios {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.tarjeta-usuario {
+    display: flex;
+    align-items: center;
+    background-color: #0f172a;
+    border: 2px solid #334155;
+    border-radius: 12px;
+    width: 100%;
+    color: #f8fafc;
+    font-family: inherit;
+    font-size: inherit;
+    overflow: hidden;
+}
+
+.tarjeta-usuario:hover {
+    border-color: #38bdf8;
+    background-color: #1e293b;
+}
+
+.tu-info-clickeable {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 16px 20px;
+    cursor: pointer;
+    flex: 1;
+    text-align: left;
+    color: #f8fafc;
+    font-family: inherit;
+    font-size: inherit;
+    background: none;
+    border: none;
+}
+
+.tu-info-clickeable:hover {
+    transform: translateY(-2px);
+}
+
+.tu-icono {
+    font-size: 2rem;
+    width: 50px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.tu-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.tu-info small {
+    color: #64748b;
+    font-size: 0.85rem;
+    margin-top: 2px;
+}
+
+.tu-flecha {
+    color: #64748b;
+    font-size: 1.2rem;
+}
+
+.btn-eliminar-usuario {
+    background: none;
+    border: none;
+    border-left: 1px solid #334155;
+    color: #ef4444;
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 16px 18px;
+    font-family: inherit;
+    align-self: stretch;
+}
+
+.btn-eliminar-usuario:hover {
+    background-color: rgba(239, 68, 68, 0.15);
+    color: #fca5a5;
+}

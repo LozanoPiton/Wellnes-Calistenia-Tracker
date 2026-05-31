@@ -1,0 +1,72 @@
+/* ============================================================
+   responsive.css  —  DISEÑO ADAPTATIVO
+   ============================================================ */
+
+/* Pantallas menores a 1000px */
+@media (max-width: 1000px) {
+
+    .barra-lateral {
+        width: 180px;
+    }
+
+    .contenido-principal {
+        padding: 25px 30px;
+    }
+
+    .formulario-ejercicio {
+        max-width: none;
+        margin: 15px 0;
+    }
+
+}
+
+/* Pantallas menores a 850px */
+@media (max-width: 850px) {
+
+    .barra-lateral {
+        width: 50px;
+        padding: 10px 0;
+        align-items: center;
+    }
+
+    .barra-lateral h2,
+    .info-usuario .datos-usuario,
+    .selector-idioma,
+    .boton-cambiar-usuario {
+        display: none;
+    }
+
+    .boton-nav {
+        padding: 15px 0;
+        text-align: center;
+        font-size: 0;
+        width: 100%;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+    }
+
+    .boton-nav.activo {
+        border-left: none;
+        border-bottom: 3px solid #89b4fa;
+    }
+
+    .boton-nav::before {
+        font-size: 20px;
+    }
+
+    #menu-resumen::before { content: "📊"; }
+    #menu-generador::before { content: "🤖"; }
+    #menu-gestion::before { content: "👥"; }
+
+    .info-usuario {
+        justify-content: center;
+        padding: 10px 0;
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+
+    .contenido-principal {
+        padding: 20px;
+    }
+
+}

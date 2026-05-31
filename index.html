@@ -3,7 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <title>Wellness</title>
-    <link rel="stylesheet" href="estilos.css" />
+    <link rel="stylesheet" href="styles/base.css" />
+    <link rel="stylesheet" href="styles/layout.css" />
+    <link rel="stylesheet" href="styles/components.css" />
+    <link rel="stylesheet" href="styles/auth.css" />
+    <link rel="stylesheet" href="styles/responsive.css" />
   </head>
   <body>
 
@@ -309,20 +313,20 @@
          El orden importa: cada archivo puede usar lo que declara
          el anterior.
 
-           clases.js    → define las clases (Ejercicio, Rutina)
-           database.js  → funciones de base de datos SQLite
-           app.js       → variables globales, arranque de la app
-           auth.js      → login, registro, selección de usuario
-           ejercicios.js → capturar y guardar ejercicios
-           idiomas.js   → sistema de traducción (i18n)
-           renderer.js  → navegación entre secciones, simulación IA
+           src/clases.js    → define las clases (Ejercicio, Rutina)
+           src/database.js  → funciones de base de datos SQLite
+           src/app.js       → variables globales, arranque de la app
+           src/auth.js      → login, registro, selección de usuario
+           src/ejercicios.js → capturar y guardar ejercicios
+           src/idiomas.js   → sistema de traducción (i18n)
+           src/renderer.js  → navegación entre secciones, simulación IA
          ============================================================ -->
-    <script src="clases.js"></script>
-    <script src="database.js"></script>
-    <script src="app.js"></script>
-    <script src="auth.js"></script>
-    <script src="ejercicios.js"></script>
-    <script src="idiomas.js"></script>
-    <script src="renderer.js"></script>
+    <script src="src/clases.js"></script>
+    <script src="src/database.js"></script>
+    <script src="src/app.js"></script>
+    <script src="src/auth.js"></script>
+    <script src="src/ejercicios.js"></script>
+    <script src="src/idiomas.js"></script>
+    <script src="src/renderer.js"></script>
   </body>
 </html>

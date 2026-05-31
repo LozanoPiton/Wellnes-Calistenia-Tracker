@@ -15,7 +15,8 @@ var fs = require('fs');             // fs = File System (archivos)
 var path = require('path');         // path = rutas de archivos
 
 // La ruta donde se guarda la base de datos
-var RUTA_DB = path.join(__dirname, 'wellness.db');
+// Subimos un nivel porque este archivo ahora esta en src/
+var RUTA_DB = path.join(__dirname, '..', 'wellness.db');
 
 // "db" es la conexion a la base de datos
 // Arranca como null y se llena cuando llamamos a iniciarDB()
