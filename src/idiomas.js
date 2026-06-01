@@ -27,18 +27,18 @@ const diccionarioIdiomas = {
     resumen: "Resumen",
     generador: "Generador IA",
     gestion: "Gestion de Atletas",
-    btnCambiarUser: "🔄 Cambiar usuario",
+    btnCambiarUser: "<img src='icons/refresh.svg' width='16' height='16' /> Cambiar usuario",
 
     // Pantalla Principal (Resumen)
     bienvenida: "Bienvenido de vuelta",
-    tituloRegistro: "🏋️ Registrar Nuevo Ejercicio",
+    tituloRegistro: "<img src='icons/new.svg' width='20' height='20' /> Registrar Nuevo Ejercicio",
     lblNombre: "Nombre del Ejercicio:",
     placeholderNombre: "Ej. Dominadas, Fondos, Flexiones",
     lblGrupo: "Grupo Muscular:",
     lblDificultad: "Dificultad:",
     lblSeries: "Series:",
     lblReps: "Repeticiones:",
-    btnGuardar: "💾 Guardar en Rutina IA",
+    btnGuardar: "<img src='icons/check.svg' width='20' height='20' /> Guardar en Rutina IA",
 
     // Opciones de Desplegables
     pecho: "Pecho (Empuje)",
@@ -71,18 +71,18 @@ const diccionarioIdiomas = {
     resumen: "Summary",
     generador: "AI Generator",
     gestion: "Athlete Management",
-    btnCambiarUser: "🔄 Change user",
+    btnCambiarUser: "<img src='icons/refresh.svg' width='16' height='16' /> Change user",
 
     // Pantalla Principal (Resumen)
     bienvenida: "Welcome back",
-    tituloRegistro: "🏋️ Register New Exercise",
+    tituloRegistro: "<img src='icons/new.svg' width='20' height='20' /> Register New Exercise",
     lblNombre: "Exercise Name:",
     placeholderNombre: "Ex. Pull-ups, Dips, Push-ups",
     lblGrupo: "Muscle Group:",
     lblDificultad: "Difficulty:",
     lblSeries: "Sets:",
     lblReps: "Repetitions:",
-    btnGuardar: "💾 Save to AI Routine",
+    btnGuardar: "<img src='icons/check.svg' width='20' height='20' /> Save to AI Routine",
 
     // Opciones de Desplegables
     pecho: "Chest (Push)",
@@ -133,21 +133,21 @@ function aplicarTraduccion() {
   const palabras = diccionarioIdiomas[idiomaElegido];
 
   // 1. Traducir Menú Lateral e Inferior
-  if (document.getElementById("menu-resumen"))
-    document.getElementById("menu-resumen").innerText = palabras.resumen;
-  if (document.getElementById("menu-generador"))
-    document.getElementById("menu-generador").innerText = palabras.generador;
-  if (document.getElementById("menu-gestion"))
-    document.getElementById("menu-gestion").innerText = palabras.gestion;
+  var navResumen = document.querySelector("#menu-resumen .nav-text");
+  if (navResumen) navResumen.innerText = palabras.resumen;
+  var navGenerador = document.querySelector("#menu-generador .nav-text");
+  if (navGenerador) navGenerador.innerText = palabras.generador;
+  var navGestion = document.querySelector("#menu-gestion .nav-text");
+  if (navGestion) navGestion.innerText = palabras.gestion;
   if (document.getElementById("btn-cambiar-usuario"))
-    document.getElementById("btn-cambiar-usuario").innerText =
+    document.getElementById("btn-cambiar-usuario").innerHTML =
       palabras.btnCambiarUser;
 
   // 2. Traducir Contenido de la Pantalla Resumen y Formulario
   if (document.getElementById("txt-bienvenida"))
     document.getElementById("txt-bienvenida").innerText = palabras.bienvenida;
   if (document.getElementById("titulo-registro"))
-    document.getElementById("titulo-registro").innerText =
+    document.getElementById("titulo-registro").innerHTML =
       palabras.tituloRegistro;
   if (document.getElementById("lbl-nombre-ejercicio"))
     document.getElementById("lbl-nombre-ejercicio").innerText =
@@ -165,7 +165,7 @@ function aplicarTraduccion() {
   if (document.getElementById("lbl-repeticiones"))
     document.getElementById("lbl-repeticiones").innerText = palabras.lblReps;
   if (document.getElementById("btn-guardar-rutina"))
-    document.getElementById("btn-guardar-rutina").innerText =
+    document.getElementById("btn-guardar-rutina").innerHTML =
       palabras.btnGuardar;
 
   // 3. Traducir las opciones de los desplegables

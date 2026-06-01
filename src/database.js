@@ -63,6 +63,7 @@ async function iniciarDB() {
     //   nivel    → Principiante, Intermedio o Experto
     //   peso     → peso en kg (puede estar vacio = null)
     //   altura   → altura en cm (puede estar vacio = null)
+    //   objetivo → meta del usuario (ej: "10 dominadas")
     //   creado_en → fecha y hora de cuando se creo
     // ---------------------------------------------------------
     db.run('CREATE TABLE IF NOT EXISTS usuarios (' +
@@ -71,6 +72,7 @@ async function iniciarDB() {
         'nivel     TEXT NOT NULL,' +
         'peso      REAL,' +
         'altura    REAL,' +
+        'objetivo  TEXT,' +
         'creado_en DATETIME DEFAULT CURRENT_TIMESTAMP' +
     ')');
 
@@ -122,6 +124,49 @@ async function iniciarDB() {
         db.run('ALTER TABLE ejercicios ADD COLUMN usuario_id INTEGER DEFAULT 0');
     }
 
+    // Migracion: columna objetivo
+    try {
+        db.exec('SELECT objetivo FROM usuarios LIMIT 1');
+    } catch (e) {
+        db.run('ALTER TABLE usuarios ADD COLUMN objetivo TEXT');
+    }
+
+    // ---------------------------------------------------------
+    // TABLA: progresiones
+    // ---------------------------------------------------------
+    // Catalogo de ejercicios de calistenia organizados en
+    // progresion. Cada ejercicio puede tener un "siguiente"
+    // al que se avanza cuando se cumplen las reps requeridas.
+    // ---------------------------------------------------------
+    db.run('CREATE TABLE IF NOT EXISTS progresiones (' +
+        'id              INTEGER PRIMARY KEY AUTOINCREMENT,' +
+        'grupo_muscular   TEXT NOT NULL,' +
+        'nombre           TEXT NOT NULL,' +
+        'nivel            INTEGER DEFAULT 1,' +
+        'reps_requeridas  INTEGER,' +
+        'series_requeridas INTEGER,' +
+        'siguiente_id     INTEGER,' +
+        'descripcion      TEXT' +
+    ')');
+
+    // ---------------------------------------------------------
+    // TABLA: sesiones
+    // ---------------------------------------------------------
+    // Registro diario de entrenamiento. El usuario selecciona
+    // un ejercicio, lo hace e ingresa cuanto hizo.
+    // ---------------------------------------------------------
+    db.run('CREATE TABLE IF NOT EXISTS sesiones (' +
+        'id           INTEGER PRIMARY KEY AUTOINCREMENT,' +
+        'usuario_id   INTEGER NOT NULL,' +
+        'progresion_id INTEGER NOT NULL,' +
+        'series_hechas INTEGER DEFAULT 0,' +
+        'reps_hechas  INTEGER DEFAULT 0,' +
+        'notas        TEXT,' +
+        'fecha        DATETIME DEFAULT CURRENT_TIMESTAMP,' +
+        'FOREIGN KEY (usuario_id) REFERENCES usuarios(id),' +
+        'FOREIGN KEY (progresion_id) REFERENCES progresiones(id)' +
+    ')');
+
     // Guardamos los cambios al disco
     guardarDB();
 }
@@ -148,15 +193,15 @@ function guardarDB() {
 // ============================================================
 
 // ------------------------------------------------------------
-// crearUsuario(nombre, nivel, peso, altura)
+// crearUsuario(nombre, nivel, peso, altura, objetivo)
 // ------------------------------------------------------------
 // Guarda un usuario nuevo en la base de datos.
 // Devuelve el ID que se le asigno automaticamente.
 // ------------------------------------------------------------
-function crearUsuario(nombre, nivel, peso, altura) {
+function crearUsuario(nombre, nivel, peso, altura, objetivo) {
     db.run(
-        'INSERT INTO usuarios (nombre, nivel, peso, altura) VALUES (?, ?, ?, ?)',
-        [nombre, nivel, peso, altura]
+        'INSERT INTO usuarios (nombre, nivel, peso, altura, objetivo) VALUES (?, ?, ?, ?, ?)',
+        [nombre, nivel, peso, altura, objetivo]
     );
     guardarDB();
 
@@ -173,7 +218,7 @@ function crearUsuario(nombre, nivel, peso, altura) {
 // Devuelve un array (lista) con cada usuario como objeto.
 // ------------------------------------------------------------
 function obtenerUsuarios() {
-    var resultado = db.exec('SELECT id, nombre, nivel, peso, altura, creado_en FROM usuarios');
+    var resultado = db.exec('SELECT id, nombre, nivel, peso, altura, objetivo, creado_en FROM usuarios');
 
     if (resultado.length === 0) return [];
 
@@ -181,14 +226,15 @@ function obtenerUsuarios() {
     var filas = resultado[0].values;
 
     for (var i = 0; i < filas.length; i++) {
-        usuarios.push({
-            id: filas[i][0],
-            nombre: filas[i][1],
-            nivel: filas[i][2],
-            peso: filas[i][3],
-            altura: filas[i][4],
-            creadoEn: filas[i][5]
-        });
+        usuarios.push(new Usuario(
+            filas[i][0],  // id
+            filas[i][1],  // nombre
+            filas[i][2],  // nivel
+            filas[i][3],  // peso
+            filas[i][4],  // altura
+            filas[i][5],  // objetivo
+            filas[i][6]   // creadoEn
+        ));
     }
 
     return usuarios;
@@ -202,19 +248,14 @@ function obtenerUsuarios() {
 // Devuelve el usuario o null si no lo encuentra.
 // ------------------------------------------------------------
 function obtenerUsuarioPorId(id) {
-    var resultado = db.exec('SELECT id, nombre, nivel, peso, altura, creado_en FROM usuarios WHERE id = ' + id);
+    var resultado = db.exec('SELECT id, nombre, nivel, peso, altura, objetivo, creado_en FROM usuarios WHERE id = ' + id);
 
     if (resultado.length === 0) return null;
 
     var fila = resultado[0].values[0];
-    return {
-        id: fila[0],
-        nombre: fila[1],
-        nivel: fila[2],
-        peso: fila[3],
-        altura: fila[4],
-        creadoEn: fila[5]
-    };
+    return new Usuario(
+        fila[0], fila[1], fila[2], fila[3], fila[4], fila[5], fila[6]
+    );
 }
 
 
@@ -274,18 +315,32 @@ function obtenerEjercicios(usuarioId) {
     var filas = resultado[0].values;
 
     for (var i = 0; i < filas.length; i++) {
-        ejercicios.push({
-            id: filas[i][0],
-            nombre: filas[i][1],
-            grupoMuscular: filas[i][2],
-            dificultad: filas[i][3],
-            series: filas[i][4],
-            repeticiones: filas[i][5],
-            creadoEn: filas[i][6]
-        });
+        ejercicios.push(new Ejercicio(
+            filas[i][0],  // id
+            filas[i][1],  // nombre
+            filas[i][2],  // grupoMuscular
+            filas[i][3],  // dificultad
+            filas[i][4],  // series
+            filas[i][5],  // repeticiones
+            filas[i][6]   // creadoEn
+        ));
     }
 
     return ejercicios;
+}
+
+
+// ------------------------------------------------------------
+// guardarSesion(usuarioId, progresionId, series, reps, notas)
+// ------------------------------------------------------------
+// Guarda una sesion de entrenamiento del usuario.
+// ------------------------------------------------------------
+function guardarSesion(usuarioId, progresionId, series, reps, notas) {
+    db.run(
+        'INSERT INTO sesiones (usuario_id, progresion_id, series_hechas, reps_hechas, notas) VALUES (?, ?, ?, ?, ?)',
+        [usuarioId, progresionId, series, reps, notas]
+    );
+    guardarDB();
 }
 
 
@@ -303,3 +358,4 @@ window.obtenerUsuarioPorId = obtenerUsuarioPorId;
 window.eliminarUsuario = eliminarUsuario;
 window.guardarEjercicio = guardarEjercicio;
 window.obtenerEjercicios = obtenerEjercicios;
+window.guardarSesion = guardarSesion;

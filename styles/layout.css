@@ -3,26 +3,6 @@
    ============================================================ */
 
 /* ------------------------------------------------------------
-   BARRA LATERAL (menu izquierdo)
-   ------------------------------------------------------------ */
-
-.barra-lateral {
-    width: 250px;
-    background-color: #181825;
-    padding: 20px 0;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-    flex-shrink: 0;
-}
-
-.barra-lateral h2 {
-    text-align: center;
-    color: #89b4fa;
-    margin-bottom: 30px;
-}
-
-/* ------------------------------------------------------------
    CONTENIDO PRINCIPAL (lado derecho)
    ------------------------------------------------------------ */
 
@@ -31,6 +11,7 @@
     padding: 40px;
     overflow-y: auto;
     min-width: 0;
+    background: #1e1e2e;
 }
 
 /* ------------------------------------------------------------

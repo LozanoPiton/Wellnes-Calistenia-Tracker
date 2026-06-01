@@ -1,13 +1,27 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, nativeImage } = require("electron");
 const path = require("path");
 
 function crearVentana() {
-  // Configura las dimensiones de la ventana de escritorio de la App
+  const rutaIcono = path.join(__dirname, "icons", "logo_app.png");
+  let icono = undefined;
+  try {
+    icono = nativeImage.createFromPath(rutaIcono);
+    if (!icono.isEmpty()) {
+      icono = icono.resize({ width: 128, height: 128 });
+    } else {
+      icono = undefined;
+    }
+  } catch (e) {
+    icono = undefined;
+  }
+
   const ventana = new BrowserWindow({
     width: 1000,
     height: 650,
     minWidth: 850,
     minHeight: 500,
+    autoHideMenuBar: true,
+    icon: icono,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -25,7 +39,6 @@ app.whenReady().then(() => {
   });
 });
 
-// Cierra la app si todas las ventanas se cierran (menos en Mac)
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });

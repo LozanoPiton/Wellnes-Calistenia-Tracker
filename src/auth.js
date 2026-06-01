@@ -49,9 +49,9 @@ function mostrarLogin(usuarios) {
         tarjeta.className = 'tarjeta-usuario';
 
         // Elegimos un icono segun el nivel
-        var icono = '🌱';  // Principiante
-        if (u.nivel === 'Intermedio') icono = '💪';
-        if (u.nivel === 'Experto') icono = '🔥';
+        var icono = '<img src="icons/plant.svg" width="20" height="20" />';
+        if (u.nivel === 'Intermedio') icono = '<img src="icons/muscle.svg" width="20" height="20" />';
+        if (u.nivel === 'Experto') icono = '<img src="icons/fire.svg" width="20" height="20" />';
 
         // Texto de peso y altura (si tienen)
         var pesoTexto = u.peso ? u.peso + ' kg' : '—';
@@ -75,7 +75,7 @@ function mostrarLogin(usuarios) {
         // ---- PARTE DERECHA: boton rojo para eliminar ----
         var btnEliminar = document.createElement('button');
         btnEliminar.className = 'btn-eliminar-usuario';
-        btnEliminar.textContent = '✕';
+        btnEliminar.innerHTML = '<img src="icons/close.svg" width="16" height="16" />';
         btnEliminar.title = 'Eliminar usuario';
         btnEliminar.onclick = function (id, nombre) {
             return function () {
@@ -120,7 +120,7 @@ function mostrarRegistro() {
     modoRegistro.style.display = 'block';
 
     modoRegistro.innerHTML =
-        '<h1>🆕 Crear usuario</h1>' +
+        '<h1><img src="icons/new.svg" width="24" height="24" /> Crear usuario</h1>' +
         '<div class="form-registro">' +
             '<label>Nombre</label>' +
             '<input type="text" id="reg-nombre" class="input-auth" placeholder="Ej: Usuario">' +
@@ -128,15 +128,15 @@ function mostrarRegistro() {
             '<label>Nivel</label>' +
             '<div class="opciones-nivel">' +
                 '<button onclick="elegirNivelReg(\'Principiante\')" class="boton-nivel" data-nivel="Principiante">' +
-                    '<span class="icono-nivel">🌱</span>' +
+                    '<span class="icono-nivel"><img src="icons/plant.svg" width="24" height="24" /></span>' +
                     '<span class="texto-nivel"><strong>Principiante</strong><small>Apenas empezando</small></span>' +
                 '</button>' +
                 '<button onclick="elegirNivelReg(\'Intermedio\')" class="boton-nivel" data-nivel="Intermedio">' +
-                    '<span class="icono-nivel">💪</span>' +
+                    '<span class="icono-nivel"><img src="icons/muscle.svg" width="24" height="24" /></span>' +
                     '<span class="texto-nivel"><strong>Intermedio</strong><small>Ya haces dominadas y fondos</small></span>' +
                 '</button>' +
                 '<button onclick="elegirNivelReg(\'Experto\')" class="boton-nivel" data-nivel="Experto">' +
-                    '<span class="icono-nivel">🔥</span>' +
+                    '<span class="icono-nivel"><img src="icons/fire.svg" width="24" height="24" /></span>' +
                     '<span class="texto-nivel"><strong>Experto</strong><small>Muscle up, front lever</small></span>' +
                 '</button>' +
             '</div>' +
@@ -152,13 +152,16 @@ function mostrarRegistro() {
                 '</div>' +
             '</div>' +
 
-            '<button onclick="crearUsuarioClick()" class="btn-principal">✅ Crear usuario</button>' +
+            '<label>Objetivo</label>' +
+            '<input type="text" id="reg-objetivo" class="input-auth" placeholder="Ej: Hacer muscle up, llegar a 10 dominadas">' +
+
+            '<button onclick="crearUsuarioClick()" class="btn-principal"><img src="icons/check.svg" width="20" height="20" /> Crear usuario</button>' +
         '</div>';
 
     // Agregamos el boton Volver (si hay usuarios)
     var hayUsuarios = obtenerUsuarios().length > 0;
     if (hayUsuarios) {
-        modoRegistro.innerHTML += '<button onclick="mostrarLogin(obtenerUsuarios())" class="btn-link" style="display:inline">← Volver</button>';
+        modoRegistro.innerHTML += '<button onclick="mostrarLogin(obtenerUsuarios())" class="btn-link" style="display:inline"><img src="icons/back.svg" width="16" height="16" /> Volver</button>';
     }
 
     nivelSeleccionado = null;
@@ -199,6 +202,7 @@ function crearUsuarioClick() {
     var nombre = document.getElementById('reg-nombre').value.trim();
     var peso = parseFloat(document.getElementById('reg-peso').value);
     var altura = parseFloat(document.getElementById('reg-altura').value);
+    var objetivo = document.getElementById('reg-objetivo').value.trim();
 
     // Validamos: si falta el nombre, avisamos
     if (nombre === '') {
@@ -213,9 +217,11 @@ function crearUsuarioClick() {
     // Si peso o altura estan vacios, los dejamos como null
     if (isNaN(peso)) peso = null;
     if (isNaN(altura)) altura = null;
+    // Si no hay objetivo, lo dejamos vacio
+    if (objetivo === '') objetivo = null;
 
     // Guardamos el usuario en la base de datos
-    crearUsuario(nombre, nivelSeleccionado, peso, altura);
+    crearUsuario(nombre, nivelSeleccionado, peso, altura, objetivo);
 
     // Limpiamos el nivel elegido para el proximo registro
     nivelSeleccionado = null;
@@ -286,10 +292,10 @@ function actualizarInfoUsuario() {
     document.getElementById('user-nombre').textContent = usuarioActual.nombre;
 
     // Mostramos el nivel con un icono
-    var icono = '🌱';
-    if (usuarioActual.nivel === 'Intermedio') icono = '💪';
-    if (usuarioActual.nivel === 'Experto') icono = '🔥';
-    document.getElementById('user-nivel').textContent = icono + ' ' + usuarioActual.nivel;
+    var icono = '<img src="icons/plant.svg" width="20" height="20" />';
+    if (usuarioActual.nivel === 'Intermedio') icono = '<img src="icons/muscle.svg" width="20" height="20" />';
+    if (usuarioActual.nivel === 'Experto') icono = '<img src="icons/fire.svg" width="20" height="20" />';
+    document.getElementById('user-nivel').innerHTML = icono + ' ' + usuarioActual.nivel;
 
     // El avatar es la primera letra del nombre
     document.getElementById('avatar-usuario').textContent = usuarioActual.nombre.charAt(0).toUpperCase();
@@ -297,10 +303,12 @@ function actualizarInfoUsuario() {
     // Actualizamos la tarjeta de bienvenida en el inicio
     var pesoTexto = usuarioActual.peso ? usuarioActual.peso + ' kg' : '—';
     var alturaTexto = usuarioActual.altura ? usuarioActual.altura + ' cm' : '—';
+    var objetivotTexto = usuarioActual.objetivo || 'Sin objetivo';
     var tarjeta = document.getElementById('tarjeta-bienvenida');
 
     tarjeta.innerHTML =
-        '<h3>👋 Hola, ' + usuarioActual.nombre + '</h3>' +
+        '<h3><img src="icons/muscle.svg" width="24" height="24" /> Hola, ' + usuarioActual.nombre + '</h3>' +
         '<p>Nivel: <strong>' + usuarioActual.nivel + '</strong></p>' +
+        '<p><img src="icons/target.svg" width="16" height="16" style="vertical-align:middle" /> ' + objetivotTexto + '</p>' +
         '<p>Peso: ' + pesoTexto + ' | Altura: ' + alturaTexto + '</p>';
 }

@@ -90,10 +90,10 @@ function mostrarEjercicioGuardado(nombre, series, repes, grupo) {
     contenedor.innerHTML =
         '<div style="display: flex; justify-content: space-between; align-items: center;">' +
             '<div>' +
-                '<strong style="color: #4ade80;">✅ Guardado</strong> a las ' + hora +
+                '<strong style="color: #4ade80;"><img src="icons/check.svg" width="20" height="20" /> Guardado</strong> a las ' + hora +
                 '<br>' +
                 '<span style="color: #f8fafc;">' + nombre + ' · ' + series + 'x' + repes + ' · ' + grupo + '</span>' +
             '</div>' +
-            '<span style="font-size: 24px;">💪</span>' +
+            '<span style="font-size: 24px;"><img src="icons/muscle.svg" width="24" height="24" /></span>' +
         '</div>';
 }

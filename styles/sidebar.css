@@ -1,0 +1,264 @@
+/* ============================================================
+   sidebar.css  —  BARRA LATERAL Y NAVEGACION
+   ============================================================ */
+/* Todo lo relacionado con la barra izquierda: logo, menu,
+   info del usuario, selector de idioma, cambiar usuario.
+   ============================================================ */
+
+.barra-lateral {
+    width: 260px;
+    background: #151520;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    position: relative;
+    border-right: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.barra-lateral::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(180deg, transparent 0%, rgba(137, 180, 250, 0.15) 50%, transparent 100%);
+}
+
+.barra-lateral .logo-area {
+    padding: 24px 24px 20px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.barra-lateral .logo-area .logo-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, rgba(137, 180, 250, 0.15), rgba(180, 190, 254, 0.1));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.barra-lateral .logo-area h2 {
+    margin: 0;
+    color: #cdd6f4;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.barra-lateral .logo-area .logo-sub {
+    font-size: 10px;
+    color: #585b70;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 1px;
+}
+
+
+/* ------------------------------------------------------------
+   ETIQUETA "Navegacion"
+   ------------------------------------------------------------ */
+
+.nav-label {
+    font-size: 10px;
+    color: #585b70;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 16px 24px 6px;
+    font-weight: 600;
+}
+
+
+/* ------------------------------------------------------------
+   BOTONES DEL MENU
+   ------------------------------------------------------------ */
+
+.boton-nav {
+    background: none;
+    border: none;
+    color: #6c7086;
+    padding: 10px 16px;
+    margin: 2px 12px;
+    text-align: left;
+    font-size: 13.5px;
+    cursor: pointer;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.boton-nav .nav-icon {
+    font-size: 16px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+}
+
+.boton-nav:hover {
+    color: #cdd6f4;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.boton-nav:hover .nav-icon {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.boton-nav.activo {
+    color: #89b4fa;
+    background: rgba(137, 180, 250, 0.08);
+    font-weight: 600;
+}
+
+.boton-nav.activo .nav-icon {
+    background: rgba(137, 180, 250, 0.15);
+    color: #89b4fa;
+}
+
+.boton-nav.activo::after {
+    content: '';
+    position: absolute;
+    left: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 20px;
+    background: #89b4fa;
+    border-radius: 0 3px 3px 0;
+    box-shadow: 0 0 10px rgba(137, 180, 250, 0.4);
+}
+
+
+/* ------------------------------------------------------------
+   INFO DEL USUARIO EN LA BARRA
+   ------------------------------------------------------------ */
+
+.info-usuario {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    margin: 12px 12px 4px;
+    background: linear-gradient(135deg, rgba(137, 180, 250, 0.06), rgba(180, 190, 254, 0.03));
+    border: 1px solid rgba(137, 180, 250, 0.08);
+    border-radius: 10px;
+}
+
+.avatar-usuario {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #89b4fa 0%, #b4befe 100%);
+    color: #1e1e2e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+}
+
+.datos-usuario {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.user-nombre {
+    font-weight: 600;
+    color: #cdd6f4;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-nivel {
+    font-size: 0.7rem;
+    color: #6c7086;
+    margin-top: 1px;
+}
+
+
+/* ------------------------------------------------------------
+   BOTON CAMBIAR USUARIO
+   ------------------------------------------------------------ */
+
+.boton-cambiar-usuario {
+    background: none;
+    border: none;
+    color: #585b70;
+    padding: 10px 20px;
+    text-align: left;
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    font-family: inherit;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.boton-cambiar-usuario:hover {
+    color: #a6adc8;
+    background: none;
+}
+
+
+/* ------------------------------------------------------------
+   SELECTOR DE IDIOMA
+   ------------------------------------------------------------ */
+
+.selector-idioma {
+    padding: 10px 16px;
+}
+
+.selector-idioma .etiqueta-idioma {
+    color: #45475a;
+    font-size: 10px;
+    display: block;
+    margin-bottom: 6px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+.selector-idioma select {
+    background: rgba(255, 255, 255, 0.03);
+    color: #cdd6f4;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    padding: 6px 8px;
+    width: 100%;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    transition: border-color 0.2s;
+}
+
+.selector-idioma select option {
+    color: #cdd6f4;
+    background: #1e1e2e;
+}
+
+.selector-idioma select:hover {
+    border-color: rgba(137, 180, 250, 0.2);
+}

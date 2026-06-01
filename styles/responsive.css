@@ -6,7 +6,7 @@
 @media (max-width: 1000px) {
 
     .barra-lateral {
-        width: 180px;
+        width: 200px;
     }
 
     .contenido-principal {
@@ -24,45 +24,53 @@
 @media (max-width: 850px) {
 
     .barra-lateral {
-        width: 50px;
-        padding: 10px 0;
-        align-items: center;
+        width: 60px;
     }
 
-    .barra-lateral h2,
+    .barra-lateral .logo-area .logo-text,
+    .nav-label,
     .info-usuario .datos-usuario,
     .selector-idioma,
     .boton-cambiar-usuario {
         display: none;
     }
 
+    .barra-lateral .logo-area {
+        padding: 16px 0;
+        justify-content: center;
+    }
+
+    .barra-lateral .logo-area .logo-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+    }
+
     .boton-nav {
-        padding: 15px 0;
-        text-align: center;
-        font-size: 0;
-        width: 100%;
-        border-left: none;
-        border-bottom: 3px solid transparent;
+        justify-content: center;
+        padding: 10px 0;
+        margin: 1px 8px;
     }
 
-    .boton-nav.activo {
-        border-left: none;
-        border-bottom: 3px solid #89b4fa;
+    .boton-nav .nav-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 15px;
     }
 
-    .boton-nav::before {
-        font-size: 20px;
+    .boton-nav span:not(.nav-icon) {
+        display: none;
     }
 
-    #menu-resumen::before { content: "📊"; }
-    #menu-generador::before { content: "🤖"; }
-    #menu-gestion::before { content: "👥"; }
+    .boton-nav.activo::after {
+        left: -8px;
+        height: 16px;
+    }
 
     .info-usuario {
         justify-content: center;
-        padding: 10px 0;
-        border-bottom: none;
-        margin-bottom: 0;
+        padding: 10px;
+        margin: 8px 6px;
     }
 
     .contenido-principal {
