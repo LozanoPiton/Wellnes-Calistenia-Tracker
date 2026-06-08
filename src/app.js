@@ -39,6 +39,9 @@ document.addEventListener('DOMContentLoaded', function () {
     //    Por eso usamos ".then()" que significa "cuando termine, hace esto".
     iniciarDB().then(function () {
 
+        // Poblar catalogo de progresiones si esta vacio
+        poblarProgresiones();
+
         // 2) Preguntamos a la DB: ¿hay usuarios guardados?
         var usuarios = obtenerUsuarios();
 

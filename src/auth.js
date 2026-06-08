@@ -1,63 +1,29 @@
-// ============================================================
-// auth.js  —  LOGIN Y REGISTRO DE USUARIOS
-// ============================================================
-// Este archivo maneja todo lo que pasa en la pantalla de
-// login/registro. Desde elegir un usuario hasta crear uno
-// nuevo o borrarlo.
-//
-// QUE HACE:
-//   - Muestra la lista de usuarios para elegir
-//   - Muestra el formulario para crear uno nuevo
-//   - Guarda el usuario nuevo en la base de datos
-//   - Borra usuarios si queres
-//   - Muestra la info del usuario en la barra lateral
-// ============================================================
-
-
-// ------------------------------------------------------------
-// mostrarLogin(usuarios)
-// ------------------------------------------------------------
-// Muestra la pantalla con todos los usuarios guardados.
-// Cada usuario aparece como una tarjeta que podes clickear
-// para iniciar sesion, o borrar con la cruz roja.
-//
-// "usuarios" es un array que viene de la base de datos.
-// ------------------------------------------------------------
 function mostrarLogin(usuarios) {
-
-    // Mostramos el modo login, ocultamos el registro
     document.getElementById('modo-login').style.display = 'block';
     document.getElementById('modo-registro').style.display = 'none';
     document.getElementById('pantalla-auth').style.display = 'flex';
 
-    // Buscamos donde van las tarjetas de usuarios
     var contenedor = document.getElementById('lista-usuarios');
-    contenedor.innerHTML = '';  // Limpiamos todo antes de agregar
+    contenedor.innerHTML = '';
 
-    // Si no hay usuarios, mostramos el registro directamente
     if (usuarios.length === 0) {
         mostrarRegistro();
         return;
     }
 
-    // Por cada usuario, creamos una tarjeta
     for (var i = 0; i < usuarios.length; i++) {
         var u = usuarios[i];
 
-        // ---- CREAMOS LA TARJETA ----
         var tarjeta = document.createElement('div');
         tarjeta.className = 'tarjeta-usuario';
 
-        // Elegimos un icono segun el nivel
         var icono = '<img src="icons/plant.svg" width="20" height="20" />';
         if (u.nivel === 'Intermedio') icono = '<img src="icons/muscle.svg" width="20" height="20" />';
         if (u.nivel === 'Experto') icono = '<img src="icons/fire.svg" width="20" height="20" />';
 
-        // Texto de peso y altura (si tienen)
         var pesoTexto = u.peso ? u.peso + ' kg' : '—';
         var alturaTexto = u.altura ? u.altura + ' cm' : '—';
 
-        // ---- PARTE IZQUIERDA: info del usuario (clickeable para entrar) ----
         var infoDiv = document.createElement('div');
         infoDiv.className = 'tu-info-clickeable';
         infoDiv.onclick = function (id) {
@@ -72,18 +38,16 @@ function mostrarLogin(usuarios) {
             '</div>' +
             '<span class="tu-flecha">→</span>';
 
-        // ---- PARTE DERECHA: boton rojo para eliminar ----
         var btnEliminar = document.createElement('button');
         btnEliminar.className = 'btn-eliminar-usuario';
         btnEliminar.innerHTML = '<img src="icons/close.svg" width="16" height="16" />';
-        btnEliminar.title = 'Eliminar usuario';
+        btnEliminar.title = t('eliminarUsuario');
         btnEliminar.onclick = function (id, nombre) {
             return function () {
-                if (confirm('¿Eliminar a ' + nombre + '?')) {
+                if (confirm(t('confirmEliminar') + ' ' + nombre + '?')) {
                     eliminarUsuario(id);
                     var usuariosRestantes = obtenerUsuarios();
                     if (usuariosRestantes.length === 0) {
-                        // Recargamos la pagina para arrancar de cero
                         location.reload();
                     } else {
                         mostrarLogin(usuariosRestantes);
@@ -92,93 +56,69 @@ function mostrarLogin(usuarios) {
             };
         }(u.id, u.nombre);
 
-        // Juntamos todo en la tarjeta y la agregamos al listado
         tarjeta.appendChild(infoDiv);
         tarjeta.appendChild(btnEliminar);
         contenedor.appendChild(tarjeta);
     }
 }
 
-
-// ------------------------------------------------------------
-// mostrarRegistro()
-// ------------------------------------------------------------
-// Muestra el formulario para crear un usuario nuevo.
-// Pide: nombre, nivel, peso y altura.
-// ------------------------------------------------------------
 function mostrarRegistro() {
-    // Mostramos la pantalla de auth
     document.getElementById('pantalla-auth').style.display = 'flex';
     document.getElementById('modo-login').style.display = 'none';
 
-    // RECREAMOS el formulario de registro desde cero
-    // ATENCION: esto reemplaza TODO el contenido de #modo-registro
-    // que estaba en el HTML original. El HTML estatico de index.html
-    // para #modo-registro solo sirve como plantilla inicial.
-    // Si queres cambiar el formulario, edita ACA y no en el HTML.
     var modoRegistro = document.getElementById('modo-registro');
     modoRegistro.style.display = 'block';
 
     modoRegistro.innerHTML =
-        '<h1><img src="icons/new.svg" width="24" height="24" /> Crear usuario</h1>' +
+        '<h1><img src="icons/new.svg" width="24" height="24" /> ' + t('registroTitulo') + '</h1>' +
         '<div class="form-registro">' +
-            '<label>Nombre</label>' +
-            '<input type="text" id="reg-nombre" class="input-auth" placeholder="Ej: Usuario">' +
+            '<label>' + t('regNombre') + '</label>' +
+            '<input type="text" id="reg-nombre" class="input-auth" placeholder="' + t('placeholderNombre') + '">' +
 
-            '<label>Nivel</label>' +
+            '<label>' + t('regNivel') + '</label>' +
             '<div class="opciones-nivel">' +
                 '<button onclick="elegirNivelReg(\'Principiante\')" class="boton-nivel" data-nivel="Principiante">' +
                     '<span class="icono-nivel"><img src="icons/plant.svg" width="24" height="24" /></span>' +
-                    '<span class="texto-nivel"><strong>Principiante</strong><small>Apenas empezando</small></span>' +
+                    '<span class="texto-nivel"><strong>' + t('principiante') + '</strong><small>' + t('principianteDesc') + '</small></span>' +
                 '</button>' +
                 '<button onclick="elegirNivelReg(\'Intermedio\')" class="boton-nivel" data-nivel="Intermedio">' +
                     '<span class="icono-nivel"><img src="icons/muscle.svg" width="24" height="24" /></span>' +
-                    '<span class="texto-nivel"><strong>Intermedio</strong><small>Ya haces dominadas y fondos</small></span>' +
+                    '<span class="texto-nivel"><strong>' + t('intermedio') + '</strong><small>' + t('intermedioDesc') + '</small></span>' +
                 '</button>' +
                 '<button onclick="elegirNivelReg(\'Experto\')" class="boton-nivel" data-nivel="Experto">' +
                     '<span class="icono-nivel"><img src="icons/fire.svg" width="24" height="24" /></span>' +
-                    '<span class="texto-nivel"><strong>Experto</strong><small>Muscle up, front lever</small></span>' +
+                    '<span class="texto-nivel"><strong>' + t('experto') + '</strong><small>' + t('expertoDesc') + '</small></span>' +
                 '</button>' +
             '</div>' +
 
             '<div class="fila-datos">' +
                 '<div class="columna-dato">' +
-                    '<label>Peso (kg)</label>' +
-                    '<input type="number" id="reg-peso" class="input-auth" placeholder="70" step="0.1">' +
+                    '<label>' + t('regPeso') + '</label>' +
+                    '<input type="number" id="reg-peso" class="input-auth" placeholder="' + t('placeholderPeso') + '" step="0.1">' +
                 '</div>' +
                 '<div class="columna-dato">' +
-                    '<label>Altura (cm)</label>' +
-                    '<input type="number" id="reg-altura" class="input-auth" placeholder="175">' +
+                    '<label>' + t('regAltura') + '</label>' +
+                    '<input type="number" id="reg-altura" class="input-auth" placeholder="' + t('placeholderAltura') + '">' +
                 '</div>' +
             '</div>' +
 
-            '<label>Objetivo</label>' +
-            '<input type="text" id="reg-objetivo" class="input-auth" placeholder="Ej: Hacer muscle up, llegar a 10 dominadas">' +
+            '<label>' + t('regObjetivo') + '</label>' +
+            '<input type="text" id="reg-objetivo" class="input-auth" placeholder="' + t('placeholderObjetivo') + '">' +
 
-            '<button onclick="crearUsuarioClick()" class="btn-principal"><img src="icons/check.svg" width="20" height="20" /> Crear usuario</button>' +
+            '<button onclick="crearUsuarioClick()" class="btn-principal">' + t('btnCrearUsuario') + '</button>' +
         '</div>';
 
-    // Agregamos el boton Volver (si hay usuarios)
     var hayUsuarios = obtenerUsuarios().length > 0;
     if (hayUsuarios) {
-        modoRegistro.innerHTML += '<button onclick="mostrarLogin(obtenerUsuarios())" class="btn-link" style="display:inline"><img src="icons/back.svg" width="16" height="16" /> Volver</button>';
+        modoRegistro.innerHTML += '<button onclick="mostrarLogin(obtenerUsuarios())" class="btn-link" style="display:inline"><img src="icons/back.svg" width="16" height="16" /> ' + t('volver') + '</button>';
     }
 
     nivelSeleccionado = null;
 }
 
-
-// ------------------------------------------------------------
-// elegirNivelReg(nivel)
-// ------------------------------------------------------------
-// Cuando apretas uno de los 3 botones de nivel en el
-// formulario de registro, esto guarda cual elegiste y
-// lo resalta visualmente.
-// ------------------------------------------------------------
 function elegirNivelReg(nivel) {
     nivelSeleccionado = nivel;
 
-    // Recorremos los botones de nivel y resaltamos el elegido
     var botones = document.querySelectorAll('#modo-registro .boton-nivel');
     for (var i = 0; i < botones.length; i++) {
         if (botones[i].getAttribute('data-nivel') === nivel) {
@@ -189,87 +129,52 @@ function elegirNivelReg(nivel) {
     }
 }
 
-
-// ------------------------------------------------------------
-// crearUsuarioClick()
-// ------------------------------------------------------------
-// Lee los datos del formulario de registro, los valida,
-// crea el usuario en la base de datos y vuelve al login.
-// ------------------------------------------------------------
 function crearUsuarioClick() {
-
-    // Leemos los valores del formulario
     var nombre = document.getElementById('reg-nombre').value.trim();
     var peso = parseFloat(document.getElementById('reg-peso').value);
     var altura = parseFloat(document.getElementById('reg-altura').value);
     var objetivo = document.getElementById('reg-objetivo').value.trim();
 
-    // Validamos: si falta el nombre, avisamos
     if (nombre === '') {
-        alert('Pon un nombre');
+        alert(t('alertNombre'));
         return;
     }
-    // Validamos: si no eligio nivel, avisamos
     if (nivelSeleccionado === null) {
-        alert('Elegi un nivel');
+        alert(t('alertNivel'));
         return;
     }
-    // Si peso o altura estan vacios, los dejamos como null
     if (isNaN(peso)) peso = null;
     if (isNaN(altura)) altura = null;
-    // Si no hay objetivo, lo dejamos vacio
     if (objetivo === '') objetivo = null;
 
-    // Guardamos el usuario en la base de datos
     crearUsuario(nombre, nivelSeleccionado, peso, altura, objetivo);
 
-    // Limpiamos el nivel elegido para el proximo registro
     nivelSeleccionado = null;
 
-    // Volvemos a la pantalla de login con el usuario nuevo
     var usuarios = obtenerUsuarios();
     mostrarLogin(usuarios);
 }
 
-
-// ------------------------------------------------------------
-// seleccionarUsuario(id)
-// ------------------------------------------------------------
-// Cuando haces click en un usuario de la lista, esto:
-//   1. Busca sus datos en la base de datos
-//   2. Guarda quien es el usuario actual
-//   3. Oculta la pantalla de login
-//   4. Muestra la app principal con sus datos
-// ------------------------------------------------------------
 function seleccionarUsuario(id) {
-    // Buscamos los datos del usuario en la DB
     usuarioActual = obtenerUsuarioPorId(id);
 
-    // Ocultamos login, mostramos la app
+    inicializarPlanSemanal(usuarioActual.id);
+
     ocultarAuth();
     mostrarApp();
 
-    // Actualizamos la barra lateral con su nombre y nivel
     actualizarInfoUsuario();
+    refrescarHistorial();
+    refrescarPlanSemanal();
 }
 
-
-// ------------------------------------------------------------
-// cerrarSesion()
-// ------------------------------------------------------------
-// Vuelve a la pantalla de login. Se llama desde el boton
-// "Cambiar usuario" en la barra lateral.
-// ------------------------------------------------------------
 function cerrarSesion() {
-    // Limpiamos todo
     usuarioActual = null;
     nivelSeleccionado = null;
 
-    // Ocultamos la app y mostramos el login
     ocultarApp();
     document.getElementById('pantalla-auth').style.display = 'flex';
 
-    // Preguntamos si hay usuarios y mostramos login o registro
     var usuarios = obtenerUsuarios();
     if (usuarios.length === 0) {
         mostrarRegistro();
@@ -278,37 +183,76 @@ function cerrarSesion() {
     }
 }
 
-
-// ------------------------------------------------------------
-// actualizarInfoUsuario()
-// ------------------------------------------------------------
-// Muestra el nombre, nivel y avatar del usuario en la
-// barra lateral de la izquierda.
-// ------------------------------------------------------------
 function actualizarInfoUsuario() {
     if (!usuarioActual) return;
 
-    // Mostramos el nombre
     document.getElementById('user-nombre').textContent = usuarioActual.nombre;
-
-    // Mostramos el nivel con un icono
     var icono = '<img src="icons/plant.svg" width="20" height="20" />';
     if (usuarioActual.nivel === 'Intermedio') icono = '<img src="icons/muscle.svg" width="20" height="20" />';
     if (usuarioActual.nivel === 'Experto') icono = '<img src="icons/fire.svg" width="20" height="20" />';
-    document.getElementById('user-nivel').innerHTML = icono + ' ' + usuarioActual.nivel;
-
-    // El avatar es la primera letra del nombre
+    document.getElementById('user-nivel').innerHTML = icono + ' ' + t(usuarioActual.nivel.toLowerCase());
     document.getElementById('avatar-usuario').textContent = usuarioActual.nombre.charAt(0).toUpperCase();
 
-    // Actualizamos la tarjeta de bienvenida en el inicio
     var pesoTexto = usuarioActual.peso ? usuarioActual.peso + ' kg' : '—';
     var alturaTexto = usuarioActual.altura ? usuarioActual.altura + ' cm' : '—';
-    var objetivotTexto = usuarioActual.objetivo || 'Sin objetivo';
+    var objetivotTexto = usuarioActual.objetivo && usuarioActual.objetivo.trim() !== ''
+        ? usuarioActual.objetivo
+        : '<span style="color:#6c7086;font-style:italic">' + t('sinObjetivo') + '</span>';
     var tarjeta = document.getElementById('tarjeta-bienvenida');
-
     tarjeta.innerHTML =
-        '<h3><img src="icons/muscle.svg" width="24" height="24" /> Hola, ' + usuarioActual.nombre + '</h3>' +
-        '<p>Nivel: <strong>' + usuarioActual.nivel + '</strong></p>' +
+        '<h3><img src="icons/muscle.svg" width="24" height="24" /> ' + t('hola') + ', ' + usuarioActual.nombre + '</h3>' +
+        '<p>' + t('nivel') + ' <strong>' + t(usuarioActual.nivel.toLowerCase()) + '</strong></p>' +
         '<p><img src="icons/target.svg" width="16" height="16" style="vertical-align:middle" /> ' + objetivotTexto + '</p>' +
-        '<p>Peso: ' + pesoTexto + ' | Altura: ' + alturaTexto + '</p>';
+        '<p>' + t('peso') + ' ' + pesoTexto + ' | ' + t('altura') + ' ' + alturaTexto + '</p>';
+
+    document.getElementById('texto-objetivo').innerHTML = objetivotTexto;
+
+    document.getElementById('perfil-nombre').textContent = usuarioActual.nombre;
+    document.getElementById('perfil-nivel').textContent = t(usuarioActual.nivel.toLowerCase());
+    document.getElementById('perfil-objetivo').innerHTML = objetivotTexto;
+    document.getElementById('perfil-peso').textContent = usuarioActual.peso || '—';
+    document.getElementById('perfil-altura').textContent = usuarioActual.altura || '—';
 }
+
+function mostrarEditarPerfil() {
+    if (!usuarioActual) return;
+
+    document.getElementById('edit-nombre').value = usuarioActual.nombre;
+    document.getElementById('edit-nivel').value = usuarioActual.nivel;
+    document.getElementById('edit-objetivo').value = usuarioActual.objetivo || '';
+    document.getElementById('edit-peso').value = usuarioActual.peso || '';
+    document.getElementById('edit-altura').value = usuarioActual.altura || '';
+
+    document.getElementById('perfil-vista').style.display = 'none';
+    document.getElementById('perfil-edicion').style.display = 'block';
+}
+
+function guardarEditarPerfil() {
+    if (!usuarioActual) return;
+
+    var nombre = document.getElementById('edit-nombre').value.trim();
+    var nivel = document.getElementById('edit-nivel').value;
+    var objetivo = document.getElementById('edit-objetivo').value.trim();
+    var peso = parseFloat(document.getElementById('edit-peso').value);
+    var altura = parseFloat(document.getElementById('edit-altura').value);
+
+    if (nombre === '') { alert(t('nombreVacio')); return; }
+    if (isNaN(peso)) peso = null;
+    if (isNaN(altura)) altura = null;
+    if (objetivo === '') objetivo = null;
+
+    actualizarUsuario(usuarioActual.id, nombre, nivel, peso, altura, objetivo);
+
+    usuarioActual = obtenerUsuarioPorId(usuarioActual.id);
+    actualizarInfoUsuario();
+    cancelarEditarPerfil();
+}
+
+function cancelarEditarPerfil() {
+    document.getElementById('perfil-vista').style.display = 'block';
+    document.getElementById('perfil-edicion').style.display = 'none';
+}
+
+window.mostrarEditarPerfil = mostrarEditarPerfil;
+window.guardarEditarPerfil = guardarEditarPerfil;
+window.cancelarEditarPerfil = cancelarEditarPerfil;

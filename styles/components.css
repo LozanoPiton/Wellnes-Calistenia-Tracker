@@ -111,3 +111,104 @@
 .btn-guardar-ejercicio:hover {
     background-color: #0369a1;
 }
+
+/* ------------------------------------------------------------
+   BOTON CATALOGO
+   ------------------------------------------------------------ */
+
+.btn-catalogo {
+    background-color: transparent;
+    color: #a6e3a1;
+    border: 1px solid #a6e3a1;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-family: inherit;
+    vertical-align: middle;
+    transition: all 0.2s;
+}
+
+.btn-catalogo:hover {
+    background-color: rgba(166, 227, 161, 0.15);
+}
+
+/* ------------------------------------------------------------
+   CATALOGO DE EJERCICIOS
+   ------------------------------------------------------------ */
+
+#catalogo-ejercicios {
+    display: none;
+    margin-top: 20px;
+}
+
+.catalogo-titulo {
+    color: #a6e3a1;
+    margin-bottom: 16px;
+    font-size: 1.2rem;
+}
+
+.catalogo-grupo {
+    background: #1e293b;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 14px;
+}
+
+.catalogo-grupo-titulo {
+    color: #f8fafc;
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.catalogo-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.catalogo-tabla th {
+    text-align: left;
+    color: #64748b;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-bottom: 1px solid #334155;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.catalogo-tabla td {
+    padding: 6px 8px;
+    border-bottom: 1px solid #1e293b;
+    color: #cbd5e1;
+}
+
+.catalogo-tabla tr:last-child td {
+    border-bottom: none;
+}
+
+.catalogo-nivel {
+    width: 40px;
+    text-align: center;
+    color: #facc15 !important;
+    font-weight: 700;
+}
+
+.catalogo-nombre {
+    color: #f8fafc !important;
+    font-weight: 500;
+}
+
+.catalogo-meta {
+    width: 80px;
+    text-align: center;
+    color: #38bdf8 !important;
+    font-family: monospace;
+}
+
+.catalogo-desc {
+    color: #94a3b8 !important;
+    font-style: italic;
+}

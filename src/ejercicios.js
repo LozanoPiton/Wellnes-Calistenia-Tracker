@@ -1,99 +1,93 @@
 // ============================================================
-// ejercicios.js  —  CAPTURAR Y GUARDAR EJERCICIOS
-// ============================================================
-// Este archivo se encarga de todo lo relacionado con los
-// ejercicios: agarrar los datos del formulario, validarlos,
-// guardarlos en la base de datos y mostrar el mensajito
-// de que se guardo bien.
-//
-// QUE HACE:
-//   - Toma los datos del formulario de ejercicio
-//   - Los guarda en la base de datos (vinculados al usuario)
-//   - Muestra un cartelito verde de confirmacion
+// ejercicios.js  —  REGISTRO DE SESIONES
 // ============================================================
 
-
 // ------------------------------------------------------------
-// capturarNuevoEjercicio()
+// mostrarMetaEjercicio()
 // ------------------------------------------------------------
-// Esta funcion se ejecuta cuando apretas el boton
-// "💾 Guardar en Rutina IA" en la pantalla de Resumen.
-//
-// PASO A PASO:
-//   1. Lee los datos del formulario (nombre, grupo, series, etc)
-//   2. Verifica que el nombre no este vacio
-//   3. Lo guarda en la base de datos
-//   4. Muestra un cartel verde confirmando
-//   5. Limpia el formulario para el proximo ejercicio
+// Muestra la meta del ejercicio seleccionado (reps, series, nivel)
 // ------------------------------------------------------------
-function capturarNuevoEjercicio() {
+function mostrarMetaEjercicio() {
+  var select = document.getElementById('select-ejercicio-sesion');
+  var option = select.options[select.selectedIndex];
+  var infoDiv = document.getElementById('info-meta-ejercicio');
 
-    // 1) Leemos los valores del formulario
-    var nombre = document.getElementById('nombreEjercicio').value.trim();
-    var grupoMuscular = document.getElementById('grupoMuscular').value;
-    var dificultad = document.getElementById('dificultadEjercicio').value;
-    var series = parseInt(document.getElementById('series').value);
-    var repeticiones = parseInt(document.getElementById('repeticiones').value);
+  if (!option || !option.value) {
+    infoDiv.style.display = 'none';
+    return;
+  }
 
-    // 2) Validamos: si no escribio nombre, avisamos y frenamos
-    if (nombre === '') {
-        alert('Pone un nombre para el ejercicio');
-        return;  // "return" corta la funcion aca, no sigue
-    }
+  var nombre = option.getAttribute('data-nombre');
+  var nivel = option.getAttribute('data-nivel');
+  var reps = option.getAttribute('data-reps');
+  var series = option.getAttribute('data-series');
+  var desc = option.getAttribute('data-desc');
 
-    // 3) Guardamos en la base de datos.
-    //    El ejercicio queda vinculado al usuario que esta logueado.
-    guardarEjercicio(usuarioActual.id, nombre, grupoMuscular, dificultad, series, repeticiones);
+  infoDiv.innerHTML =
+    '<div style="display:flex;justify-content:space-between;align-items:center">' +
+      '<div>' +
+        '<strong style="color:#f8fafc">' + nombre + '</strong>' +
+        '<br><span style="color:#6c7086">' + desc + '</span>' +
+      '</div>' +
+      '<div style="text-align:right">' +
+        '<span style="color:#facc15;font-weight:700">' + t('nivelAbrev') + nivel + '</span>' +
+        '<br><span style="color:#38bdf8;font-family:monospace">' + t('meta') + ': ' + series + 'x' + reps + '</span>' +
+      '</div>' +
+    '</div>';
 
-    // 4) Mostramos el cartelito de "Guardado" abajo del formulario
-    mostrarEjercicioGuardado(nombre, series, repeticiones, grupoMuscular);
-
-    // 5) Limpiamos los campos para el proximo ejercicio
-    document.getElementById('nombreEjercicio').value = '';
-    document.getElementById('series').value = '4';
-    document.getElementById('repeticiones').value = '10';
-    // El grupo muscular y dificultad vuelven solos al primer valor
+  infoDiv.style.display = 'block';
 }
 
-
 // ------------------------------------------------------------
-// mostrarEjercicioGuardado(nombre, series, repes, grupo)
+// guardarSesionClick()
 // ------------------------------------------------------------
-// Muestra un cartelito verde debajo del formulario para que
-// sepas que el ejercicio se guardo bien.
-//
-// Dice: "✅ Guardado a las 14:30 · Dominadas 4x10 · Espalda"
-// ------------------------------------------------------------
-function mostrarEjercicioGuardado(nombre, series, repes, grupo) {
+function guardarSesionClick() {
+  var select = document.getElementById('select-ejercicio-sesion');
+  var option = select.options[select.selectedIndex];
+  var progresionId = parseInt(select.value);
+  var series = parseInt(document.getElementById('series-sesion').value);
+  var reps = parseInt(document.getElementById('reps-sesion').value);
+  var notas = document.getElementById('notas-sesion').value.trim();
 
-    // Buscamos un contenedor para el mensaje
-    // Si no existe, lo creamos sobre la marcha
-    // (no esta en el HTML fijo porque solo aparece
-    // cuando guardas un ejercicio por primera vez)
-    var contenedor = document.getElementById('resultado-ejercicio');
+  if (!progresionId || !series || !reps) {
+    mostrarMensajeSesion(t('completarCampos'), 'error');
+    return;
+  }
 
-    if (!contenedor) {
-        // Creamos el contenedor
-        contenedor = document.createElement('div');
-        contenedor.id = 'resultado-ejercicio';
-        contenedor.style.cssText = 'margin-top: 20px; padding: 15px; background-color: #1e293b; border-radius: 8px; border-left: 4px solid #4ade80;';
+  guardarSesion(usuarioActual.id, progresionId, series, reps, notas);
 
-        // Lo metemos justo despues del formulario
-        var formulario = document.querySelector('.formulario-ejercicio');
-        formulario.parentNode.insertBefore(contenedor, formulario.nextSibling);
-    }
+  var metaReps = parseInt(option.getAttribute('data-reps'));
+  var metaSeries = parseInt(option.getAttribute('data-series'));
+  var nombre = option.getAttribute('data-nombre');
 
-    // Obtenemos la hora actual para mostrar cuando se guardo
-    var hora = new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+  var texto = t('sesionGuardada') + ' — ' + series + 'x' + reps + ' de ' + nombre;
 
-    // Armamos el mensaje
-    contenedor.innerHTML =
-        '<div style="display: flex; justify-content: space-between; align-items: center;">' +
-            '<div>' +
-                '<strong style="color: #4ade80;"><img src="icons/check.svg" width="20" height="20" /> Guardado</strong> a las ' + hora +
-                '<br>' +
-                '<span style="color: #f8fafc;">' + nombre + ' · ' + series + 'x' + repes + ' · ' + grupo + '</span>' +
-            '</div>' +
-            '<span style="font-size: 24px;"><img src="icons/muscle.svg" width="24" height="24" /></span>' +
-        '</div>';
+  if (series >= metaSeries && reps >= metaReps) {
+    texto += '<br><span style="color:#a6e3a1;font-weight:700">' + t('metaCumplida') + '</span>';
+  } else {
+    texto += '<br><span style="color:#f9e2af">' + t('meta') + ': ' + metaSeries + 'x' + metaReps + ' — ' + t('teFaltaron') + ' ' +
+      Math.max(0, metaSeries - series) + ' ' + t('seriesAbrev') + ' ' + t('o') + ' ' + Math.max(0, metaReps - reps) + ' ' + t('repsAbrev') + '</span>';
+  }
+
+  mostrarMensajeSesion(texto, 'ok');
+
+  document.getElementById('series-sesion').value = '3';
+  document.getElementById('reps-sesion').value = '10';
+  document.getElementById('notas-sesion').value = '';
+
+  refrescarHistorial();
 }
+
+// ------------------------------------------------------------
+// mostrarMensajeSesion(texto, tipo)
+// ------------------------------------------------------------
+function mostrarMensajeSesion(texto, tipo) {
+  var div = document.getElementById('resultado-sesion');
+  var color = tipo === 'ok' ? '#4ade80' : '#f87171';
+  div.innerHTML =
+    '<div style="padding:12px;border-radius:8px;background:#1e293b;border-left:4px solid ' + color + ';color:#f8fafc">' +
+    texto + '</div>';
+}
+
+window.guardarSesionClick = guardarSesionClick;
+window.mostrarMetaEjercicio = mostrarMetaEjercicio;

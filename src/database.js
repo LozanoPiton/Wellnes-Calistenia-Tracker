@@ -15,12 +15,15 @@ var fs = require('fs');             // fs = File System (archivos)
 var path = require('path');         // path = rutas de archivos
 
 // La ruta donde se guarda la base de datos
-// Subimos un nivel porque este archivo ahora esta en src/
-var RUTA_DB = path.join(__dirname, '..', 'wellness.db');
+// __dirname = carpeta del HTML (root del proyecto), no la de este archivo
+// en Electron renderer con nodeIntegration. Por eso va directo.
+var RUTA_DB = path.join(__dirname, 'wellness.db');
 
 // "db" es la conexion a la base de datos
 // Arranca como null y se llena cuando llamamos a iniciarDB()
+// Se exporta a window para que otros modulos puedan usarla
 var db = null;
+window.db = null;
 
 
 // ------------------------------------------------------------
@@ -45,11 +48,11 @@ async function iniciarDB() {
     if (fs.existsSync(RUTA_DB)) {
         var archivo = fs.readFileSync(RUTA_DB);
         db = new SQL.Database(archivo);
-        console.log(' BD existente cargada');
+        window.db = db;
     } else {
         // Si no existe, creamos una base de datos nueva en memoria
         db = new SQL.Database();
-        console.log(' BD nueva creada');
+        window.db = db;
     }
 
     // ---------------------------------------------------------
@@ -167,6 +170,20 @@ async function iniciarDB() {
         'FOREIGN KEY (progresion_id) REFERENCES progresiones(id)' +
     ')');
 
+    // ---------------------------------------------------------
+    // TABLA: plan_semanal
+    // ---------------------------------------------------------
+    // Guarda que grupo muscular toca cada dia de la semana.
+    // Cada usuario tiene su propio plan.
+    // ---------------------------------------------------------
+    db.run('CREATE TABLE IF NOT EXISTS plan_semanal (' +
+        'id        INTEGER PRIMARY KEY AUTOINCREMENT,' +
+        'usuario_id INTEGER NOT NULL,' +
+        'dia       INTEGER NOT NULL,' +   // 0=Lunes ... 6=Domingo
+        'grupo_muscular TEXT,' +
+        'FOREIGN KEY (usuario_id) REFERENCES usuarios(id)' +
+    ')');
+
     // Guardamos los cambios al disco
     guardarDB();
 }
@@ -274,6 +291,20 @@ function eliminarUsuario(id) {
 }
 
 
+// ------------------------------------------------------------
+// actualizarUsuario(id, nombre, nivel, peso, altura, objetivo)
+// ------------------------------------------------------------
+// Actualiza los datos de un usuario existente.
+// ------------------------------------------------------------
+function actualizarUsuario(id, nombre, nivel, peso, altura, objetivo) {
+    db.run(
+        'UPDATE usuarios SET nombre = ?, nivel = ?, peso = ?, altura = ?, objetivo = ? WHERE id = ?',
+        [nombre, nivel, peso, altura, objetivo, id]
+    );
+    guardarDB();
+}
+
+
 // ============================================================
 // FUNCIONES PARA EJERCICIOS
 // ============================================================
@@ -344,9 +375,106 @@ function guardarSesion(usuarioId, progresionId, series, reps, notas) {
 }
 
 
-// ============================================================
-// EXPORTAR FUNCIONES (para que otros archivos las puedan usar)
-// ============================================================
+// ------------------------------------------------------------
+// obtenerSesiones(usuarioId, limite)
+// ------------------------------------------------------------
+// Trae las ultimas sesiones de un usuario, con el nombre del
+// ejercicio incluido. Ordenadas de la mas nueva a la mas vieja.
+// ------------------------------------------------------------
+function obtenerSesiones(usuarioId, limite) {
+    limite = limite || 10;
+    var resultado = db.exec(
+        'SELECT p.nombre, s.series_hechas, s.reps_hechas, s.notas, s.fecha, ' +
+        'p.reps_requeridas, p.series_requeridas, p.grupo_muscular, p.nivel ' +
+        'FROM sesiones s ' +
+        'JOIN progresiones p ON s.progresion_id = p.id ' +
+        'WHERE s.usuario_id = ' + usuarioId + ' ' +
+        'ORDER BY s.fecha DESC LIMIT ' + limite
+    );
+    if (resultado.length === 0) return [];
+    return resultado[0].values;
+}
+
+
+// ------------------------------------------------------------
+// inicializarPlanSemanal(usuarioId)
+// ------------------------------------------------------------
+// Crea el plan semanal por defecto si no existe.
+// ------------------------------------------------------------
+function inicializarPlanSemanal(usuarioId) {
+    var existe = db.exec('SELECT COUNT(*) FROM plan_semanal WHERE usuario_id = ' + usuarioId);
+    if (existe[0].values[0][0] > 0) return;
+
+    var plan = [
+        [0, 'Espalda'],   // Lunes
+        [1, 'Pecho'],     // Martes
+        [2, 'Hombros'],   // Miercoles
+        [3, 'Abdomen'],   // Jueves
+        [4, 'Piernas'],   // Viernes
+        [5, null],        // Sabado
+        [6, null],        // Domingo
+    ];
+
+    for (var i = 0; i < plan.length; i++) {
+        db.run(
+            'INSERT INTO plan_semanal (usuario_id, dia, grupo_muscular) VALUES (?, ?, ?)',
+            [usuarioId, plan[i][0], plan[i][1]]
+        );
+    }
+    guardarDB();
+}
+
+
+// ------------------------------------------------------------
+// obtenerPlanSemanal(usuarioId)
+// ------------------------------------------------------------
+// Devuelve un array de 7 dias con el grupo muscular asignado.
+// ------------------------------------------------------------
+function obtenerPlanSemanal(usuarioId) {
+    var resultado = db.exec(
+        'SELECT dia, grupo_muscular FROM plan_semanal WHERE usuario_id = ' + usuarioId + ' ORDER BY dia'
+    );
+    if (resultado.length === 0) return [];
+    var plan = [];
+    for (var i = 0; i < resultado[0].values.length; i++) {
+        plan.push({ dia: resultado[0].values[i][0], grupo: resultado[0].values[i][1] });
+    }
+    return plan;
+}
+
+
+// ------------------------------------------------------------
+// guardarPlanSemanal(usuarioId, dia, grupo)
+// ------------------------------------------------------------
+function guardarPlanSemanal(usuarioId, dia, grupo) {
+    db.run(
+        'UPDATE plan_semanal SET grupo_muscular = ? WHERE usuario_id = ? AND dia = ?',
+        [grupo, usuarioId, dia]
+    );
+    guardarDB();
+}
+
+
+// ------------------------------------------------------------
+// obtenerProgresionesPorGrupo(grupo, nivelMaximo)
+// ------------------------------------------------------------
+// Trae ejercicios de progresiones filtrados por grupo muscular
+// y nivel maximo. Se usa para recomendar ejercicios segun el
+// dia y el nivel del usuario.
+// ------------------------------------------------------------
+function obtenerProgresionesPorGrupo(grupo, nivelMaximo) {
+    var resultado = db.exec(
+        "SELECT id, nombre, grupo_muscular, nivel, reps_requeridas, series_requeridas, descripcion " +
+        "FROM progresiones " +
+        "WHERE grupo_muscular = '" + grupo.replace(/'/g, "''") + "' " +
+        "AND nivel <= " + nivelMaximo + " " +
+        "ORDER BY nivel ASC"
+    );
+    if (resultado.length === 0) return [];
+    return resultado[0].values;
+}
+
+
 // En Electron con nodeIntegration, las funciones se comparten
 // a traves de window. Asi auth.js, ejercicios.js, etc.
 // pueden llamar a estas funciones de base de datos.
@@ -359,3 +487,9 @@ window.eliminarUsuario = eliminarUsuario;
 window.guardarEjercicio = guardarEjercicio;
 window.obtenerEjercicios = obtenerEjercicios;
 window.guardarSesion = guardarSesion;
+window.obtenerSesiones = obtenerSesiones;
+window.actualizarUsuario = actualizarUsuario;
+window.inicializarPlanSemanal = inicializarPlanSemanal;
+window.obtenerPlanSemanal = obtenerPlanSemanal;
+window.guardarPlanSemanal = guardarPlanSemanal;
+window.obtenerProgresionesPorGrupo = obtenerProgresionesPorGrupo;

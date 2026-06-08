@@ -14,120 +14,58 @@
 
     <!-- ============================================================
          PANTALLA DE LOGIN / REGISTRO
-         ============================================================
-         Esta pantalla aparece primero. El usuario elige su perfil
-         o crea uno nuevo. Despues entra a la app.
          ============================================================ -->
     <div id="pantalla-auth" class="overlay-auth">
 
-      <!-- ---- MODO LOGIN: lista de usuarios existentes ---- -->
       <div id="modo-login" class="modal-auth">
         <h1><img src="icons/hand.svg" width="24" height="24" style="vertical-align:middle" /> Bienvenido a Wellness</h1>
         <p>Elegí tu usuario para empezar</p>
-
         <div id="lista-usuarios" class="lista-usuarios"></div>
-
         <button onclick="mostrarRegistro()" class="btn-link">
           <img src="icons/plus.svg" width="16" height="16" /> Crear usuario nuevo
         </button>
       </div>
 
-      <!-- ---- MODO REGISTRO: formulario para crear usuario ---- -->
       <div id="modo-registro" class="modal-auth" style="display: none">
-        <h1>🆕 Crear usuario</h1>
-
+        <h1><img src="icons/new.svg" width="24" height="24" /> Crear usuario</h1>
         <div class="form-registro">
           <label>Nombre</label>
-          <input
-            type="text"
-            id="reg-nombre"
-            class="input-auth"
-            placeholder="Ej: Usuario"
-          />
-
+          <input type="text" id="reg-nombre" class="input-auth" placeholder="Ej: Usuario" />
           <label>Nivel</label>
           <div class="opciones-nivel">
-            <button
-              onclick="elegirNivelReg('Principiante')"
-              class="boton-nivel"
-              data-nivel="Principiante"
-            >
-              <span class="icono-nivel">🌱</span>
-              <span class="texto-nivel">
-                <strong>Principiante</strong>
-                <small>Apenas empezando</small>
-              </span>
+            <button onclick="elegirNivelReg('Principiante')" class="boton-nivel" data-nivel="Principiante">
+              <span class="icono-nivel"><img src="icons/plant.svg" width="24" height="24" /></span>
+              <span class="texto-nivel"><strong>Principiante</strong><small>Apenas empezando</small></span>
             </button>
-            <button
-              onclick="elegirNivelReg('Intermedio')"
-              class="boton-nivel"
-              data-nivel="Intermedio"
-            >
-              <span class="icono-nivel">💪</span>
-              <span class="texto-nivel">
-                <strong>Intermedio</strong>
-                <small>Ya haces dominadas y fondos</small>
-              </span>
+            <button onclick="elegirNivelReg('Intermedio')" class="boton-nivel" data-nivel="Intermedio">
+              <span class="icono-nivel"><img src="icons/muscle.svg" width="24" height="24" /></span>
+              <span class="texto-nivel"><strong>Intermedio</strong><small>Ya haces dominadas y fondos</small></span>
             </button>
-            <button
-              onclick="elegirNivelReg('Experto')"
-              class="boton-nivel"
-              data-nivel="Experto"
-            >
-              <span class="icono-nivel">🔥</span>
-              <span class="texto-nivel">
-                <strong>Experto</strong>
-                <small>Muscle up, front lever</small>
-              </span>
+            <button onclick="elegirNivelReg('Experto')" class="boton-nivel" data-nivel="Experto">
+              <span class="icono-nivel"><img src="icons/fire.svg" width="24" height="24" /></span>
+              <span class="texto-nivel"><strong>Experto</strong><small>Muscle up, front lever</small></span>
             </button>
           </div>
-
           <div class="fila-datos">
             <div class="columna-dato">
               <label>Peso (kg)</label>
-              <input
-                type="number"
-                id="reg-peso"
-                class="input-auth"
-                placeholder="70"
-                step="0.1"
-              />
+              <input type="number" id="reg-peso" class="input-auth" placeholder="70" step="0.1" />
             </div>
             <div class="columna-dato">
               <label>Altura (cm)</label>
-              <input
-                type="number"
-                id="reg-altura"
-                class="input-auth"
-                placeholder="175"
-              />
+              <input type="number" id="reg-altura" class="input-auth" placeholder="175" />
             </div>
           </div>
-
           <label>Objetivo</label>
-          <input
-            type="text"
-            id="reg-objetivo"
-            class="input-auth"
-            placeholder="Ej: Hacer muscle up, llegar a 10 dominadas"
-          />
-
-          <button onclick="crearUsuarioClick()" class="btn-principal">
-            ✅ Crear usuario
-          </button>
+          <input type="text" id="reg-objetivo" class="input-auth" placeholder="Ej: Hacer muscle up, llegar a 10 dominadas" />
+          <button onclick="crearUsuarioClick()" class="btn-principal"><img src="icons/check.svg" width="20" height="20" /> Crear usuario</button>
         </div>
-
-        <button onclick="mostrarLogin(obtenerUsuarios())" class="btn-link">
-          ← Volver
-        </button>
+        <button onclick="mostrarLogin(obtenerUsuarios())" class="btn-link"><img src="icons/back.svg" width="16" height="16" /> Volver</button>
       </div>
     </div>
 
     <!-- ============================================================
-         BARRA LATERAL (menú izquierdo)
-         ============================================================
-         Navegación principal: Resumen, Generador IA, Gestión.
-         También muestra el usuario actual y selector de idioma.
+         BARRA LATERAL
          ============================================================ -->
     <div class="barra-lateral" id="barra-lateral">
       <div class="logo-area">
@@ -139,7 +77,9 @@
       </div>
 
       <div id="info-usuario" class="info-usuario" style="display: none">
-        <div class="avatar-usuario" id="avatar-usuario">👤</div>
+        <div class="avatar-usuario" id="avatar-usuario">
+          <img src="icons/muscle.svg" width="24" height="24" />
+        </div>
         <div class="datos-usuario">
           <span id="user-nombre" class="user-nombre"></span>
           <span id="user-nivel" class="user-nivel"></span>
@@ -148,29 +88,25 @@
 
       <span class="nav-label">Navegación</span>
 
-      <button
-        id="menu-resumen"
-        class="boton-nav activo"
-        onclick="cambiarSeccion('resumen', this)"
-      >
+      <button id="menu-inicio" class="boton-nav activo" onclick="cambiarSeccion('inicio', this)">
         <span class="nav-icon"><img src="icons/chart.svg" width="16" height="16" /></span>
-        <span class="nav-text">Resumen</span>
+        <span class="nav-text">Inicio</span>
       </button>
-      <button
-        id="menu-generador"
-        class="boton-nav"
-        onclick="cambiarSeccion('rutinas', this)"
-      >
+      <button id="menu-entrenar" class="boton-nav" onclick="cambiarSeccion('entrenar', this)">
+        <span class="nav-icon"><img src="icons/muscle.svg" width="16" height="16" /></span>
+        <span class="nav-text">Entrenar</span>
+      </button>
+      <button id="menu-progreso" class="boton-nav" onclick="cambiarSeccion('progreso', this)">
         <span class="nav-icon"><img src="icons/robot.svg" width="16" height="16" /></span>
-        <span class="nav-text">Generador IA</span>
+        <span class="nav-text">Progreso</span>
       </button>
-      <button
-        id="menu-gestion"
-        class="boton-nav"
-        onclick="cambiarSeccion('atletas', this)"
-      >
+      <button id="menu-catalogo" class="boton-nav" onclick="cambiarSeccion('catalogo', this)">
+        <span class="nav-icon"><img src="icons/target.svg" width="16" height="16" /></span>
+        <span class="nav-text">Catálogo</span>
+      </button>
+      <button id="menu-perfil" class="boton-nav" onclick="cambiarSeccion('perfil', this)">
         <span class="nav-icon"><img src="icons/users.svg" width="16" height="16" /></span>
-        <span class="nav-text">Gestion de Atletas</span>
+        <span class="nav-text">Perfil</span>
       </button>
 
       <div class="selector-idioma">
@@ -181,170 +117,172 @@
         </select>
       </div>
 
-      <button
-        onclick="cerrarSesion()"
-        class="boton-cambiar-usuario"
-        id="btn-cambiar-usuario"
-        style="display: none"
-      >
+      <button onclick="cerrarSesion()" class="boton-cambiar-usuario" id="btn-cambiar-usuario" style="display: none">
         <img src="icons/refresh.svg" width="14" height="14" /> Cambiar usuario
       </button>
     </div>
 
     <!-- ============================================================
-         CONTENIDO PRINCIPAL (lado derecho)
-         ============================================================
-         Las 3 secciones de la app. Solo se muestra una a la vez
-         según qué botón del menú esté activo.
+         CONTENIDO PRINCIPAL
          ============================================================ -->
-    <div
-      class="contenido-principal"
-      id="contenido-principal"
-      style="display: none"
-    >
+    <div class="contenido-principal" id="contenido-principal" style="display: none">
 
-      <!-- ---- SECCIÓN: Resumen (inicio) ---- -->
-      <div id="resumen" class="seccion activa">
+      <!-- ---- SECCIÓN: Inicio ---- -->
+      <div id="inicio" class="seccion activa">
         <h1 id="txt-bienvenida">Bienvenido de vuelta</h1>
-
         <div class="tarjeta" id="tarjeta-bienvenida"></div>
-
-        <div class="formulario-ejercicio">
-          <h3 class="formulario-titulo" id="titulo-registro">
-            <img src="icons/muscle.svg" width="18" height="18" style="vertical-align:middle" /> Registrar Nuevo Ejercicio
-          </h3>
-
-          <div class="grupo-input">
-            <label class="label-ejercicio" id="lbl-nombre-ejercicio"
-              >Nombre del Ejercicio:</label
-            >
-            <input
-              type="text"
-              id="nombreEjercicio"
-              class="input-ejercicio"
-              placeholder="Ej. Dominadas, Fondos, Flexiones"
-            />
-          </div>
-
-          <div class="fila-inputs">
-            <div class="columna-input">
-              <label class="label-ejercicio" id="lbl-grupo-muscular"
-                >Grupo Muscular:</label
-              >
-              <select id="grupoMuscular" class="select-ejercicio">
-                <option id="opt-pecho" value="Pecho">Pecho (Empuje)</option>
-                <option id="opt-espalda" value="Espalda">
-                  Espalda (Tiron)
-                </option>
-                <option id="opt-piernas" value="Piernas">Piernas</option>
-                <option id="opt-hombros" value="Hombros">Hombros</option>
-                <option id="opt-core" value="Core">Core / Abdomen</option>
-              </select>
-            </div>
-
-            <div class="columna-input">
-              <label class="label-ejercicio" id="lbl-dificultad"
-                >Dificultad:</label
-              >
-              <select id="dificultadEjercicio" class="select-ejercicio">
-                <option id="opt-principiante" value="Principiante">
-                  Principiante
-                </option>
-                <option id="opt-intermedio" value="Intermedio">
-                  Intermedio
-                </option>
-                <option id="opt-avanzado" value="Avanzado">Avanzado</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="fila-inputs mb-25">
-            <div class="columna-input">
-              <label class="label-ejercicio" id="lbl-series">Series:</label>
-              <input
-                type="number"
-                id="series"
-                class="input-ejercicio"
-                value="4"
-                min="1"
-              />
-            </div>
-            <div class="columna-input">
-              <label class="label-ejercicio" id="lbl-repeticiones"
-                >Repeticiones:</label
-              >
-              <input
-                type="number"
-                id="repeticiones"
-                class="input-ejercicio"
-                value="10"
-                min="1"
-              />
-            </div>
-          </div>
-
-          <button
-            onclick="capturarNuevoEjercicio()"
-            class="btn-guardar-ejercicio"
-            id="btn-guardar-rutina"
-          >
-            💾 Guardar en Rutina IA
+        <div class="tarjeta" id="tarjeta-objetivo">
+          <h3><img src="icons/target.svg" width="18" height="18" style="vertical-align:middle" /> Mi objetivo</h3>
+          <p id="texto-objetivo" style="color:#cdd6f4;font-size:1.1rem"></p>
+        </div>
+        <div class="tarjeta" id="tarjeta-ultima-sesion">
+          <h3><img src="icons/muscle.svg" width="18" height="18" style="vertical-align:middle" /> Última sesión</h3>
+          <p id="texto-ultima-sesion" style="color:#a6adc8;font-style:italic">Todavía no registraste ninguna sesión</p>
+        </div>
+        <div class="tarjeta" id="tarjeta-ejercicios-hoy" style="display:none">
+          <h3><img src="icons/target.svg" width="18" height="18" style="vertical-align:middle" /> Ejercicios recomendados para hoy</h3>
+          <div id="texto-ejercicios-hoy"></div>
+        </div>
+        <div class="tarjeta" id="tarjeta-plan-semanal">
+          <h3><img src="icons/chart.svg" width="18" height="18" style="vertical-align:middle" /> Plan semanal</h3>
+          <div id="texto-plan-hoy" style="margin-bottom:10px"></div>
+          <div id="texto-plan-completo"></div>
+          <button onclick="mostrarEditorPlan()" class="btn-catalogo" style="margin-top:12px">
+            <img src="icons/new.svg" width="14" height="14" /> Editar plan
+          </button>
+        </div>
+        <div class="tarjeta" id="tarjeta-editor-plan" style="display:none">
+          <h3>Editar plan semanal</h3>
+          <div id="editor-plan-contenido"></div>
+          <button onclick="guardarEditorPlan()" class="btn-guardar-ejercicio" style="margin-top:12px">
+            <img src="icons/check.svg" width="16" height="16" style="vertical-align:middle" /> Guardar plan
+          </button>
+          <button onclick="cancelarEditorPlan()" class="btn-catalogo" style="margin-top:8px">
+            Cancelar
           </button>
         </div>
       </div>
 
-      <!-- ---- SECCIÓN: Generador IA ---- -->
-      <div id="rutinas" class="seccion">
-        <h1 id="ia-titulo-seccion">Generador de Rutinas IA</h1>
+      <!-- ---- SECCIÓN: Entrenar ---- -->
+      <div id="entrenar" class="seccion">
+        <h1>Entrenar</h1>
         <div class="tarjeta">
-          <h3 id="ia-titulo-tarjeta">Crear rutina personalizada</h3>
-          <p id="ia-descripcion">
-            Selecciona el nivel y el grupo muscular para que la IA genere el
-            circuito.
-          </p>
-          <select id="select-nivel-ia" style="padding: 5px; margin-right: 10px">
-            <option id="ia-opt-principiante">Principiante</option>
-            <option id="ia-opt-intermedio">Intermedio</option>
-            <option id="ia-opt-avanzado">
-              Avanzado (Front Lever, Muscle Up)
-            </option>
-          </select>
-          <button class="boton-ia" id="boton-generar">Generar con IA</button>
-          <div id="resultado-ia" class="resultado-oculto"></div>
+          <h3>Registrar sesión</h3>
+          <p style="color:#a6adc8">Seleccioná un ejercicio del catálogo y registrá cuánto hiciste hoy.</p>
+          <div class="grupo-input">
+            <label class="label-ejercicio">Ejercicio:</label>
+            <select id="select-ejercicio-sesion" class="select-ejercicio"></select>
+            <div id="info-meta-ejercicio" style="margin-top:8px;padding:10px;background:#151520;border-radius:8px;display:none"></div>
+          </div>
+          <div class="fila-inputs">
+            <div class="columna-input">
+              <label class="label-ejercicio">Series:</label>
+              <input type="number" id="series-sesion" class="input-ejercicio" value="3" min="1" />
+            </div>
+            <div class="columna-input">
+              <label class="label-ejercicio">Reps:</label>
+              <input type="number" id="reps-sesion" class="input-ejercicio" value="10" min="1" />
+            </div>
+          </div>
+          <div class="grupo-input">
+            <label class="label-ejercicio">Notas (opcional):</label>
+            <input type="text" id="notas-sesion" class="input-ejercicio" placeholder="Ej: última rep difícil" />
+          </div>
+          <button onclick="guardarSesionClick()" class="btn-guardar-ejercicio" id="btn-guardar-sesion">
+            <img src="icons/check.svg" width="16" height="16" style="vertical-align:middle" /> Guardar sesión
+          </button>
+          <div id="resultado-sesion" style="margin-top:15px"></div>
         </div>
       </div>
 
-      <!-- ---- SECCIÓN: Gestión de Atletas ---- -->
-      <div id="atletas" class="seccion">
-        <h1>Gestion de Atletas</h1>
+      <!-- ---- SECCIÓN: Progreso ---- -->
+      <div id="progreso" class="seccion">
+        <h1 id="ia-titulo-seccion">Progreso</h1>
         <div class="tarjeta">
-          <h3>Listado</h3>
-          <p>
-            Interfaz lista para que construyas tu tabla de usuarios, conectes el
-            backend y manejes perfiles, pesos y progresiones.
-          </p>
+          <h3 id="ia-titulo-tarjeta">Análisis de entrenamiento</h3>
+          <p id="ia-descripcion">La IA analiza tus sesiones y te recomienda cómo mejorar.</p>
+          <button class="boton-ia" id="boton-analizar">Analizar con IA</button>
+          <div id="resultado-ia" class="resultado-oculto"></div>
         </div>
+        <div class="tarjeta">
+          <h3>Últimas sesiones</h3>
+          <div id="historial-sesiones">
+            <p style="color:#a6adc8;font-style:italic">Aún no hay sesiones registradas</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ---- SECCIÓN: Catálogo ---- -->
+      <div id="catalogo" class="seccion">
+        <h1><img src="icons/target.svg" width="20" height="20" style="vertical-align:middle" /> Catálogo de Ejercicios</h1>
+        <div id="catalogo-contenido"></div>
+      </div>
+
+      <!-- ---- SECCIÓN: Perfil ---- -->
+      <div id="perfil" class="seccion">
+        <h1><img src="icons/users.svg" width="20" height="20" style="vertical-align:middle" /> Mi Perfil</h1>
+
+        <!-- Vista -->
+        <div class="tarjeta" id="perfil-vista">
+          <h3>Datos personales</h3>
+          <p><strong>Nombre:</strong> <span id="perfil-nombre"></span></p>
+          <p><strong>Nivel:</strong> <span id="perfil-nivel"></span></p>
+          <p><strong>Objetivo:</strong> <span id="perfil-objetivo"></span></p>
+          <p><strong>Peso:</strong> <span id="perfil-peso"></span> kg</p>
+          <p><strong>Altura:</strong> <span id="perfil-altura"></span> cm</p>
+          <button onclick="mostrarEditarPerfil()" class="btn-catalogo" style="margin-top:12px">
+            <img src="icons/new.svg" width="14" height="14" /> Editar perfil
+          </button>
+        </div>
+
+        <!-- Edicion -->
+        <div class="tarjeta" id="perfil-edicion" style="display:none">
+          <h3>Editar perfil</h3>
+          <div class="grupo-input">
+            <label class="label-ejercicio">Nombre:</label>
+            <input type="text" id="edit-nombre" class="input-ejercicio" />
+          </div>
+          <div class="grupo-input">
+            <label class="label-ejercicio">Nivel:</label>
+            <select id="edit-nivel" class="select-ejercicio">
+              <option value="Principiante">Principiante</option>
+              <option value="Intermedio">Intermedio</option>
+              <option value="Experto">Experto</option>
+            </select>
+          </div>
+          <div class="grupo-input">
+            <label class="label-ejercicio">Objetivo:</label>
+            <input type="text" id="edit-objetivo" class="input-ejercicio" />
+          </div>
+          <div class="fila-inputs">
+            <div class="columna-input">
+              <label class="label-ejercicio">Peso (kg):</label>
+              <input type="number" id="edit-peso" class="input-ejercicio" step="0.1" />
+            </div>
+            <div class="columna-input">
+              <label class="label-ejercicio">Altura (cm):</label>
+              <input type="number" id="edit-altura" class="input-ejercicio" />
+            </div>
+          </div>
+          <button onclick="guardarEditarPerfil()" class="btn-guardar-ejercicio" style="margin-top:12px">
+            <img src="icons/check.svg" width="16" height="16" style="vertical-align:middle" /> Guardar cambios
+          </button>
+          <button onclick="cancelarEditarPerfil()" class="btn-catalogo" style="margin-top:8px">
+            Cancelar
+          </button>
+        </div>
+
       </div>
     </div>
 
     <!-- ============================================================
-         SCRIPTS (orden de carga importante)
-         ============================================================
-         El orden importa: cada archivo puede usar lo que declara
-         el anterior.
-
-           src/clases.js    → define las clases (Ejercicio, Rutina)
-           src/database.js  → funciones de base de datos SQLite
-           src/app.js       → variables globales, arranque de la app
-           src/auth.js      → login, registro, selección de usuario
-           src/ejercicios.js → capturar y guardar ejercicios
-           src/idiomas.js   → sistema de traducción (i18n)
-           src/renderer.js  → navegación entre secciones, simulación IA
+         SCRIPTS
          ============================================================ -->
     <script src="src/clases.js"></script>
     <script src="src/database.js"></script>
     <script src="src/app.js"></script>
     <script src="src/auth.js"></script>
+    <script src="src/progresiones.js"></script>
     <script src="src/ejercicios.js"></script>
     <script src="src/idiomas.js"></script>
     <script src="src/renderer.js"></script>
