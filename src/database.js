@@ -380,12 +380,16 @@ function guardarSesion(usuarioId, progresionId, series, reps, notas) {
 // ------------------------------------------------------------
 // Trae las ultimas sesiones de un usuario, con el nombre del
 // ejercicio incluido. Ordenadas de la mas nueva a la mas vieja.
+// Columnas devueltas (indice):
+//   [0]=nombre, [1]=series_hechas, [2]=reps_hechas, [3]=notas,
+//   [4]=fecha, [5]=reps_requeridas, [6]=series_requeridas,
+//   [7]=grupo_muscular, [8]=nivel, [9]=s.id
 // ------------------------------------------------------------
 function obtenerSesiones(usuarioId, limite) {
     limite = limite || 10;
     var resultado = db.exec(
         'SELECT p.nombre, s.series_hechas, s.reps_hechas, s.notas, s.fecha, ' +
-        'p.reps_requeridas, p.series_requeridas, p.grupo_muscular, p.nivel ' +
+        'p.reps_requeridas, p.series_requeridas, p.grupo_muscular, p.nivel, s.id ' +
         'FROM sesiones s ' +
         'JOIN progresiones p ON s.progresion_id = p.id ' +
         'WHERE s.usuario_id = ' + usuarioId + ' ' +
@@ -393,6 +397,27 @@ function obtenerSesiones(usuarioId, limite) {
     );
     if (resultado.length === 0) return [];
     return resultado[0].values;
+}
+
+
+// ------------------------------------------------------------
+// actualizarSesion(id, series, reps, notas)
+// ------------------------------------------------------------
+function actualizarSesion(id, series, reps, notas) {
+    db.run(
+        'UPDATE sesiones SET series_hechas = ?, reps_hechas = ?, notas = ? WHERE id = ?',
+        [series, reps, notas, id]
+    );
+    guardarDB();
+}
+
+
+// ------------------------------------------------------------
+// eliminarSesion(id)
+// ------------------------------------------------------------
+function eliminarSesion(id) {
+    db.run('DELETE FROM sesiones WHERE id = ?', [id]);
+    guardarDB();
 }
 
 
@@ -493,3 +518,5 @@ window.inicializarPlanSemanal = inicializarPlanSemanal;
 window.obtenerPlanSemanal = obtenerPlanSemanal;
 window.guardarPlanSemanal = guardarPlanSemanal;
 window.obtenerProgresionesPorGrupo = obtenerProgresionesPorGrupo;
+window.actualizarSesion = actualizarSesion;
+window.eliminarSesion = eliminarSesion;

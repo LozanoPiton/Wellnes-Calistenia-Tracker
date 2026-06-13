@@ -1,0 +1,203 @@
+====================================================================
+  WELLNESS - Calistenia Tracker
+  Documentacion del proyecto
+  ====================================================================
+
+  QUE HACE LA APP
+  ===============
+  App de escritorio (Electron) para registrar entrenamientos de
+  calistenia. El usuario se registra, elige un nivel, y la app
+  le muestra ejercicios adecuados a ese nivel. Puede registrar
+  sesiones (series, repeticiones, notas), ver su historial, y
+  un modulo IA analiza el progreso y recomienda cuando subir de
+  nivel.
+
+  No necesita internet. Todo se guarda local en SQLite.
+
+  ====================================================================
+  ARCHIVOS DEL PROYECTO
+  ====================================================================
+
+  Raiz:
+  ├── index.html          - Interfaz (estructura HTML)
+  ├── main.js             - Configuracion de Electron (ventana, menu)
+  ├── package.json        - Dependencias (electron, sql.js)
+  ├── wellness.db         - Base de datos SQLite (se crea sola)
+  │
+  ├── src/
+  │   ├── clases.js       - Clases POO (Usuario, Ejercicio, Rutina, Sesion)
+  │   ├── database.js     - Conexion SQLite + todas las consultas
+  │   ├── app.js          - Variables globales + inicio
+  │   ├── auth.js         - Login, registro, perfil de usuario
+  │   ├── progresiones.js - Catalogo de ejercicios (64 ejercicios)
+  │   ├── ejercicios.js   - Registro de sesiones de entrenamiento
+  │   ├── idiomas.js      - Traducciones ES/EN
+  │   └── renderer.js     - Navegacion, plan semanal, IA, resumen diario
+  │
+  ├── styles/
+  │   ├── base.css        - Reset, colores, tipografia
+  │   ├── layout.css      - Distribucion de la pagina
+  │   ├── sidebar.css     - Barra lateral
+  │   ├── components.css  - Tarjetas, botones, tablas, formularios
+  │   ├── auth.css        - Pantalla de login/registro
+  │   └── responsive.css  - Adaptacion a pantallas chicas
+  │
+  └── icons/
+      ├── chart.svg, muscle.svg, target.svg, etc.
+      └── logo_app.png    - Logo personalizado
+
+  ====================================================================
+  COMO FUNCIONA CADA PARTE
+  ====================================================================
+
+  1. index.html
+  -------------
+  - Tiene TODA la interfaz en HTML puro.
+  - Secciones: login/registro (#pantalla-auth), luego se muestra
+    el contenido principal (#contenido-principal) con 5 secciones:
+    inicio, entrenar, progreso, catalogo, perfil.
+  - Cada seccion es un <div class="seccion">. Solo una tiene
+    clase "activa" a la vez.
+  - Al final carga los JS en orden (clases.js primero, renderer.js
+    ultimo).
+
+  2. main.js
+  ----------
+  - Crea la ventana de Electron (1000x650).
+  - Oculta la barra de menu (autoHideMenuBar).
+  - Carga index.html.
+  - Pone el icono personalizado (logo_app.png).
+
+  3. clases.js
+  ------------
+  - Define las clases Usuario, Ejercicio, Rutina, Sesion.
+  - NO se usan directamente en la logica actual, pero estan
+    para cumplir con el requisito de POO.
+
+  4. database.js
+  --------------
+  - Abre (o crea) wellness.db con SQL.js.
+  - Crea las tablas:
+    * usuarios (id, nombre, nivel, peso, altura, objetivo, creado_en)
+    * progresiones (id, grupo_muscular, nombre, nivel, reps, series, desc)
+    * sesiones (id, usuario_id, progresion_id, series_hechas, reps_hechas,
+                notas, fecha)
+    * plan_semanal (usuario_id, dia, grupo_muscular)
+  - Funciones disponibles globalmente (window.xxx):
+    * iniciarDB()              - Abre/crea DB
+    * crearUsuario()           - Inserta usuario
+    * obtenerUsuarioPorId()    - Trae un usuario
+    * actualizarUsuario()      - Modifica nombre/nivel/peso/altura/objetivo
+    * eliminarUsuario()        - Borra usuario y sus sesiones/plan
+    * guardarSesion()          - Inserta sesion (fecha se pone sola)
+    * obtenerSesiones(id,lim)  - Trae sesiones (con nombre del ejercicio)
+    * actualizarSesion()       - Edita series/reps/notas de una sesion
+    * eliminarSesion()         - Borra una sesion por id
+    * inicializarPlanSemanal() - Crea plan por defecto (Lun-Esp, etc)
+    * obtenerPlanSemanal()     - Trae el plan del usuario
+    * guardarPlanSemanal()     - Guarda grupo muscular para un dia
+    * obtenerProgresionesPorGrupo() - Ejercicios filtrados por grupo+nivel
+  - guardarDB() se llama despues de cada escritura.
+  - Las funciones NO usan parametrizacion segura (concatenan strings),
+    pero al ser local no hay riesgo de inyeccion.
+
+  5. app.js
+  ---------
+  - Declara var usuarioActual = null (global).
+  - Al cargar la pagina, llama a iniciarDB(), poblarProgresiones(),
+    y muestra la pantalla de login.
+
+  6. auth.js
+  ----------
+  - Login: muestra lista de usuarios guardados.
+  - Registro: formulario con nombre, nivel, peso, altura, objetivo.
+  - iniciarSesion(id): carga el usuario, muestra sidebar y contenido.
+  - cerrarSesion(): vuelve al login.
+  - actualizarInfoUsuario(): llena los datos en sidebar y perfil.
+
+  7. progresiones.js
+  ------------------
+  - CATALOGO: array de 64 ejercicios de calistenia. Cada uno con:
+    grupo_muscular, nombre, nivel (1-5), reps, series, descripcion.
+  - poblarProgresiones(): inserta el CATALOGO en la tabla progresiones
+    si esta vacia. Se ejecuta UNA vez al iniciar.
+  - mostrarCatalogo(): renderiza tabla en seccion Catalogo.
+  - poblarSelectEjercicios(): llena el <select> en Entrenar,
+    filtrando por nivel del usuario.
+
+  8. ejercicios.js
+  ----------------
+  - mostrarMetaEjercicio(): cuando seleccionas un ejercicio, muestra
+    su meta (series x reps) y descripcion.
+  - guardarSesionClick(): toma los datos del formulario (ejercicio,
+    series, reps, notas) y los guarda via guardarSesion(). Luego
+    muestra si cumpliste la meta o no.
+
+  9. idiomas.js
+  -------------
+  - dict: objeto con traducciones ES y EN.
+  - t(clave): busca la clave en el idioma actual (segun el <select>).
+  - getIdiomaActual(): lee el <select id="select-lang">.
+  - aplicarTraduccion(): se ejecuta al cambiar idioma. Traduce TODOS
+    los textos estaticos y re-renderiza la seccion activa.
+
+  10. renderer.js
+  ---------------
+  - cambiarSeccion(id, boton): muestra/oculta secciones y llama a
+    las funciones de renderizado segun corresponda.
+  - refrescarHistorial(): muestra ultimas 10 sesiones en Inicio
+    y en Progreso, con botones Editar/Eliminar.
+  - IA (analisis): al hacer clic en "Analizar con IA":
+    * Calcula si podes subir de nivel (60+ dias, 15+ sesiones, 60% metas)
+    * Muestra tendencia semanal (volumen esta semana vs anterior)
+    * Detecta estancamiento (ejercicios sin mejorar en 3 sesiones)
+  - refrescarPlanSemanal(): muestra el plan de la semana, el dia de
+    hoy destacado, y los ejercicios recomendados para hoy.
+  - mostrarResumenDiario(): tarjeta con X/Y ejercicios completados hoy.
+  - mostrarEditorPlan(): formulario para editar el plan semanal.
+  - editarSesionClick() / eliminarSesionClick(): editar/borrar sesiones.
+
+  ====================================================================
+  FLUJO DE DATOS
+  ====================================================================
+
+  Registro:
+    formulario → crearUsuario() → INSERT INTO usuarios → wellness.db
+
+  Login:
+    clic en usuario → obtenerUsuarioPorId() → SELECT FROM usuarios
+    → objeto usuarioActual (global)
+
+  Catalogo:
+    poblarProgresiones() → INSERT INTO progresiones (una vez)
+    mostrarCatalogo() → SELECT FROM progresiones → HTML
+
+  Entrenar:
+    poblarSelectEjercicios() → SELECT FROM progresiones WHERE nivel ≤ X
+    → <select>
+    guardarSesionClick() → guardarSesion() → INSERT INTO sesiones
+    → guardarDB()
+
+  Progreso:
+    obtenerSesiones() → SELECT sesiones + JOIN progresiones → HTML
+    IA: analiza las sesiones y muestra recomendaciones
+
+  Plan semanal:
+    inicializarPlanSemanal() → INSERT INTO plan_semanal (por defecto)
+    obtenerPlanSemanal() → SELECT FROM plan_semanal
+    guardarPlanSemanal() → UPDATE plan_semanal
+
+  ====================================================================
+  MODIFICAR O AGREGAR FUNCIONALIDAD
+  ====================================================================
+
+  - Para agregar ejercicios: editar CATALOGO en progresiones.js,
+    borrar wellness.db y reiniciar la app.
+  - Para cambiar colores: editar styles/base.css (variables CSS).
+  - Para agregar traducciones: agregar claves en dict (idiomas.js).
+  - Para cambiar el plan por defecto: editar inicializarPlanSemanal()
+    en database.js.
+  - Para cambiar requisitos de ascenso: editar los valores en
+    renderer.js (diffDias >= 60, sesiones >= 15, porcentaje >= 60).
+
+  ====================================================================

@@ -41,6 +41,12 @@ function mostrarMetaEjercicio() {
 // ------------------------------------------------------------
 // guardarSesionClick()
 // ------------------------------------------------------------
+// Toma los valores del formulario (ejercicio, series, reps, notas)
+// y los guarda en la BD via guardarSesion(). Compara lo hecho
+// con la meta (series_requeridas, reps_requeridas) y muestra si
+// se cumplio o cuanto falto. Luego limpia el formulario y
+// actualiza el historial + resumen diario.
+// ------------------------------------------------------------
 function guardarSesionClick() {
   var select = document.getElementById('select-ejercicio-sesion');
   var option = select.options[select.selectedIndex];
@@ -76,6 +82,7 @@ function guardarSesionClick() {
   document.getElementById('notas-sesion').value = '';
 
   refrescarHistorial();
+  mostrarResumenDiario();
 }
 
 // ------------------------------------------------------------

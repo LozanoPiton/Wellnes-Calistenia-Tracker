@@ -80,6 +80,7 @@ var dict = {
 
     planSemanal: "Plan semanal",
     ejerciciosHoy: "Ejercicios recomendados para hoy",
+    resumenHoy: "Resumen de hoy",
     editarPlan: "Editar plan",
     editarPlanTitulo: "Editar plan semanal",
     guardarPlan: "Guardar plan",
@@ -92,6 +93,7 @@ var dict = {
     primeraVez: "Es tu primera vez. Empezá con calma y priorizá la técnica.",
     ejerciciosPara: "Ejercicios de",
     paraTuNivel: "para tu nivel",
+    ejerciciosCompletados: "ejercicios completados hoy",
     seriesAbrev: "series",
     repsAbrev: "reps",
 
@@ -127,6 +129,30 @@ var dict = {
     nivelSubido: "Nivel actualizado correctamente.",
     analisisNivel: "Revisando tu progreso para subir de nivel...",
     noSesionesNivel: "Todavía no hay suficientes sesiones para evaluar si podés subir de nivel.",
+    entrenandoDesde: "Entrenando desde hace",
+    dias: "días",
+    faltan: "Faltan",
+    y: "y",
+    sesionesMas: "sesiones más",
+    paraEvaluar: "para evaluar ascenso",
+    mejorarRendimiento: "Seguí entrenando, necesitás cumplir más metas para ascender.",
+    // IA extra
+    tendenciaSemanal: "Tendencia semanal",
+    subiste: "Subiste",
+    bajaste: "Bajaste",
+    vsSemanaPasada: "vs la semana pasada",
+    igualQueSemanaPasada: "Igual que la semana pasada",
+    volumenTotal: "Volumen total",
+    diasEntrenados: "días entrenados",
+    sinDatosTendencia: "No hay suficientes datos para comparar semanas.",
+    primeraSemana: "Primera semana con datos. La semana que viene podremos comparar.",
+    estancamiento: "Posible estancamiento",
+    ejerciciosEstancados: "Estos ejercicios no mejoran en las últimas 3 sesiones",
+    sugerenciaEstancamiento: "Probá cambiar la progresión o variar el ejercicio.",
+    editar: "Editar",
+    eliminar: "Eliminar",
+    editando: "Editando sesión",
+    confirmEliminarSesion: "¿Eliminar esta sesión?",
   },
 
   en: {
@@ -210,6 +236,7 @@ var dict = {
 
     planSemanal: "Weekly plan",
     ejerciciosHoy: "Today's recommended exercises",
+    resumenHoy: "Today's summary",
     editarPlan: "Edit plan",
     editarPlanTitulo: "Edit weekly plan",
     guardarPlan: "Save plan",
@@ -222,6 +249,7 @@ var dict = {
     primeraVez: "First time? Take it slow and focus on technique.",
     ejerciciosPara: "Exercises for",
     paraTuNivel: "for your level",
+    ejerciciosCompletados: "exercises completed today",
     seriesAbrev: "sets",
     repsAbrev: "reps",
 
@@ -257,6 +285,30 @@ var dict = {
     nivelSubido: "Level updated successfully.",
     analisisNivel: "Checking your progress to level up...",
     noSesionesNivel: "Not enough sessions to evaluate leveling up yet.",
+    entrenandoDesde: "Training for",
+    dias: "days",
+    faltan: "Need",
+    y: "and",
+    sesionesMas: "more sessions",
+    paraEvaluar: "to evaluate level up",
+    mejorarRendimiento: "Keep training, you need to meet more goals to advance.",
+    // IA extra
+    tendenciaSemanal: "Weekly trend",
+    subiste: "Up",
+    bajaste: "Down",
+    vsSemanaPasada: "vs last week",
+    igualQueSemanaPasada: "Same as last week",
+    volumenTotal: "Total volume",
+    diasEntrenados: "days trained",
+    sinDatosTendencia: "Not enough data to compare weeks.",
+    primeraSemana: "First week with data. Next week we can compare.",
+    estancamiento: "Possible plateau",
+    ejerciciosEstancados: "These exercises haven't improved in the last 3 sessions",
+    sugerenciaEstancamiento: "Try changing the progression or varying the exercise.",
+    editar: "Edit",
+    eliminar: "Delete",
+    editando: "Editing session",
+    confirmEliminarSesion: "Delete this session?",
   },
 };
 
@@ -312,6 +364,8 @@ function aplicarTraduccion() {
   if (el) el.innerHTML = '<img src="icons/chart.svg" width="18" height="18" style="vertical-align:middle" /> ' + t('planSemanal');
   el = document.querySelector('#tarjeta-ejercicios-hoy h3');
   if (el) el.innerHTML = '<img src="icons/target.svg" width="18" height="18" style="vertical-align:middle" /> ' + t('ejerciciosHoy');
+  el = document.querySelector('#tarjeta-resumen-diario h3');
+  if (el) el.innerHTML = '<img src="icons/chart.svg" width="18" height="18" style="vertical-align:middle" /> ' + t('resumenHoy');
   el = document.querySelector('#tarjeta-plan-semanal .btn-catalogo');
   if (el) el.innerHTML = '<img src="icons/new.svg" width="14" height="14" /> ' + t('editarPlan');
   el = document.querySelector('#tarjeta-editor-plan h3');
