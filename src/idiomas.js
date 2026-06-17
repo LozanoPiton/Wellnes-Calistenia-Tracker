@@ -5,7 +5,7 @@ var dict = {
     navProgreso: "Progreso",
     navCatalogo: "Catálogo",
     navPerfil: "Perfil",
-    btnCambiarUser: "<img src='icons/refresh.svg' width='16' height='16' /> Cambiar usuario",
+    btnCambiarUser: "Cambiar usuario",
 
     bienvenida: "Bienvenido de vuelta",
     objetivo: "Mi objetivo",
@@ -22,7 +22,7 @@ var dict = {
     lblReps: "Reps:",
     lblNotas: "Notas (opcional):",
     placeholderNotas: "Ej: última rep difícil",
-    btnGuardarSesion: "<img src='icons/check.svg' width='16' height='16' style='vertical-align:middle' /> Guardar sesión",
+    btnGuardarSesion: "Guardar sesión",
     selectPlaceholder: "— Seleccioná un ejercicio —",
 
     progresoTitulo: "Progreso",
@@ -65,7 +65,7 @@ var dict = {
     placeholderPeso: "70",
     placeholderAltura: "175",
     placeholderObjetivo: "Ej: Hacer muscle up, llegar a 10 dominadas",
-    btnCrearUsuario: "<img src='icons/check.svg' width='20' height='20' /> Crear usuario",
+    btnCrearUsuario: "Crear usuario",
     volver: "Volver",
     principiante: "Principiante",
     principianteDesc: "Apenas empezando",
@@ -161,7 +161,7 @@ var dict = {
     navProgreso: "Progress",
     navCatalogo: "Catalog",
     navPerfil: "Profile",
-    btnCambiarUser: "<img src='icons/refresh.svg' width='16' height='16' /> Change user",
+    btnCambiarUser: "Change user",
 
     bienvenida: "Welcome back",
     objetivo: "My goal",
@@ -178,7 +178,7 @@ var dict = {
     lblReps: "Reps:",
     lblNotas: "Notes (optional):",
     placeholderNotas: "Ex: last rep was hard",
-    btnGuardarSesion: "<img src='icons/check.svg' width='16' height='16' style='vertical-align:middle' /> Save session",
+    btnGuardarSesion: "Save session",
     selectPlaceholder: "— Select an exercise —",
 
     progresoTitulo: "Progress",
@@ -221,7 +221,7 @@ var dict = {
     placeholderPeso: "70",
     placeholderAltura: "175",
     placeholderObjetivo: "Ex: Get a muscle up, reach 10 pull-ups",
-    btnCrearUsuario: "<img src='icons/check.svg' width='20' height='20' /> Create user",
+    btnCrearUsuario: "Create user",
     volver: "Back",
     principiante: "Beginner",
     principianteDesc: "Just starting out",
@@ -312,6 +312,29 @@ var dict = {
   },
 };
 
+function setIconText(el, src, ancho, alto, texto) {
+  if (!el) return;
+  el.innerHTML = '';
+  var img = document.createElement('img');
+  img.src = src;
+  img.width = ancho;
+  img.height = alto;
+  img.style.cssText = 'vertical-align:middle';
+  el.appendChild(img);
+  el.appendChild(document.createTextNode(' ' + texto));
+}
+
+function setIconTextNoVAlign(el, src, ancho, alto, texto) {
+  if (!el) return;
+  el.innerHTML = '';
+  var img = document.createElement('img');
+  img.src = src;
+  img.width = ancho;
+  img.height = alto;
+  el.appendChild(img);
+  el.appendChild(document.createTextNode(' ' + texto));
+}
+
 var lang = 'es';
 
 function t(clave) {
@@ -342,38 +365,38 @@ function aplicarTraduccion() {
   m = document.querySelector("#menu-perfil .nav-text");
   if (m) m.innerText = t('navPerfil');
   var btn = document.getElementById("btn-cambiar-usuario");
-  if (btn) btn.innerHTML = t('btnCambiarUser');
+  if (btn) setIconText(btn, 'icons/refresh.svg', 16, 16, t('btnCambiarUser'));
 
   // Auth page (if visible)
   el = document.querySelector('#modo-login h1');
-  if (el) el.innerHTML = '<img src="icons/hand.svg" width="24" height="24" style="vertical-align:middle" /> ' + t('loginTitulo');
+  if (el) setIconText(el, 'icons/hand.svg', 24, 24, t('loginTitulo'));
   el = document.querySelector('#modo-login p');
   if (el) el.textContent = t('loginDesc');
   el = document.querySelector('#modo-login .btn-link');
-  if (el) el.innerHTML = '<img src="icons/plus.svg" width="16" height="16" /> ' + t('crearUsuarioNuevo');
+  if (el) setIconTextNoVAlign(el, 'icons/plus.svg', 16, 16, t('crearUsuarioNuevo'));
 
   // Static section titles
   var el;
   el = document.getElementById('txt-bienvenida');
   if (el) el.textContent = t('bienvenida');
   el = document.querySelector('#tarjeta-objetivo h3');
-  if (el) el.innerHTML = '<img src="icons/target.svg" width="18" height="18" style="vertical-align:middle" /> ' + t('objetivo');
+  if (el) setIconText(el, 'icons/target.svg', 18, 18, t('objetivo'));
   el = document.querySelector('#tarjeta-ultima-sesion h3');
-  if (el) el.innerHTML = '<img src="icons/muscle.svg" width="18" height="18" style="vertical-align:middle" /> ' + t('ultimaSesion');
+  if (el) setIconText(el, 'icons/muscle.svg', 18, 18, t('ultimaSesion'));
   el = document.querySelector('#tarjeta-plan-semanal h3');
-  if (el) el.innerHTML = '<img src="icons/chart.svg" width="18" height="18" style="vertical-align:middle" /> ' + t('planSemanal');
+  if (el) setIconText(el, 'icons/chart.svg', 18, 18, t('planSemanal'));
   el = document.querySelector('#tarjeta-ejercicios-hoy h3');
-  if (el) el.innerHTML = '<img src="icons/target.svg" width="18" height="18" style="vertical-align:middle" /> ' + t('ejerciciosHoy');
+  if (el) setIconText(el, 'icons/target.svg', 18, 18, t('ejerciciosHoy'));
   el = document.querySelector('#tarjeta-resumen-diario h3');
-  if (el) el.innerHTML = '<img src="icons/chart.svg" width="18" height="18" style="vertical-align:middle" /> ' + t('resumenHoy');
+  if (el) setIconText(el, 'icons/chart.svg', 18, 18, t('resumenHoy'));
   el = document.querySelector('#tarjeta-plan-semanal .btn-catalogo');
-  if (el) el.innerHTML = '<img src="icons/new.svg" width="14" height="14" /> ' + t('editarPlan');
+  if (el) setIconTextNoVAlign(el, 'icons/new.svg', 14, 14, t('editarPlan'));
   el = document.querySelector('#tarjeta-editor-plan h3');
   if (el) el.textContent = t('editarPlanTitulo');
   el = document.querySelector('#tarjeta-editor-plan .btn-guardar-ejercicio');
-  if (el) el.innerHTML = '<img src="icons/check.svg" width="16" height="16" style="vertical-align:middle" /> ' + t('guardarPlan');
+  if (el) setIconText(el, 'icons/check.svg', 16, 16, t('guardarPlan'));
   el = document.querySelector('#tarjeta-editor-plan .btn-catalogo');
-  if (el) el.innerHTML = t('cancelar');
+  if (el) el.textContent = t('cancelar');
 
   // Entrenar section
   el = document.querySelector('#entrenar h1');
@@ -394,7 +417,7 @@ function aplicarTraduccion() {
   el = document.getElementById('notas-sesion');
   if (el) el.placeholder = t('placeholderNotas');
   el = document.getElementById('btn-guardar-sesion');
-  if (el) el.innerHTML = t('btnGuardarSesion');
+  if (el) setIconText(el, 'icons/check.svg', 16, 16, t('btnGuardarSesion'));
 
   // Progreso section
   el = document.querySelector('#progreso h1');
@@ -410,11 +433,11 @@ function aplicarTraduccion() {
 
   // Catalogo section
   el = document.querySelector('#catalogo h1');
-  if (el) el.innerHTML = '<img src="icons/target.svg" width="20" height="20" style="vertical-align:middle" /> ' + t('catalogoTitulo');
+  if (el) setIconText(el, 'icons/target.svg', 20, 20, t('catalogoTitulo'));
 
   // Perfil section
   el = document.querySelector('#perfil h1');
-  if (el) el.innerHTML = '<img src="icons/users.svg" width="20" height="20" style="vertical-align:middle" /> ' + t('perfilTitulo');
+  if (el) setIconText(el, 'icons/users.svg', 20, 20, t('perfilTitulo'));
   el = document.querySelector('#perfil-vista h3');
   if (el) el.textContent = t('datosPersonales');
   el = document.querySelector('#perfil-vista p:nth-child(2) strong');
@@ -428,7 +451,7 @@ function aplicarTraduccion() {
   el = document.querySelector('#perfil-vista p:nth-child(6) strong');
   if (el) el.textContent = t('altura');
   el = document.querySelector('#perfil-vista .btn-catalogo');
-  if (el) el.innerHTML = '<img src="icons/new.svg" width="14" height="14" /> ' + t('editarPerfil');
+  if (el) setIconTextNoVAlign(el, 'icons/new.svg', 14, 14, t('editarPerfil'));
   el = document.querySelector('#perfil-edicion h3');
   if (el) el.textContent = t('editarTitulo');
   el = document.querySelector('#perfil-edicion .grupo-input:nth-child(2) .label-ejercicio');
@@ -442,7 +465,7 @@ function aplicarTraduccion() {
   if (editLabels[0]) editLabels[0].textContent = t('pesoKg');
   if (editLabels[1]) editLabels[1].textContent = t('alturaCm');
   el = document.querySelector('#perfil-edicion .btn-guardar-ejercicio');
-  if (el) el.innerHTML = '<img src="icons/check.svg" width="16" height="16" style="vertical-align:middle" /> ' + t('guardarCambios');
+  if (el) setIconText(el, 'icons/check.svg', 16, 16, t('guardarCambios'));
   el = document.querySelector('#perfil-edicion .btn-catalogo');
   if (el) el.textContent = t('cancelar');
 

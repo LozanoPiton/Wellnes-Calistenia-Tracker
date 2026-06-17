@@ -23,29 +23,42 @@ function mostrarMetaEjercicio() {
   var series = option.getAttribute('data-series');
   var desc = option.getAttribute('data-desc');
 
-  infoDiv.innerHTML =
-    '<div style="display:flex;justify-content:space-between;align-items:center">' +
-      '<div>' +
-        '<strong style="color:#f8fafc">' + nombre + '</strong>' +
-        '<br><span style="color:#6c7086">' + desc + '</span>' +
-      '</div>' +
-      '<div style="text-align:right">' +
-        '<span style="color:#facc15;font-weight:700">' + t('nivelAbrev') + nivel + '</span>' +
-        '<br><span style="color:#38bdf8;font-family:monospace">' + t('meta') + ': ' + series + 'x' + reps + '</span>' +
-      '</div>' +
-    '</div>';
-
+  infoDiv.innerHTML = '';
   infoDiv.style.display = 'block';
+
+  var flex = document.createElement('div');
+  flex.style.cssText = 'display:flex;justify-content:space-between;align-items:center';
+
+  var left = document.createElement('div');
+  var strongNombre = document.createElement('strong');
+  strongNombre.style.color = '#f8fafc';
+  strongNombre.textContent = nombre;
+  left.appendChild(strongNombre);
+  left.appendChild(document.createElement('br'));
+  var spanDesc = document.createElement('span');
+  spanDesc.style.color = '#6c7086';
+  spanDesc.textContent = desc;
+  left.appendChild(spanDesc);
+  flex.appendChild(left);
+
+  var right = document.createElement('div');
+  right.style.textAlign = 'right';
+  var spanNivel = document.createElement('span');
+  spanNivel.style.cssText = 'color:#facc15;font-weight:700';
+  spanNivel.textContent = t('nivelAbrev') + nivel;
+  right.appendChild(spanNivel);
+  right.appendChild(document.createElement('br'));
+  var spanMeta = document.createElement('span');
+  spanMeta.style.cssText = 'color:#38bdf8;font-family:monospace';
+  spanMeta.textContent = t('meta') + ': ' + series + 'x' + reps;
+  right.appendChild(spanMeta);
+  flex.appendChild(right);
+
+  infoDiv.appendChild(flex);
 }
 
 // ------------------------------------------------------------
 // guardarSesionClick()
-// ------------------------------------------------------------
-// Toma los valores del formulario (ejercicio, series, reps, notas)
-// y los guarda en la BD via guardarSesion(). Compara lo hecho
-// con la meta (series_requeridas, reps_requeridas) y muestra si
-// se cumplio o cuanto falto. Luego limpia el formulario y
-// actualiza el historial + resumen diario.
 // ------------------------------------------------------------
 function guardarSesionClick() {
   var select = document.getElementById('select-ejercicio-sesion');
@@ -56,7 +69,8 @@ function guardarSesionClick() {
   var notas = document.getElementById('notas-sesion').value.trim();
 
   if (!progresionId || !series || !reps) {
-    mostrarMensajeSesion(t('completarCampos'), 'error');
+    var msgEl = mostrarMensajeSesion('error');
+    msgEl.textContent = t('completarCampos');
     return;
   }
 
@@ -66,16 +80,23 @@ function guardarSesionClick() {
   var metaSeries = parseInt(option.getAttribute('data-series'));
   var nombre = option.getAttribute('data-nombre');
 
-  var texto = t('sesionGuardada') + ' — ' + series + 'x' + reps + ' de ' + nombre;
+  var msgEl = mostrarMensajeSesion('ok');
+  msgEl.appendChild(document.createTextNode(t('sesionGuardada') + ' \u2014 ' + series + 'x' + reps + ' de ' + nombre));
 
   if (series >= metaSeries && reps >= metaReps) {
-    texto += '<br><span style="color:#a6e3a1;font-weight:700">' + t('metaCumplida') + '</span>';
+    msgEl.appendChild(document.createElement('br'));
+    var spanOk = document.createElement('span');
+    spanOk.style.cssText = 'color:#a6e3a1;font-weight:700';
+    spanOk.textContent = t('metaCumplida');
+    msgEl.appendChild(spanOk);
   } else {
-    texto += '<br><span style="color:#f9e2af">' + t('meta') + ': ' + metaSeries + 'x' + metaReps + ' — ' + t('teFaltaron') + ' ' +
-      Math.max(0, metaSeries - series) + ' ' + t('seriesAbrev') + ' ' + t('o') + ' ' + Math.max(0, metaReps - reps) + ' ' + t('repsAbrev') + '</span>';
+    msgEl.appendChild(document.createElement('br'));
+    var spanFalta = document.createElement('span');
+    spanFalta.style.color = '#f9e2af';
+    spanFalta.textContent = t('meta') + ': ' + metaSeries + 'x' + metaReps + ' \u2014 ' + t('teFaltaron') + ' ' +
+      Math.max(0, metaSeries - series) + ' ' + t('seriesAbrev') + ' ' + t('o') + ' ' + Math.max(0, metaReps - reps) + ' ' + t('repsAbrev');
+    msgEl.appendChild(spanFalta);
   }
-
-  mostrarMensajeSesion(texto, 'ok');
 
   document.getElementById('series-sesion').value = '3';
   document.getElementById('reps-sesion').value = '10';
@@ -86,14 +107,15 @@ function guardarSesionClick() {
 }
 
 // ------------------------------------------------------------
-// mostrarMensajeSesion(texto, tipo)
+// mostrarMensajeSesion(tipo)
 // ------------------------------------------------------------
-function mostrarMensajeSesion(texto, tipo) {
+function mostrarMensajeSesion(tipo) {
   var div = document.getElementById('resultado-sesion');
-  var color = tipo === 'ok' ? '#4ade80' : '#f87171';
-  div.innerHTML =
-    '<div style="padding:12px;border-radius:8px;background:#1e293b;border-left:4px solid ' + color + ';color:#f8fafc">' +
-    texto + '</div>';
+  div.innerHTML = '';
+  var msg = document.createElement('div');
+  msg.className = 'mensaje-sesion ' + tipo;
+  div.appendChild(msg);
+  return msg;
 }
 
 window.guardarSesionClick = guardarSesionClick;

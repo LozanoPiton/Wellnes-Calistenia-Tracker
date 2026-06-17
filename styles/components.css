@@ -212,3 +212,429 @@
     color: #94a3b8 !important;
     font-style: italic;
 }
+
+/* ------------------------------------------------------------
+   HISTORIAL DE SESIONES
+   ------------------------------------------------------------ */
+
+.historial-lista {
+    list-style: none;
+    padding: 0;
+    line-height: 1.8;
+}
+
+.historial-item {
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    background: #1e293b;
+    border-radius: 8px;
+}
+
+.historial-item-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.historial-item-info {
+    flex: 1;
+}
+
+.historial-item-fecha {
+    color: #6c7086;
+    margin-left: 8px;
+    font-size: 0.8rem;
+}
+
+.historial-item-notas {
+    color: #a6adc8;
+}
+
+.historial-item-acciones {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.btn-historial {
+    padding: 4px 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-family: inherit;
+}
+
+.btn-historial-editar {
+    background: #313244;
+    color: #cdd6f4;
+}
+
+.btn-historial-eliminar {
+    background: #313244;
+    color: #f38ba8;
+}
+
+/* ------------------------------------------------------------
+   FORMULARIO DE EDICION DE SESION
+   ------------------------------------------------------------ */
+
+.edit-form {
+    background: #151520;
+    border: 1px solid #313244;
+    border-radius: 10px;
+    padding: 16px;
+}
+
+.edit-form-titulo {
+    color: #cdd6f4;
+    margin: 0 0 10px 0;
+}
+
+.edit-form-acciones {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.btn-guardar {
+    flex: 1;
+    padding: 10px;
+    background: #a6e3a1;
+    color: #1e1e2e;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.btn-cancelar {
+    flex: 1;
+    padding: 10px;
+    background: #313244;
+    color: #cdd6f4;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+/* ------------------------------------------------------------
+   MENSAJE DE SESION GUARDADA
+   ------------------------------------------------------------ */
+
+.mensaje-sesion {
+    padding: 12px;
+    border-radius: 8px;
+    background: #1e293b;
+    color: #f8fafc;
+}
+
+.mensaje-sesion.ok {
+    border-left: 4px solid #4ade80;
+}
+
+.mensaje-sesion.error {
+    border-left: 4px solid #f87171;
+}
+
+/* ------------------------------------------------------------
+   BOTONES DE NIVEL (SUBIR / NO SUBIR)
+   ------------------------------------------------------------ */
+
+.btn-subir-nivel {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.btn-subir-nivel.confirmar {
+    background: #a6e3a1;
+    color: #1e1e2e;
+}
+
+.btn-subir-nivel.rechazar {
+    background: #313244;
+    color: #cdd6f4;
+}
+
+/* ------------------------------------------------------------
+   TARJETA DE RESUMEN DIARIO
+   ------------------------------------------------------------ */
+
+.resumen-diario {
+    text-align: center;
+    padding: 5px;
+}
+
+.resumen-diario-numero {
+    font-size: 2.2rem;
+    font-weight: bold;
+}
+
+.resumen-diario-texto {
+    color: #a6adc8;
+    margin-top: 2px;
+    font-size: 0.85rem;
+}
+
+.resumen-diario-barra {
+    margin-top: 8px;
+    height: 8px;
+    background: #313244;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.resumen-diario-barra-inner {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s;
+}
+
+.resumen-diario-lista {
+    margin-top: 10px;
+    text-align: left;
+}
+
+.resumen-diario-ejercicio {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid #1e1e2e;
+}
+
+.resumen-diario-ejercicio-nombre {
+    color: #cdd6f4;
+    font-size: 0.85rem;
+}
+
+.resumen-diario-ejercicio-nivel {
+    color: #6c7086;
+    font-size: 0.75rem;
+}
+
+/* ------------------------------------------------------------
+   ANALISIS IA
+   ------------------------------------------------------------ */
+
+.ia-titulo {
+    color: #a6e3a1;
+    margin-top: 0;
+}
+
+.ia-subtitulo {
+    color: #cdd6f4;
+    margin: 10px 0 6px;
+}
+
+.ia-texto {
+    color: #a6adc8;
+}
+
+.ia-texto-dorado {
+    color: #f9e2af;
+}
+
+.ia-texto-verde {
+    color: #a6e3a1;
+}
+
+.ia-texto-rojo {
+    color: #f38ba8;
+}
+
+.ia-texto-gris {
+    color: #6c7086;
+}
+
+.ia-lista-sesiones {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.ia-item-sesion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 8px;
+    margin: 2px 0;
+    background: #1e1e2e;
+    border-radius: 6px;
+    font-size: 0.85rem;
+}
+
+.ia-item-sesion-fecha {
+    color: #6c7086;
+    font-size: 0.75rem;
+}
+
+.ia-card {
+    background: #1e1e2e;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 8px;
+}
+
+.ia-card-nivel {
+    background: #1e1e2e;
+    border: 1px solid #a6e3a1;
+    border-radius: 10px;
+    padding: 14px;
+    margin-top: 10px;
+}
+
+.ia-card-plateau {
+    background: #1e1e2e;
+    border: 1px solid #f38ba8;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 8px;
+}
+
+.ia-card-plateau-titulo {
+    color: #f38ba8;
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+}
+
+.ia-ejercicio-estancado {
+    color: #cdd6f4;
+    font-size: 0.85rem;
+    padding: 3px 0;
+}
+
+/* ------------------------------------------------------------
+   PLAN SEMANAL
+   ------------------------------------------------------------ */
+
+.plan-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.plan-grid-item {
+    padding: 10px 4px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 0.7rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.plan-grid-item.hoy {
+    background: #313244;
+    border: 1px solid #a6e3a1;
+}
+
+.plan-grid-item.normal {
+    background: #1e1e2e;
+    border: 1px solid #313244;
+}
+
+.plan-grid-dia {
+    font-weight: bold;
+    color: #cdd6f4;
+    font-size: 0.75rem;
+}
+
+.plan-grid-grupo {
+    font-size: 0.7rem;
+    line-height: 1.2;
+}
+
+.plan-grid-grupo.activo {
+    color: #a6e3a1;
+}
+
+.plan-grid-grupo.inactivo {
+    color: #6c7086;
+}
+
+.plan-ej-card {
+    background: #1e1e2e;
+    border-radius: 8px;
+    padding: 10px 12px;
+    border: 1px solid #313244;
+}
+
+.plan-ej-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.plan-ej-card-nombre {
+    color: #cdd6f4;
+}
+
+.plan-ej-card-nivel {
+    color: #a6e3a1;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.plan-ej-card-desc {
+    color: #6c7086;
+    font-size: 0.85rem;
+    margin-top: 4px;
+}
+
+.banner-primera-vez {
+    background: #1e1e2e;
+    border: 1px solid #f9e2af;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    color: #f9e2af;
+    font-size: 0.9rem;
+}
+
+/* ------------------------------------------------------------
+   EDITOR PLAN SEMANAL
+   ------------------------------------------------------------ */
+
+.editor-plan-tabla {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.editor-plan-td-dia {
+    padding: 8px 12px;
+    font-weight: bold;
+    color: #cdd6f4;
+    width: 90px;
+}
+
+.editor-plan-td-select {
+    padding: 8px;
+}
+
+/* ------------------------------------------------------------
+   CONFIRMACION DE NIVEL
+   ------------------------------------------------------------ */
+
+.card-felicitaciones {
+    background: #1e1e2e;
+    border: 1px solid #a6e3a1;
+    border-radius: 10px;
+    padding: 14px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.card-felicitaciones-titulo {
+    color: #a6e3a1;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
