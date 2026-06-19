@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Wellness</title>
+    <link rel="stylesheet" href="styles/variables.css" />
     <link rel="stylesheet" href="styles/base.css" />
     <link rel="stylesheet" href="styles/layout.css" />
     <link rel="stylesheet" href="styles/sidebar.css" />
@@ -18,7 +19,7 @@
     <div id="pantalla-auth" class="overlay-auth">
 
       <div id="modo-login" class="modal-auth">
-        <h1><img src="icons/hand.svg" width="24" height="24" style="vertical-align:middle" /> Bienvenido a Wellness</h1>
+        <h1><img src="icons/hand.svg" width="24" height="24" class="icon-vmiddle" /> Bienvenido a Wellness</h1>
         <p>Elegí tu usuario para empezar</p>
         <div id="lista-usuarios" class="lista-usuarios"></div>
         <button onclick="mostrarRegistro()" class="btn-link">
@@ -26,42 +27,7 @@
         </button>
       </div>
 
-      <div id="modo-registro" class="modal-auth" style="display: none">
-        <h1><img src="icons/new.svg" width="24" height="24" /> Crear usuario</h1>
-        <div class="form-registro">
-          <label>Nombre</label>
-          <input type="text" id="reg-nombre" class="input-auth" placeholder="Ej: Usuario" />
-          <label>Nivel</label>
-          <div class="opciones-nivel">
-            <button onclick="elegirNivelReg('Principiante')" class="boton-nivel" data-nivel="Principiante">
-              <span class="icono-nivel"><img src="icons/plant.svg" width="24" height="24" /></span>
-              <span class="texto-nivel"><strong>Principiante</strong><small>Apenas empezando</small></span>
-            </button>
-            <button onclick="elegirNivelReg('Intermedio')" class="boton-nivel" data-nivel="Intermedio">
-              <span class="icono-nivel"><img src="icons/muscle.svg" width="24" height="24" /></span>
-              <span class="texto-nivel"><strong>Intermedio</strong><small>Ya haces dominadas y fondos</small></span>
-            </button>
-            <button onclick="elegirNivelReg('Experto')" class="boton-nivel" data-nivel="Experto">
-              <span class="icono-nivel"><img src="icons/fire.svg" width="24" height="24" /></span>
-              <span class="texto-nivel"><strong>Experto</strong><small>Muscle up, front lever</small></span>
-            </button>
-          </div>
-          <div class="fila-datos">
-            <div class="columna-dato">
-              <label>Peso (kg)</label>
-              <input type="number" id="reg-peso" class="input-auth" placeholder="70" step="0.1" />
-            </div>
-            <div class="columna-dato">
-              <label>Altura (cm)</label>
-              <input type="number" id="reg-altura" class="input-auth" placeholder="175" />
-            </div>
-          </div>
-          <label>Objetivo</label>
-          <input type="text" id="reg-objetivo" class="input-auth" placeholder="Ej: Hacer muscle up, llegar a 10 dominadas" />
-          <button onclick="crearUsuarioClick()" class="btn-principal"><img src="icons/check.svg" width="20" height="20" /> Crear usuario</button>
-        </div>
-        <button onclick="mostrarLogin(obtenerUsuarios())" class="btn-link"><img src="icons/back.svg" width="16" height="16" /> Volver</button>
-      </div>
+      <div id="modo-registro" class="modal-auth" style="display: none"></div>
     </div>
 
     <!-- ============================================================
@@ -69,7 +35,7 @@
          ============================================================ -->
     <div class="barra-lateral" id="barra-lateral">
       <div class="logo-area">
-        <div class="logo-icon"><img src="icons/logo_app.png" width="36" height="36" style="border-radius:6px" /></div>
+        <div class="logo-icon"><img src="icons/logo_app.png" width="36" height="36" class="logo-img" /></div>
         <div class="logo-text">
           <h2 id="app-titulo">Wellness</h2>
           <span class="logo-sub">Calistenia tracker</span>
@@ -109,8 +75,13 @@
         <span class="nav-text">Perfil</span>
       </button>
 
+      <button id="btn-tema" class="boton-tema" onclick="toggleTema()">
+        <span class="nav-icon" id="icono-tema">☀️</span>
+        <span class="nav-text" id="texto-tema">Modo claro</span>
+      </button>
+
       <div class="selector-idioma">
-        <span class="etiqueta-idioma"><img src="icons/globe.svg" width="14" height="14" style="vertical-align:middle" /> Idioma / Language:</span>
+        <span class="etiqueta-idioma"><img src="icons/globe.svg" width="14" height="14" class="icon-vmiddle" /> Idioma / Language:</span>
         <select id="select-lang">
           <option value="es">Español</option>
           <option value="en">English</option>
@@ -132,36 +103,36 @@
         <h1 id="txt-bienvenida">Bienvenido de vuelta</h1>
         <div class="tarjeta" id="tarjeta-bienvenida"></div>
         <div class="tarjeta" id="tarjeta-objetivo">
-          <h3><img src="icons/target.svg" width="18" height="18" style="vertical-align:middle" /> Mi objetivo</h3>
-          <p id="texto-objetivo" style="color:#cdd6f4;font-size:1.1rem"></p>
+          <h3><img src="icons/target.svg" width="18" height="18" class="icon-vmiddle" /> Mi objetivo</h3>
+          <p id="texto-objetivo" class="texto-objetivo"></p>
         </div>
         <div class="tarjeta" id="tarjeta-ultima-sesion">
-          <h3><img src="icons/muscle.svg" width="18" height="18" style="vertical-align:middle" /> Última sesión</h3>
-          <p id="texto-ultima-sesion" style="color:#a6adc8;font-style:italic">Todavía no registraste ninguna sesión</p>
+          <h3><img src="icons/muscle.svg" width="18" height="18" class="icon-vmiddle" /> Última sesión</h3>
+          <p id="texto-ultima-sesion" class="texto-placeholder">Todavía no registraste ninguna sesión</p>
         </div>
         <div class="tarjeta" id="tarjeta-ejercicios-hoy" style="display:none">
-          <h3><img src="icons/target.svg" width="18" height="18" style="vertical-align:middle" /> Ejercicios recomendados para hoy</h3>
+          <h3><img src="icons/target.svg" width="18" height="18" class="icon-vmiddle" /> Ejercicios recomendados para hoy</h3>
           <div id="texto-ejercicios-hoy"></div>
         </div>
         <div class="tarjeta" id="tarjeta-resumen-diario" style="display:none">
-          <h3><img src="icons/chart.svg" width="18" height="18" style="vertical-align:middle" /> Resumen de hoy</h3>
+          <h3><img src="icons/chart.svg" width="18" height="18" class="icon-vmiddle" /> Resumen de hoy</h3>
           <div id="texto-resumen-diario"></div>
         </div>
         <div class="tarjeta" id="tarjeta-plan-semanal">
-          <h3><img src="icons/chart.svg" width="18" height="18" style="vertical-align:middle" /> Plan semanal</h3>
-          <div id="texto-plan-hoy" style="margin-bottom:10px"></div>
+          <h3><img src="icons/chart.svg" width="18" height="18" class="icon-vmiddle" /> Plan semanal</h3>
+          <div id="texto-plan-hoy" class="mb-10"></div>
           <div id="texto-plan-completo"></div>
-          <button onclick="mostrarEditorPlan()" class="btn-catalogo" style="margin-top:12px">
+          <button onclick="mostrarEditorPlan()" class="btn-catalogo mt-12">
             <img src="icons/new.svg" width="14" height="14" /> Editar plan
           </button>
         </div>
         <div class="tarjeta" id="tarjeta-editor-plan" style="display:none">
           <h3>Editar plan semanal</h3>
           <div id="editor-plan-contenido"></div>
-          <button onclick="guardarEditorPlan()" class="btn-guardar-ejercicio" style="margin-top:12px">
-            <img src="icons/check.svg" width="16" height="16" style="vertical-align:middle" /> Guardar plan
+          <button onclick="guardarEditorPlan()" class="btn-guardar-ejercicio mt-12">
+            <img src="icons/check.svg" width="16" height="16" class="icon-vmiddle" /> Guardar plan
           </button>
-          <button onclick="cancelarEditorPlan()" class="btn-catalogo" style="margin-top:8px">
+          <button onclick="cancelarEditorPlan()" class="btn-catalogo mt-8">
             Cancelar
           </button>
         </div>
@@ -172,30 +143,26 @@
         <h1>Entrenar</h1>
         <div class="tarjeta">
           <h3>Registrar sesión</h3>
-          <p style="color:#a6adc8">Seleccioná un ejercicio del catálogo y registrá cuánto hiciste hoy.</p>
+          <p>Seleccioná un ejercicio del catálogo y registrá cuánto hiciste hoy.</p>
           <div class="grupo-input">
             <label class="label-ejercicio">Ejercicio:</label>
             <select id="select-ejercicio-sesion" class="select-ejercicio"></select>
-            <div id="info-meta-ejercicio" style="margin-top:8px;padding:10px;background:#151520;border-radius:8px;display:none"></div>
+            <div id="info-meta-ejercicio" class="card-meta"></div>
           </div>
           <div class="fila-inputs">
-            <div class="columna-input">
-              <label class="label-ejercicio">Series:</label>
-              <input type="number" id="series-sesion" class="input-ejercicio" value="3" min="1" />
-            </div>
-            <div class="columna-input">
-              <label class="label-ejercicio">Reps:</label>
-              <input type="number" id="reps-sesion" class="input-ejercicio" value="10" min="1" />
-            </div>
+            <label class="label-ejercicio">Series:</label>
+            <input type="number" id="series-sesion" class="input-ejercicio" value="3" min="1" />
+            <label class="label-ejercicio">Reps:</label>
+            <input type="number" id="reps-sesion" class="input-ejercicio" value="10" min="1" />
           </div>
           <div class="grupo-input">
             <label class="label-ejercicio">Notas (opcional):</label>
             <input type="text" id="notas-sesion" class="input-ejercicio" placeholder="Ej: última rep difícil" />
           </div>
           <button onclick="guardarSesionClick()" class="btn-guardar-ejercicio" id="btn-guardar-sesion">
-            <img src="icons/check.svg" width="16" height="16" style="vertical-align:middle" /> Guardar sesión
+            <img src="icons/check.svg" width="16" height="16" class="icon-vmiddle" /> Guardar sesión
           </button>
-          <div id="resultado-sesion" style="margin-top:15px"></div>
+          <div id="resultado-sesion" class="mt-15"></div>
         </div>
       </div>
 
@@ -211,20 +178,20 @@
         <div class="tarjeta">
           <h3>Últimas sesiones</h3>
           <div id="historial-sesiones">
-            <p style="color:#a6adc8;font-style:italic">Aún no hay sesiones registradas</p>
+            <p class="texto-placeholder">Aún no hay sesiones registradas</p>
           </div>
         </div>
       </div>
 
       <!-- ---- SECCIÓN: Catálogo ---- -->
       <div id="catalogo" class="seccion">
-        <h1><img src="icons/target.svg" width="20" height="20" style="vertical-align:middle" /> Catálogo de Ejercicios</h1>
+        <h1><img src="icons/target.svg" width="20" height="20" class="icon-vmiddle" /> Catálogo de Ejercicios</h1>
         <div id="catalogo-contenido"></div>
       </div>
 
       <!-- ---- SECCIÓN: Perfil ---- -->
       <div id="perfil" class="seccion">
-        <h1><img src="icons/users.svg" width="20" height="20" style="vertical-align:middle" /> Mi Perfil</h1>
+        <h1><img src="icons/users.svg" width="20" height="20" class="icon-vmiddle" /> Mi Perfil</h1>
 
         <!-- Vista -->
         <div class="tarjeta" id="perfil-vista">
@@ -234,7 +201,7 @@
           <p><strong>Objetivo:</strong> <span id="perfil-objetivo"></span></p>
           <p><strong>Peso:</strong> <span id="perfil-peso"></span> kg</p>
           <p><strong>Altura:</strong> <span id="perfil-altura"></span> cm</p>
-          <button onclick="mostrarEditarPerfil()" class="btn-catalogo" style="margin-top:12px">
+          <button onclick="mostrarEditarPerfil()" class="btn-catalogo mt-12">
             <img src="icons/new.svg" width="14" height="14" /> Editar perfil
           </button>
         </div>
@@ -259,19 +226,15 @@
             <input type="text" id="edit-objetivo" class="input-ejercicio" />
           </div>
           <div class="fila-inputs">
-            <div class="columna-input">
-              <label class="label-ejercicio">Peso (kg):</label>
-              <input type="number" id="edit-peso" class="input-ejercicio" step="0.1" />
-            </div>
-            <div class="columna-input">
-              <label class="label-ejercicio">Altura (cm):</label>
-              <input type="number" id="edit-altura" class="input-ejercicio" />
-            </div>
+            <label class="label-ejercicio">Peso (kg):</label>
+            <input type="number" id="edit-peso" class="input-ejercicio" step="0.1" />
+            <label class="label-ejercicio">Altura (cm):</label>
+            <input type="number" id="edit-altura" class="input-ejercicio" />
           </div>
-          <button onclick="guardarEditarPerfil()" class="btn-guardar-ejercicio" style="margin-top:12px">
-            <img src="icons/check.svg" width="16" height="16" style="vertical-align:middle" /> Guardar cambios
+          <button onclick="guardarEditarPerfil()" class="btn-guardar-ejercicio mt-12">
+            <img src="icons/check.svg" width="16" height="16" class="icon-vmiddle" /> Guardar cambios
           </button>
-          <button onclick="cancelarEditarPerfil()" class="btn-catalogo" style="margin-top:8px">
+          <button onclick="cancelarEditarPerfil()" class="btn-catalogo mt-8">
             Cancelar
           </button>
         </div>

@@ -31,7 +31,7 @@ function refrescarPlanSemanal() {
   strong.style.fontSize = '1.1rem';
   strong.appendChild(document.createTextNode(t('hoy') + ' (' + DIAS[hoyIndex] + '): '));
   var spanGrupo = document.createElement('span');
-  spanGrupo.style.cssText = hoyGrupo ? 'color:#a6e3a1' : 'color:#6c7086';
+  spanGrupo.style.cssText = hoyGrupo ? 'color:var(--success)' : 'color:var(--text-muted)';
   spanGrupo.textContent = hoyGrupo ? t(hoyGrupo.toLowerCase()) : t('descanso');
   strong.appendChild(spanGrupo);
   hoyDiv.appendChild(strong);
@@ -206,7 +206,7 @@ function mostrarResumenDiario() {
   div.innerHTML = '';
 
   var pct = total > 0 ? Math.round((completados / total) * 100) : 0;
-  var color = completados === total ? '#a6e3a1' : (completados > 0 ? '#f9e2af' : '#f38ba8');
+  var color = completados === total ? 'var(--success)' : (completados > 0 ? 'var(--warning)' : 'var(--danger)');
 
   var contenedor = document.createElement('div');
   contenedor.className = 'resumen-diario';
@@ -246,7 +246,7 @@ function mostrarResumenDiario() {
 
     var spanIzq = document.createElement('span');
     var icono = document.createElement('span');
-    icono.style.color = hecho ? '#a6e3a1' : '#f38ba8';
+    icono.style.color = hecho ? 'var(--success)' : 'var(--danger)';
     icono.textContent = hecho ? '\u2713' : '\u2717';
     spanIzq.appendChild(icono);
 

@@ -1,3 +1,5 @@
 node_modules/
 wellness.db
 nul
+.env
+gemini-key.txt

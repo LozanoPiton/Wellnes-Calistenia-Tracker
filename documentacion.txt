@@ -61,19 +61,26 @@
 
   1. index.html
   -------------
-  - SPA con TODA la interfaz en HTML puro.
-  - Secciones: login/registro (#pantalla-auth), luego el contenido
-    principal (#contenido-principal) con 5 secciones: inicio, entrenar,
-    progreso, catalogo, perfil.
-  - Cada seccion es un <div class="seccion">. Solo una tiene clase
-    "activa" a la vez.
-  - Los JS se cargan al final en orden de dependencias.
+   - SPA con TODA la interfaz en HTML puro.
+   - Sin estilos inline (todos movidos a clases CSS).
+   - Secciones: login/registro (#pantalla-auth), luego el contenido
+     principal (#contenido-principal) con 5 secciones: inicio, entrenar,
+     progreso, catalogo, perfil.
+   - Cada seccion es un <div class="seccion">. Solo una tiene clase
+     "activa" a la vez.
+   - Los JS se cargan al final en orden de dependencias.
 
-  2. main.js
-  ----------
-  - Crea ventana Electron (1000x650, min 850x500).
-  - nodeIntegration: true, contextIsolation: false.
-  - Oculta barra de menu (autoHideMenuBar).
+   2. main.js
+   ----------
+   - Crea ventana Electron (1000x650, min 850x500).
+   - nodeIntegration: true, contextIsolation: false.
+   - Oculta barra de menu (autoHideMenuBar).
+   - Carga GROQ_API_KEY desde .env si existe.
+   - IPC handlers:
+     * groq-set-key: guarda API key en memoria
+     * groq-analyze: envia prompt con sesiones + catalogo a Groq,
+       devuelve JSON con observaciones, recomendaciones, tecnicas,
+       planSugerido, ejerciciosRecomendados[]
 
   3. clases.js
   ------------
@@ -96,7 +103,9 @@
     * actualizarSesion(), eliminarSesion()
     * inicializarPlanSemanal(), obtenerPlanSemanal(), guardarPlanSemanal()
     * obtenerProgresionesPorGrupo(grupo, nivelMaximo) — filtra por
-      grupo y nivel
+       grupo y nivel
+    * obtenerTodasProgresiones(nivelMaximo) — todos los ejercicios
+       hasta un nivel (usado por IA para recomendar alternativas)
   - guardarDB() se llama tras cada escritura.
 
   5. app.js
@@ -156,16 +165,26 @@
   - editarSesionClick(): modal para modificar series/reps/notas.
   - eliminarSesionClick(): confirmacion y borrado.
 
-  12. ia.js
-  ---------
-  - Analisis 100% local (sin API externa por ahora):
-    * analizarNivel(): evalua si puede subir (60+ dias, 15+ sesiones,
-      60%+ metas cumplidas)
-    * analizarTendencia(): compara volumen semanal vs semana pasada
-    * analizarEstancamiento(): detecta ejercicios sin mejora en 3
-      sesiones consecutivas
-  - confirmarSubirNivel(): cambia nivel y felicita.
-  - cancelarSubirNivel(): descarta.
+   12. ia.js (472 lineas)
+   ---------
+    - Analisis dual: Groq AI (si hay API key) + local (siempre).
+    - AI Coach via Groq (modelo llama-3.3-70b-versatile):
+      * Recibe sesiones recientes, plan semanal y CATALOGO completo
+      * Sugiere ejercicios alternativos del catalogo segun debilidades
+      * Cache: feedback basado en sesiones de hoy/ayer
+    - Local (rule-based, siempre visible):
+      * analizarNivel(): evalua si puede subir (60+ dias, 15+ sesiones,
+        60%+ metas cumplidas). Barra de progreso visual.
+      * analizarTendencia(): compara volumen semanal vs semana pasada
+      * analizarEstancamiento(): detecta ejercicios sin mejora en 3
+        sesiones consecutivas y sugiere alternativas del catalogo
+    - Funciones helper:
+      * crear(tag, clase, texto): reemplaza createElement+className+textContent
+      * nivelMaximo(): mapea nivel string a numero
+      * usarDiasTranscurridos(): calcula dias desde registro
+      * crearBarraProgreso(): renderiza barra de ascenso
+    - confirmarSubirNivel(): cambia nivel y felicita.
+    - cancelarSubirNivel(): descarta (usa resultadoIA directo, no volcar).
 
   13. idiomas.js
   --------------
@@ -201,7 +220,11 @@
     guardarPlanSemanal() → UPDATE plan_semanal
 
   IA:
-    obtenerSesiones() → analisis local (reglas fijas) → HTML
+    obtenerSesiones() → iaAnalizar() (via Groq API) + analisis local
+    → coach card (IA) + nivel/progreso/tendencia/estancamiento (local)
+    → HTML
+    La IA recibe el catalogo de ejercicios y puede recomendar alternativas
+    especificas segun debilidades detectadas.
 
   ====================================================================
   MODIFICAR O AGREGAR FUNCIONALIDAD
@@ -214,9 +237,22 @@
   - Para agregar traducciones: agregar claves en dict (idiomas.js).
   - Para cambiar plan por defecto: editar inicializarPlanSemanal()
     en database.js.
-  - Para cambiar requisitos de ascenso: editar valores en ia.js
-    (diffDias >= 60, sesiones >= 15, porcentaje >= 60).
-  - Para conectar IA externa (Gemini, etc.): agregar IPC en main.js,
-    exponer en preload.js, y llamar desde ia.js.
+   - Para cambiar requisitos de ascenso: editar valores en ia.js
+     (diffDias >= 60, sesiones >= 15, porcentaje >= 60).
+   - Para cambiar modelo de IA: editar model + response_format en
+     groq.chat.completions.create() en main.js.
+   - Para cambiar colores del tema: editar variables CSS en
+     styles/variables.css (modo claro y body.dark-mode).
+   - Para estilos: usar clases en vez de inline styles.
+      Utilitarios: .mt-8, .mt-12, .mt-15, .mb-10, .icon-vmiddle,
+      .logo-img, .texto-placeholder, .texto-sin-objetivo, .card-meta.
+      IA: .ia-texto-success, .ia-texto-warn, .ia-texto-error,
+      .ia-texto-danger, .ia-texto-muted, .ia-texto-exito, .ia-texto-preg,
+      .ia-texto-sugerencia, .ia-texto-muted-vol, .ia-card-warn,
+      .ia-card-error, .ia-flex-row, .ia-input-key, .ia-btn-guardar-key.
+    - El modal de registro se genera dinamicamente desde auth.js;
+      el HTML estatico de #modo-registro esta vacio a proposito.
+    - ia.js no tiene estilos inline (solo 4 asignaciones dinamicas:
+      display, width de barra, marginTop, color de icono).
 
   ====================================================================

@@ -500,6 +500,21 @@ function obtenerProgresionesPorGrupo(grupo, nivelMaximo) {
 }
 
 
+// ------------------------------------------------------------
+// Trae todos los ejercicios de progresiones hasta un nivel maximo
+// ------------------------------------------------------------
+function obtenerTodasProgresiones(nivelMaximo) {
+    var resultado = db.exec(
+        "SELECT nombre, grupo_muscular, nivel, reps_requeridas || 'x' || series_requeridas, descripcion " +
+        "FROM progresiones " +
+        "WHERE nivel <= " + nivelMaximo + " " +
+        "ORDER BY grupo_muscular, nivel ASC"
+    );
+    if (resultado.length === 0) return [];
+    return resultado[0].values;
+}
+
+
 // En Electron con nodeIntegration, las funciones se comparten
 // a traves de window. Asi auth.js, ejercicios.js, etc.
 // pueden llamar a estas funciones de base de datos.
@@ -517,6 +532,7 @@ window.actualizarUsuario = actualizarUsuario;
 window.inicializarPlanSemanal = inicializarPlanSemanal;
 window.obtenerPlanSemanal = obtenerPlanSemanal;
 window.guardarPlanSemanal = guardarPlanSemanal;
+window.obtenerTodasProgresiones = obtenerTodasProgresiones;
 window.obtenerProgresionesPorGrupo = obtenerProgresionesPorGrupo;
 window.actualizarSesion = actualizarSesion;
 window.eliminarSesion = eliminarSesion;

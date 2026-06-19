@@ -28,7 +28,7 @@ function refrescarHistorial() {
     ultimaDiv.appendChild(document.createTextNode(' — ' + s[1] + 'x' + s[2] + ' (' + s[4] + ')'));
   } else {
     ultimaDiv.textContent = t('sinSesiones');
-    ultimaDiv.style.cssText = 'color:#a6adc8;font-style:italic';
+    ultimaDiv.style.cssText = 'color:var(--text-secondary);font-style:italic';
   }
 
   // ---- Historial en Progreso ----
@@ -37,7 +37,7 @@ function refrescarHistorial() {
 
   if (sesiones.length === 0) {
     var msg = document.createElement('p');
-    msg.style.cssText = 'color:#a6adc8;font-style:italic';
+    msg.style.cssText = 'color:var(--text-secondary);font-style:italic';
     msg.textContent = t('sinHistorial');
     histDiv.appendChild(msg);
     return;

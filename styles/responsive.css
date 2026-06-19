@@ -31,7 +31,8 @@
     .nav-label,
     .info-usuario .datos-usuario,
     .selector-idioma,
-    .boton-cambiar-usuario {
+    .boton-cambiar-usuario,
+    .boton-tema .nav-text {
         display: none;
     }
 
@@ -47,6 +48,12 @@
     }
 
     .boton-nav {
+        justify-content: center;
+        padding: 10px 0;
+        margin: 1px 8px;
+    }
+
+    .boton-tema {
         justify-content: center;
         padding: 10px 0;
         margin: 1px 8px;

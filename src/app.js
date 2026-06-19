@@ -34,6 +34,9 @@ var nivelSeleccionado = null;
 // ------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', function () {
 
+    // 0) Inicializar tema (modo claro por defecto)
+    initTema();
+
     // 1) Arrancamos la base de datos (ver database.js)
     //    "iniciarDB()" es async, osea que lleva tiempo.
     //    Por eso usamos ".then()" que significa "cuando termine, hace esto".
@@ -109,4 +112,32 @@ function verEjercicios() {
     for (var i = 0; i < ejercicios.length; i++) {
         console.log('  ' + (i + 1) + '. ' + ejercicios[i].nombre + ' ' + ejercicios[i].series + 'x' + ejercicios[i].repeticiones);
     }
+}
+
+
+// ------------------------------------------------------------
+// TEMA: MODO CLARO / OSCURO
+// ------------------------------------------------------------
+
+function initTema() {
+    var tema = localStorage.getItem('tema');
+    if (tema === 'oscuro') {
+        document.body.classList.add('dark-mode');
+    }
+    actualizarBotonTema();
+}
+
+function toggleTema() {
+    document.body.classList.toggle('dark-mode');
+    var esOscuro = document.body.classList.contains('dark-mode');
+    localStorage.setItem('tema', esOscuro ? 'oscuro' : 'claro');
+    actualizarBotonTema();
+}
+
+function actualizarBotonTema() {
+    var esOscuro = document.body.classList.contains('dark-mode');
+    var icono = document.getElementById('icono-tema');
+    var texto = document.getElementById('texto-tema');
+    if (icono) icono.textContent = esOscuro ? '\uD83C\uDF19' : '\u2600\uFE0F';
+    if (texto) texto.textContent = esOscuro ? 'Modo oscuro' : 'Modo claro';
 }

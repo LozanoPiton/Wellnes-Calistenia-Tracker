@@ -7,13 +7,13 @@
 
 .barra-lateral {
     width: 260px;
-    background: #151520;
+    background: var(--bg-sidebar);
     padding: 0;
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
     position: relative;
-    border-right: 1px solid rgba(255, 255, 255, 0.04);
+    border-right: 1px solid var(--border-card);
 }
 
 .barra-lateral::before {
@@ -23,13 +23,13 @@
     right: 0;
     bottom: 0;
     width: 1px;
-    background: linear-gradient(180deg, transparent 0%, rgba(137, 180, 250, 0.15) 50%, transparent 100%);
+    background: var(--gradient-divider);
 }
 
 .barra-lateral .logo-area {
     padding: 24px 24px 20px;
     text-align: left;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid var(--border-card);
     display: flex;
     align-items: center;
     gap: 14px;
@@ -38,7 +38,7 @@
 .barra-lateral .logo-area .logo-icon {
     width: 40px;
     height: 40px;
-    background: linear-gradient(135deg, rgba(137, 180, 250, 0.15), rgba(180, 190, 254, 0.1));
+    background: var(--accent-light);
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -48,7 +48,7 @@
 
 .barra-lateral .logo-area h2 {
     margin: 0;
-    color: #cdd6f4;
+    color: var(--text-primary);
     font-size: 1.05rem;
     font-weight: 700;
     letter-spacing: 0.5px;
@@ -56,7 +56,7 @@
 
 .barra-lateral .logo-area .logo-sub {
     font-size: 10px;
-    color: #585b70;
+    color: var(--text-muted);
     letter-spacing: 1.5px;
     text-transform: uppercase;
     margin-top: 1px;
@@ -69,7 +69,7 @@
 
 .nav-label {
     font-size: 10px;
-    color: #585b70;
+    color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 1.5px;
     padding: 16px 24px 6px;
@@ -84,7 +84,7 @@
 .boton-nav {
     background: none;
     border: none;
-    color: #6c7086;
+    color: var(--text-muted);
     padding: 10px 16px;
     margin: 2px 12px;
     text-align: left;
@@ -106,30 +106,30 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--bg-hover);
     border-radius: 6px;
     flex-shrink: 0;
     transition: all 0.2s ease;
 }
 
 .boton-nav:hover {
-    color: #cdd6f4;
-    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-primary);
+    background: var(--bg-hover);
 }
 
 .boton-nav:hover .nav-icon {
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--bg-card-alt);
 }
 
 .boton-nav.activo {
-    color: #89b4fa;
-    background: rgba(137, 180, 250, 0.08);
+    color: var(--accent);
+    background: var(--accent-light);
     font-weight: 600;
 }
 
 .boton-nav.activo .nav-icon {
-    background: rgba(137, 180, 250, 0.15);
-    color: #89b4fa;
+    background: var(--accent-glow);
+    color: var(--accent);
 }
 
 .boton-nav.activo::after {
@@ -140,9 +140,9 @@
     transform: translateY(-50%);
     width: 3px;
     height: 20px;
-    background: #89b4fa;
+    background: var(--accent);
     border-radius: 0 3px 3px 0;
-    box-shadow: 0 0 10px rgba(137, 180, 250, 0.4);
+    box-shadow: 0 0 10px var(--accent-glow);
 }
 
 
@@ -156,8 +156,8 @@
     gap: 12px;
     padding: 14px 16px;
     margin: 12px 12px 4px;
-    background: linear-gradient(135deg, rgba(137, 180, 250, 0.06), rgba(180, 190, 254, 0.03));
-    border: 1px solid rgba(137, 180, 250, 0.08);
+    background: var(--accent-light);
+    border: 1px solid var(--accent-light);
     border-radius: 10px;
 }
 
@@ -165,8 +165,8 @@
     width: 38px;
     height: 38px;
     border-radius: 10px;
-    background: linear-gradient(135deg, #89b4fa 0%, #b4befe 100%);
-    color: #1e1e2e;
+    background: var(--gradient-avatar);
+    color: var(--text-inverse);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -183,7 +183,7 @@
 
 .user-nombre {
     font-weight: 600;
-    color: #cdd6f4;
+    color: var(--text-primary);
     font-size: 0.85rem;
     white-space: nowrap;
     overflow: hidden;
@@ -192,7 +192,7 @@
 
 .user-nivel {
     font-size: 0.7rem;
-    color: #6c7086;
+    color: var(--text-secondary);
     margin-top: 1px;
 }
 
@@ -204,13 +204,13 @@
 .boton-cambiar-usuario {
     background: none;
     border: none;
-    color: #585b70;
+    color: var(--text-muted);
     padding: 10px 20px;
     text-align: left;
     font-size: 12px;
     cursor: pointer;
     margin-top: auto;
-    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    border-top: 1px solid var(--border-card);
     font-family: inherit;
     transition: color 0.2s;
     display: flex;
@@ -219,7 +219,7 @@
 }
 
 .boton-cambiar-usuario:hover {
-    color: #a6adc8;
+    color: var(--text-secondary);
     background: none;
 }
 
@@ -233,7 +233,7 @@
 }
 
 .selector-idioma .etiqueta-idioma {
-    color: #45475a;
+    color: var(--text-muted);
     font-size: 10px;
     display: block;
     margin-bottom: 6px;
@@ -242,9 +242,9 @@
 }
 
 .selector-idioma select {
-    background: rgba(255, 255, 255, 0.03);
-    color: #cdd6f4;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: var(--bg-hover);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
     border-radius: 6px;
     padding: 6px 8px;
     width: 100%;
@@ -255,10 +255,51 @@
 }
 
 .selector-idioma select option {
-    color: #cdd6f4;
-    background: #1e1e2e;
+    color: var(--text-primary);
+    background: var(--bg-body);
 }
 
 .selector-idioma select:hover {
-    border-color: rgba(137, 180, 250, 0.2);
+    border-color: var(--accent-light);
+}
+
+
+/* ------------------------------------------------------------
+   BOTON TEMA (margin-top: auto lo empuja al fondo)
+   ------------------------------------------------------------ */
+
+.boton-tema {
+    margin: 2px 12px;
+    margin-top: auto;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    padding: 10px 16px;
+    text-align: left;
+    font-size: 13.5px;
+    cursor: pointer;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    border-top: 1px solid var(--border-card);
+    padding-top: 14px;
+}
+
+.boton-tema .nav-icon {
+    font-size: 16px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+
+.boton-tema:hover {
+    color: var(--text-primary);
+    background: var(--bg-hover);
 }

@@ -1,479 +1,472 @@
 // ============================================================
-// ia.js  —  ANALISIS IA: NIVEL, TENDENCIA, ESTANCAMIENTO
+// ia.js  —  ANALISIS IA: Groq + FALLBACK LOCAL
 // ============================================================
-// Depende de: database.js (obtenerSesiones, actualizarUsuario, obtenerUsuarioPorId),
-//             auth.js (actualizarInfoUsuario),
-//             idiomas.js (t),
-//             app.js (usuarioActual)
+// Depende de: database.js, auth.js, idiomas.js, app.js
 // ============================================================
-
-// ------------------------------------------------------------
-// ANALISIS IA — PUNTO DE ENTRADA
-// ------------------------------------------------------------
-// El boton "Analizar con IA" ejecuta tres analisis:
-//   1. Nivel       — evalua si puede subir (60d + 15 sesiones + 60%)
-//   2. Tendencia   — compara volumen semanal vs semana pasada
-//   3. Estancamiento — detecta ejercicios sin mejora en 3 sesiones
-// ------------------------------------------------------------
 
 var botonIA = document.getElementById("boton-analizar");
 var resultadoIA = document.getElementById("resultado-ia");
+var { ipcRenderer } = require("electron");
 
-botonIA.addEventListener("click", function () {
+// Helper DOM — crear elemento con clase y texto opcionales
+function crear(tag, clase, texto) {
+  var el = document.createElement(tag);
+  if (clase) el.className = clase;
+  if (texto != null) el.textContent = texto;
+  return el;
+}
+
+function nivelMaximo() {
+  return { "Principiante": 1, "Intermedio": 2, "Experto": 3 }[usuarioActual.nivel] || 1;
+}
+
+(function initKey() {
+  var saved = localStorage.getItem("groqKey");
+  if (saved) {
+    ipcRenderer.invoke("groq-set-key", saved);
+  }
+})();
+
+// ------------------------------------------------------------
+// ejecutarAnalisisIA()  —  compartido entre boton y auto-analisis
+// ------------------------------------------------------------
+function ejecutarAnalisisIA() {
   resultadoIA.style.display = "block";
-  resultadoIA.innerHTML = '';
-  var pAnalizando = document.createElement('p');
-  pAnalizando.className = 'ia-texto-dorado';
-  pAnalizando.textContent = t('analizando');
-  resultadoIA.appendChild(pAnalizando);
+  resultadoIA.innerHTML = "";
+  resultadoIA.appendChild(crear("p", "ia-texto-dorado", t("analizando")));
 
-  // setTimeout para que el DOM pinte "Analizando..." antes del bloqueo
   setTimeout(function () {
     try {
-      var sesiones = obtenerSesiones(usuarioActual.id, 40);
-      var container = document.createElement('div');
-
-      // Titulo
-      var titulo = document.createElement('h4');
-      titulo.className = 'ia-titulo';
-      titulo.textContent = t('analisisTitulo');
-      container.appendChild(titulo);
+      var sesiones = obtenerSesiones(usuarioActual.id, 15);
+      var container = crear("div");
+      container.appendChild(crear("h4", "ia-titulo", t("analisisTitulo")));
 
       if (sesiones.length === 0) {
-        var sinDatos = document.createElement('p');
-        sinDatos.className = 'ia-texto';
-        sinDatos.textContent = t('sinDatosAnalisis');
-        container.appendChild(sinDatos);
-        resultadoIA.innerHTML = '';
-        resultadoIA.appendChild(container);
-        return;
+        container.appendChild(crear("p", "ia-texto", t("sinDatosAnalisis")));
+        return volcar(container);
       }
 
       container.appendChild(crearListaSesiones(sesiones));
-      container.appendChild(analizarNivel(sesiones));
-      container.appendChild(analizarTendencia(sesiones));
 
-      var infoEstancamiento = analizarEstancamiento(sesiones);
-      if (infoEstancamiento) container.appendChild(infoEstancamiento);
+      var plan = obtenerPlanSemanal(usuarioActual.id);
+      var planMap = {};
+      if (plan && plan.length > 0) {
+        for (var p = 0; p < plan.length; p++) {
+          planMap[plan[p][0]] = plan[p][1];
+        }
+      }
 
-      var seguir = document.createElement('p');
-      seguir.className = 'ia-texto-verde';
-      seguir.style.marginTop = '12px';
-      seguir.textContent = t('seguirAsi');
-      container.appendChild(seguir);
-
-      resultadoIA.innerHTML = '';
-      resultadoIA.appendChild(container);
+      iaAnalizar(sesiones, planMap).then(function (respuesta) {
+        resultadoIA.innerHTML = "";
+        if (respuesta.error === "no-key") {
+          container.appendChild(crearInputAPIKey());
+        } else if (respuesta.error) {
+          container.appendChild(errorMsg(respuesta.error));
+        } else {
+          container.appendChild(renderizarIA(respuesta));
+        }
+        container.appendChild(analizarLocalCompleto(sesiones));
+        resultadoIA.appendChild(container);
+      }).catch(function (e) {
+        resultadoIA.innerHTML = "";
+        container.appendChild(errorMsg(e.message));
+        container.appendChild(analizarLocalCompleto(sesiones));
+        resultadoIA.appendChild(container);
+      });
 
     } catch (e) {
-      resultadoIA.innerHTML = '';
-      var pError = document.createElement('p');
-      pError.style.color = '#f38ba8';
-      pError.textContent = 'Error: ' + e.message;
-      resultadoIA.appendChild(pError);
+      volcar(crear("p", "ia-texto-danger", "Error: " + e.message));
     }
   }, 800);
-});
 
+  function volcar(el) {
+    resultadoIA.innerHTML = "";
+    resultadoIA.appendChild(el);
+  }
+}
 
 // ------------------------------------------------------------
-// crearListaSesiones(sesiones)
+// Boton: Analizar con IA
 // ------------------------------------------------------------
-// Genera un bloque con las ultimas sesiones, cada una con
-// un check (verde) si cumplio la meta o un cross (rojo) si no.
+botonIA.addEventListener("click", ejecutarAnalisisIA);
+
 // ------------------------------------------------------------
-function crearListaSesiones(sesiones) {
-  var container = document.createElement('div');
+// iaAnalizar(sesiones) → llama a main process
+// ------------------------------------------------------------
+async function iaAnalizar(sesiones, planSemanal) {
+  var fechaReg;
+  if (usuarioActual.creado_en) {
+    fechaReg = new Date(usuarioActual.creado_en.split(" ")[0]);
+  } else {
+    fechaReg = new Date();
+  }
+  var hoy = new Date();
+  var diffDias = Math.floor((hoy.getTime() - fechaReg.getTime()) / (1000 * 60 * 60 * 24));
 
-  var subtitulo = document.createElement('h5');
-  subtitulo.className = 'ia-subtitulo';
-  subtitulo.textContent = t('ultimasSesiones');
-  container.appendChild(subtitulo);
-
-  var lista = document.createElement('div');
-  lista.className = 'ia-lista-sesiones';
-
+  // Formatear sesiones solo con campos utiles para la IA
+  var slim = [];
   for (var i = 0; i < sesiones.length; i++) {
     var s = sesiones[i];
-    // Columnas: [0]=nombre, [1]=series_hechas, [2]=reps_hechas,
-    //            [4]=fecha, [5]=reps_req, [6]=series_req
-    var cumplio = s[1] >= s[6] && s[2] >= s[5];
-
-    var item = document.createElement('div');
-    item.className = 'ia-item-sesion';
-
-    var spanInfo = document.createElement('span');
-    var icono = document.createElement('span');
-    icono.style.color = cumplio ? '#a6e3a1' : '#f38ba8';
-    icono.textContent = cumplio ? '\u2713' : '\u2717';
-    spanInfo.appendChild(icono);
-    spanInfo.appendChild(document.createTextNode(' '));
-    var strong = document.createElement('strong');
-    strong.textContent = s[0];
-    spanInfo.appendChild(strong);
-    spanInfo.appendChild(document.createTextNode(' ' + s[1] + 'x' + s[2]));
-
-    var spanFecha = document.createElement('span');
-    spanFecha.className = 'ia-item-sesion-fecha';
-    spanFecha.textContent = s[4];
-
-    item.appendChild(spanInfo);
-    item.appendChild(spanFecha);
-    lista.appendChild(item);
+    slim.push([s[0], s[1], s[2], s[4], s[5], s[6], s[7]]);
   }
 
+  // Obtener catalogo filtrado por nivel del usuario
+  var nivelMax = { "Principiante": 1, "Intermedio": 2, "Experto": 3 }[usuarioActual.nivel] || 1;
+  var catalogo = obtenerTodasProgresiones(nivelMax);
+
+  return await ipcRenderer.invoke("groq-analyze", {
+    nivel: usuarioActual.nivel,
+    diasDesdeRegistro: diffDias,
+    objetivo: usuarioActual.objetivo || "",
+    planSemanal: planSemanal || {},
+    sesiones: slim,
+    catalogo: catalogo
+  });
+}
+
+// ------------------------------------------------------------
+// renderizarIA(respuesta)  —  COACHING IA (no pisa lo local)
+// ------------------------------------------------------------
+function renderizarIA(r) {
+  var card = crear("div", "ia-coach-card");
+  card.appendChild(crear("h5", "ia-coach-titulo", "\uD83C\uDFCB\uFE0F\u200D\u2642\uFE0F Coach IA"));
+
+  if (r.observaciones) card.appendChild(crear("p", "ia-texto-obs", r.observaciones));
+  if (r.recomendaciones) {
+    for (var i = 0; i < r.recomendaciones.length; i++) {
+      card.appendChild(crear("p", "ia-texto-rec", "\u25B8 " + r.recomendaciones[i]));
+    }
+  }
+  if (r.tecnicas) card.appendChild(crear("p", "ia-texto-tec", "\uD83D\uDD0D " + r.tecnicas));
+  if (r.planSugerido) card.appendChild(crear("p", "ia-texto-plan", "\uD83D\uDCCB " + r.planSugerido));
+
+  var container = crear("div");
+  container.appendChild(card);
+
+  if (r.ejerciciosRecomendados) {
+    for (var ei = 0; ei < r.ejerciciosRecomendados.length; ei++) {
+      var item = r.ejerciciosRecomendados[ei];
+      var recCard = crear("div", "ia-card-recomendacion");
+      recCard.appendChild(crear("p", "ia-rec-titulo", "\uD83D\uDCA1 " + t("alternativasPara") + " " + item.ejercicioEstancado + ":"));
+      if (item.sugerencias) {
+        for (var si = 0; si < item.sugerencias.length; si++) {
+          recCard.appendChild(crear("span", "ia-rec-ejercicio", item.sugerencias[si]));
+        }
+      }
+      container.appendChild(recCard);
+    }
+  }
+  return container;
+}
+
+// ------------------------------------------------------------
+// crearBotonSubir(nivel)
+// ------------------------------------------------------------
+function crearBotonSubir(nivel) {
+  var card = crear("div", "ia-card-nivel");
+  card.appendChild(crear("p", "ia-texto-exito", t("progresoSuficiente")));
+
+  var pPreg = crear("p", "ia-texto-preg");
+  pPreg.appendChild(document.createTextNode(t("listoSubir") + " "));
+  var strong = document.createElement("strong");
+  strong.textContent = t(nivel.toLowerCase());
+  pPreg.appendChild(strong);
+  pPreg.appendChild(document.createTextNode("?"));
+  card.appendChild(pPreg);
+
+  var divBtns = crear("div", "edit-form-acciones");
+
+  var btnSi = crear("button", "btn-subir-nivel confirmar", t("siSubir") + " (" + t(nivel.toLowerCase()) + ")");
+  btnSi.addEventListener("click", function (n) {
+    return function () { confirmarSubirNivel(n); };
+  }(nivel));
+  divBtns.appendChild(btnSi);
+
+  var btnNo = crear("button", "btn-subir-nivel rechazar", t("noSubir") + " " + t(usuarioActual.nivel.toLowerCase()));
+  btnNo.addEventListener("click", cancelarSubirNivel);
+  divBtns.appendChild(btnNo);
+
+  card.appendChild(divBtns);
+  return card;
+}
+
+// ------------------------------------------------------------
+// crearInputAPIKey()
+// ------------------------------------------------------------
+function crearInputAPIKey() {
+  var div = crear("div", "ia-card-warn");
+  div.appendChild(crear("p", "ia-texto-warn", "No hay API key de Groq. Pega tu key para activar el analisis con IA:"));
+
+  var inputRow = crear("div", "ia-flex-row");
+  var input = document.createElement("input");
+  input.type = "text";
+  input.placeholder = "gsk_...";
+  input.className = "ia-input-key";
+  inputRow.appendChild(input);
+
+  var btn = crear("button", "ia-btn-guardar-key", "Guardar");
+  btn.addEventListener("click", function () {
+    var key = input.value.trim();
+    if (key) {
+      localStorage.setItem("groqKey", key);
+      ipcRenderer.invoke("groq-set-key", key);
+      input.disabled = true;
+      btn.textContent = "\u2713 Listo";
+      btn.className = "ia-btn-guardar-key ia-btn-guardado";
+      botonIA.click();
+    }
+  });
+  inputRow.appendChild(btn);
+  div.appendChild(inputRow);
+  div.appendChild(crear("p", "ia-texto-muted", "La key se guarda localmente. Saca tuya en https://console.groq.com/keys"));
+  return div;
+}
+
+function errorMsg(msg) {
+  var div = crear("div", "ia-card-error");
+  div.appendChild(crear("p", "ia-texto-danger", "Error IA: " + msg));
+  return div;
+}
+
+// ============================================================
+// FALLBACK LOCAL
+// ============================================================
+
+function analizarLocalCompleto(sesiones) {
+  var container = crear("div");
+  container.appendChild(analizarNivel(sesiones));
+  container.appendChild(analizarTendencia(sesiones));
+  var infoEst = analizarEstancamiento(sesiones);
+  if (infoEst) container.appendChild(infoEst);
+  var seguir = crear("p", "ia-texto-verde", t("seguirAsi"));
+  seguir.style.marginTop = "12px";
+  container.appendChild(seguir);
+  return container;
+}
+
+function crearListaSesiones(sesiones) {
+  var container = crear("div");
+  container.appendChild(crear("h5", "ia-subtitulo", t("ultimasSesiones")));
+
+  var lista = crear("div", "ia-lista-sesiones");
+  for (var i = 0; i < sesiones.length; i++) {
+    var s = sesiones[i];
+    var cumplio = s[1] >= s[6] && s[2] >= s[5];
+    var item = crear("div", "ia-item-sesion");
+
+    var spanInfo = document.createElement("span");
+    var icono = document.createElement("span");
+    icono.style.color = cumplio ? "var(--success)" : "var(--danger)";
+    icono.textContent = cumplio ? "\u2713" : "\u2717";
+    spanInfo.appendChild(icono);
+    spanInfo.appendChild(document.createTextNode(" "));
+    var strong = document.createElement("strong");
+    strong.textContent = s[0];
+    spanInfo.appendChild(strong);
+    spanInfo.appendChild(document.createTextNode(" " + s[1] + "x" + s[2]));
+
+    item.appendChild(spanInfo);
+    item.appendChild(crear("span", "ia-item-sesion-fecha", s[4]));
+    lista.appendChild(item);
+  }
   container.appendChild(lista);
   return container;
 }
 
-
-// ------------------------------------------------------------
-// analizarNivel(sesiones)
-// ------------------------------------------------------------
-// Evalua si el usuario cumple los requisitos para subir de nivel:
-//   • 60+ dias desde el registro
-//   • 15+ sesiones en su nivel actual
-//   • 60%+ de metas cumplidas
-// Si no cumple, muestra cuantos dias/sesiones faltan.
-// ------------------------------------------------------------
 function analizarNivel(sesiones) {
-  var container = document.createElement('div');
+  var container = crear("div");
+  container.appendChild(crear("h5", "ia-subtitulo", t("nivelActual") + ": " + t(usuarioActual.nivel.toLowerCase())));
 
-  var subtitulo = document.createElement('h5');
-  subtitulo.className = 'ia-subtitulo';
-  subtitulo.textContent = t('nivelActual') + ': ' + t(usuarioActual.nivel.toLowerCase());
-  container.appendChild(subtitulo);
-
-  var niveles = ['', 'Principiante', 'Intermedio', 'Experto'];
-  var nivelActualIdx = niveles.indexOf(usuarioActual.nivel);
-  var puedeSubir = false;
-  var nivelSiguiente = null;
-
-  // Si ya es Experto (ultimo nivel) no puede subir mas
-  if (nivelActualIdx <= 0 || nivelActualIdx >= 3) {
-    var p = document.createElement('p');
-    p.className = 'ia-texto-verde';
-    p.textContent = t('seguirAsi');
-    container.appendChild(p);
+  var niveles = ["", "Principiante", "Intermedio", "Experto"];
+  var idx = niveles.indexOf(usuarioActual.nivel);
+  if (idx <= 0 || idx >= 3) {
+    container.appendChild(crear("p", "ia-texto-verde", t("seguirAsi")));
     return container;
   }
+  var sig = niveles[idx + 1];
 
-  nivelSiguiente = niveles[nivelActualIdx + 1];
-
-  // Filtrar sesiones de su nivel actual
-  var sesionesNivelActual = [];
+  var actuales = [];
   for (var i = 0; i < sesiones.length; i++) {
     var s = sesiones[i];
-    if (s[8] > 0 && s[8] <= nivelActualIdx + 1) {
-      sesionesNivelActual.push(s);
-    }
+    if (s[8] > 0 && s[8] <= idx + 1) actuales.push(s);
   }
 
-  // Calcular dias desde el registro
-  var fechaReg;
-  if (usuarioActual.creado_en) {
-    fechaReg = new Date(usuarioActual.creado_en.split(' ')[0]);
-  } else {
-    fechaReg = new Date();
-  }
-  var hoyDate = new Date();
-  var diffTime = hoyDate.getTime() - fechaReg.getTime();
-  var diffDias = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  var dias = usarDiasTranscurridos();
+  container.appendChild(crear("p", "ia-texto", t("entrenandoDesde") + ": " + dias + " " + t("dias")));
 
-  // Mostrar tiempo entrenando
-  var pTiempo = document.createElement('p');
-  pTiempo.className = 'ia-texto';
-  pTiempo.textContent = t('entrenandoDesde') + ': ' + diffDias + ' ' + t('dias');
-  container.appendChild(pTiempo);
-
-  // Si cumple tiempo y sesiones minimas
-  if (diffDias >= 60 && sesionesNivelActual.length >= 15) {
+  var puede = false;
+  if (dias >= 60 && actuales.length >= 15) {
     var cumplidas = 0;
-    for (var i = 0; i < sesionesNivelActual.length; i++) {
-      var s = sesionesNivelActual[i];
-      if (s[1] >= s[6] && s[2] >= s[5]) cumplidas++;
+    for (i = 0; i < actuales.length; i++) {
+      if (actuales[i][1] >= actuales[i][6] && actuales[i][2] >= actuales[i][5]) cumplidas++;
     }
-    var porcentaje = (cumplidas / sesionesNivelActual.length) * 100;
-
-    var pStats = document.createElement('p');
-    pStats.className = 'ia-texto';
-    pStats.textContent = sesionesNivelActual.length + ' sesiones en tu nivel — '
-      + cumplidas + ' cumplieron la meta (' + Math.round(porcentaje) + '%)';
-    container.appendChild(pStats);
-
-    if (porcentaje >= 60) {
-      puedeSubir = true;
+    var pct = (cumplidas / actuales.length) * 100;
+    container.appendChild(crear("p", "ia-texto", actuales.length + " sesiones en tu nivel \u2014 " + cumplidas + " cumplieron la meta (" + Math.round(pct) + "%)"));
+    if (pct >= 60) {
+      puede = true;
     } else {
-      var pMejora = document.createElement('p');
-      pMejora.className = 'ia-texto-dorado';
-      pMejora.textContent = t('mejorarRendimiento');
-      container.appendChild(pMejora);
+      container.appendChild(crear("p", "ia-texto-dorado", t("mejorarRendimiento")));
     }
   } else {
-    var faltaTiempo = Math.max(0, 60 - diffDias);
-    var faltaSesiones = Math.max(0, 15 - sesionesNivelActual.length);
-    var pFalta = document.createElement('p');
-    pFalta.className = 'ia-texto-dorado';
-    var textoFalta = '';
-    if (faltaTiempo > 0) textoFalta += t('faltan') + ' ' + faltaTiempo + ' ' + t('dias') + ' ';
-    if (faltaSesiones > 0) textoFalta += t('y') + ' ' + faltaSesiones + ' ' + t('sesionesMas');
-    textoFalta += ' ' + t('paraEvaluar');
-    pFalta.textContent = textoFalta;
-    container.appendChild(pFalta);
+    container.appendChild(crearBarraProgreso(dias, actuales.length));
   }
 
-  // Si puede subir, mostrar botones
-  if (puedeSubir && nivelSiguiente) {
-    var nivelSiguienteT = t(nivelSiguiente.toLowerCase());
-
-    var card = document.createElement('div');
-    card.className = 'ia-card-nivel';
-
-    var pSuficiente = document.createElement('p');
-    pSuficiente.textContent = t('progresoSuficiente');
-    pSuficiente.style.cssText = 'color:#a6e3a1;font-weight:bold;margin-bottom:10px';
-    card.appendChild(pSuficiente);
-
-    var pPregunta = document.createElement('p');
-    pPregunta.style.cssText = 'color:#cdd6f4;margin-bottom:12px';
-    var textPre = document.createTextNode(t('listoSubir') + ' ');
-    pPregunta.appendChild(textPre);
-    var strongNivel = document.createElement('strong');
-    strongNivel.textContent = nivelSiguienteT;
-    pPregunta.appendChild(strongNivel);
-    pPregunta.appendChild(document.createTextNode('?'));
-    card.appendChild(pPregunta);
-
-    var divBotones = document.createElement('div');
-    divBotones.className = 'edit-form-acciones';
-
-    var btnSi = document.createElement('button');
-    btnSi.className = 'btn-subir-nivel confirmar';
-    btnSi.textContent = t('siSubir') + ' (' + nivelSiguienteT + ')';
-    btnSi.addEventListener('click', (function (nivel) {
-      return function () { confirmarSubirNivel(nivel); };
-    })(nivelSiguiente));
-    divBotones.appendChild(btnSi);
-
-    var btnNo = document.createElement('button');
-    btnNo.className = 'btn-subir-nivel rechazar';
-    btnNo.textContent = t('noSubir') + ' ' + t(usuarioActual.nivel.toLowerCase());
-    btnNo.addEventListener('click', cancelarSubirNivel);
-    divBotones.appendChild(btnNo);
-
-    card.appendChild(divBotones);
-    container.appendChild(card);
-  }
-
+  if (puede && sig) container.appendChild(crearBotonSubir(sig));
   return container;
 }
 
+function crearBarraProgreso(dias, ses) {
+  var pDias = Math.min(dias / 60, 1) * 100;
+  var pSes = Math.min(ses / 15, 1) * 100;
+  var total = Math.min(pDias, pSes);
 
-// ------------------------------------------------------------
-// analizarTendencia(sesiones)
-// ------------------------------------------------------------
-// Calcula el volumen (series * reps) de esta semana y lo
-// compara con la semana pasada. Muestra subiste/bajaste/igual%.
-// Si no hay datos de la semana pasada, muestra "Primera semana".
-// ------------------------------------------------------------
+  var div = crear("div", "progreso-ascenso");
+  var barra = crear("div", "progreso-ascenso-barra");
+  var relleno = crear("div", "progreso-ascenso-relleno");
+  relleno.style.width = Math.round(total) + "%";
+  barra.appendChild(relleno);
+  div.appendChild(barra);
+  div.appendChild(crear("span", "progreso-ascenso-texto", Math.round(total) + "% " + t("paraAscenso")));
+
+  var det = crear("div", "progreso-ascenso-detalle");
+  det.appendChild(crear("span", null, "\uD83D\uDCC5 " + dias + "/60 " + t("dias")));
+  det.appendChild(crear("span", null, "\uD83D\uDCAA " + ses + "/15 " + t("sesiones")));
+  div.appendChild(det);
+  return div;
+}
+
+function usarDiasTranscurridos() {
+  var fechaReg = usuarioActual.creado_en ? new Date(usuarioActual.creado_en.split(" ")[0]) : new Date();
+  return Math.floor((Date.now() - fechaReg.getTime()) / (1000 * 60 * 60 * 24));
+}
+
 function analizarTendencia(sesiones) {
-  var container = document.createElement('div');
-
-  var subtitulo = document.createElement('h5');
-  subtitulo.className = 'ia-subtitulo';
-  subtitulo.textContent = t('tendenciaSemanal');
-  container.appendChild(subtitulo);
+  var container = crear("div");
+  container.appendChild(crear("h5", "ia-subtitulo", t("tendenciaSemanal")));
 
   var ahora = new Date();
-  var hace7 = new Date(ahora);
-  hace7.setDate(hace7.getDate() - 7);
-  var hace14 = new Date(ahora);
-  hace14.setDate(hace14.getDate() - 14);
+  var hace7 = new Date(+ahora - 604800000);
+  var hace14 = new Date(+ahora - 1209600000);
 
-  var volSemana = 0;
-  var volSemanaPasada = 0;
-  var diasUnicos = {};
-
+  var volSem = 0, volAnt = 0, diasU = {};
   for (var i = 0; i < sesiones.length; i++) {
     var s = sesiones[i];
-    var fechaSesion = new Date(s[4].split(' ')[0]);
+    var f = new Date(s[4].split(" ")[0]);
     var vol = s[1] * s[2];
-    if (fechaSesion >= hace7) {
-      volSemana += vol;
-      diasUnicos[s[4].split(' ')[0]] = true;
-    } else if (fechaSesion >= hace14) {
-      volSemanaPasada += vol;
-    }
+    if (f >= hace7) { volSem += vol; diasU[s[4].split(" ")[0]] = true; }
+    else if (f >= hace14) volAnt += vol;
   }
+  var totDias = 0; for (var d in diasU) totDias++;
 
-  var totalDias = 0;
-  for (var d in diasUnicos) totalDias++;
-
-  var card = document.createElement('div');
-  card.className = 'ia-card';
-
-  if (volSemana === 0 && volSemanaPasada === 0) {
-    var p = document.createElement('p');
-    p.className = 'ia-texto';
-    p.style.fontSize = '0.85rem';
-    p.textContent = t('sinDatosTendencia');
-    card.appendChild(p);
+  var card = crear("div", "ia-card");
+  if (volSem === 0 && volAnt === 0) {
+    card.appendChild(crear("p", "ia-texto", t("sinDatosTendencia")));
   } else {
-    if (volSemanaPasada < 10) {
-      var pPrimera = document.createElement('p');
-      pPrimera.textContent = t('primeraSemana');
-      pPrimera.style.cssText = 'color:#a6e3a1;font-size:0.9rem';
-      card.appendChild(pPrimera);
-    } else if (volSemana > volSemanaPasada) {
-      var dif = Math.round(((volSemana - volSemanaPasada) / volSemanaPasada) * 100);
-      var pSubio = document.createElement('p');
-      pSubio.appendChild(document.createTextNode(t('subiste') + ' '));
-      var strongDif = document.createElement('strong');
-      strongDif.textContent = dif + '%';
-      pSubio.appendChild(strongDif);
-      pSubio.appendChild(document.createTextNode(' ' + t('vsSemanaPasada')));
-      pSubio.style.cssText = 'color:#a6e3a1;font-size:0.9rem';
-      card.appendChild(pSubio);
-    } else if (volSemana < volSemanaPasada) {
-      var dif = Math.round(((volSemanaPasada - volSemana) / volSemanaPasada) * 100);
-      var pBajo = document.createElement('p');
-      pBajo.appendChild(document.createTextNode(t('bajaste') + ' '));
-      var strongDif = document.createElement('strong');
-      strongDif.textContent = dif + '%';
-      pBajo.appendChild(strongDif);
-      pBajo.appendChild(document.createTextNode(' ' + t('vsSemanaPasada')));
-      pBajo.style.cssText = 'color:#f38ba8;font-size:0.9rem';
-      card.appendChild(pBajo);
+    if (volAnt < 10) {
+      card.appendChild(crear("p", "ia-texto-success", t("primeraSemana")));
     } else {
-      var pIgual = document.createElement('p');
-      pIgual.textContent = t('igualQueSemanaPasada');
-      pIgual.style.cssText = 'color:#f9e2af;font-size:0.9rem';
-      card.appendChild(pIgual);
+      var subio = volSem > volAnt;
+      var igual = volSem === volAnt;
+      var dif = Math.round((Math.abs(volSem - volAnt) / volAnt) * 100);
+      var clase = subio ? "ia-texto-success" : igual ? "ia-texto-warn" : "ia-texto-error";
+      var verbo = subio ? t("subiste") : igual ? t("igualQueSemanaPasada") : t("bajaste");
+      var p = crear("p", clase);
+      if (!igual) {
+        p.appendChild(document.createTextNode(verbo + " "));
+        var st = document.createElement("strong");
+        st.textContent = dif + "%";
+        p.appendChild(st);
+        p.appendChild(document.createTextNode(" " + t("vsSemanaPasada")));
+      } else {
+        p.textContent = verbo;
+      }
+      card.appendChild(p);
     }
-
-    var pVol = document.createElement('p');
-    pVol.textContent = t('volumenTotal') + ': ' + volSemana + ' — ' + totalDias + ' ' + t('diasEntrenados');
-    pVol.style.cssText = 'color:#6c7086;font-size:0.8rem;margin-top:4px';
-    card.appendChild(pVol);
+    card.appendChild(crear("p", "ia-texto-muted-vol", t("volumenTotal") + ": " + volSem + " \u2014 " + totDias + " " + t("diasEntrenados")));
   }
-
   container.appendChild(card);
   return container;
 }
 
-
-// ------------------------------------------------------------
-// analizarEstancamiento(sesiones)
-// ------------------------------------------------------------
-// Agrupa sesiones por ejercicio. Si las ultimas 3 sesiones
-// de un ejercicio NO cumplieron la meta (series/reps),
-// lo marca como estancado y sugiere cambiar de progresion.
-// Retorna null si no hay estancamiento.
-// ------------------------------------------------------------
 function analizarEstancamiento(sesiones) {
-  // Agrupar sesiones por nombre de ejercicio
-  var porEjercicio = {};
+  var porEj = {}, grupoDe = {};
   for (var i = 0; i < sesiones.length; i++) {
     var s = sesiones[i];
-    if (!porEjercicio[s[0]]) porEjercicio[s[0]] = [];
-    porEjercicio[s[0]].push(s);
+    if (!porEj[s[0]]) porEj[s[0]] = [];
+    porEj[s[0]].push(s);
+    grupoDe[s[0]] = s[7];
   }
 
-  // Detectar estancados: 3+ sesiones consecutivas sin cumplir meta
   var estancados = [];
-  for (var nombre in porEjercicio) {
-    var list = porEjercicio[nombre];
+  for (var nom in porEj) {
+    var list = porEj[nom];
     if (list.length >= 3) {
-      var todosFallaron = true;
-      for (var i = 0; i < 3; i++) {
-        var ex = list[i];
-        if (ex[1] >= ex[6] && ex[2] >= ex[5]) {
-          todosFallaron = false;
-          break;
-        }
+      var mal = true;
+      for (var i2 = 0; i2 < 3; i2++) {
+        var ex = list[i2];
+        if (ex[1] >= ex[6] && ex[2] >= ex[5]) { mal = false; break; }
       }
-      if (todosFallaron) estancados.push(nombre);
+      if (mal) estancados.push({ nombre: nom, grupo: grupoDe[nom] || "" });
     }
   }
-
   if (estancados.length === 0) return null;
 
-  var container = document.createElement('div');
-
-  var subtitulo = document.createElement('h5');
-  subtitulo.className = 'ia-subtitulo';
-  subtitulo.textContent = t('estancamiento');
-  container.appendChild(subtitulo);
-
-  var card = document.createElement('div');
-  card.className = 'ia-card-plateau';
-
-  var pTitulo = document.createElement('p');
-  pTitulo.className = 'ia-card-plateau-titulo';
-  pTitulo.textContent = t('ejerciciosEstancados') + ':';
-  card.appendChild(pTitulo);
-
-  for (var i = 0; i < estancados.length; i++) {
-    var pEj = document.createElement('p');
-    pEj.className = 'ia-ejercicio-estancado';
-    pEj.appendChild(document.createTextNode('\u2717 '));
-    var strongEj = document.createElement('strong');
-    strongEj.textContent = estancados[i];
-    pEj.appendChild(strongEj);
-    card.appendChild(pEj);
+  var catalogo = obtenerTodasProgresiones(nivelMaximo());
+  var porGrupo = {};
+  for (var ci = 0; ci < catalogo.length; ci++) {
+    var row = catalogo[ci];
+    if (!porGrupo[row[1]]) porGrupo[row[1]] = [];
+    porGrupo[row[1]].push(row[0]);
   }
 
-  var pSugerencia = document.createElement('p');
-  pSugerencia.textContent = t('sugerenciaEstancamiento');
-  pSugerencia.style.cssText = 'color:#a6adc8;font-size:0.8rem;margin-top:6px';
-  card.appendChild(pSugerencia);
+  var container = crear("div");
+  container.appendChild(crear("h5", "ia-subtitulo", t("estancamiento")));
+  var card = crear("div", "ia-card-plateau");
+  card.appendChild(crear("p", "ia-card-plateau-titulo", t("ejerciciosEstancados") + ":"));
 
+  for (var i3 = 0; i3 < estancados.length; i3++) {
+    var est = estancados[i3];
+    var pEj = crear("p", "ia-ejercicio-estancado");
+    pEj.appendChild(document.createTextNode("\u2717 "));
+    var st = document.createElement("strong");
+    st.textContent = est.nombre;
+    pEj.appendChild(st);
+    card.appendChild(pEj);
+
+    var alternativas = (porGrupo[est.grupo] || []).filter(function (a) { return a !== est.nombre; });
+    if (alternativas.length > 0) {
+      card.appendChild(crear("p", "ia-rec-local", "\u21E2 " + t("probaCon") + ": " + alternativas.slice(0, 3).join(", ")));
+    }
+  }
+
+  card.appendChild(crear("p", "ia-texto-sugerencia", t("sugerenciaEstancamiento")));
   container.appendChild(card);
   return container;
 }
 
-
-// ------------------------------------------------------------
-// confirmarSubirNivel(nuevoNivel)
-// ------------------------------------------------------------
 function confirmarSubirNivel(nuevoNivel) {
   actualizarUsuario(usuarioActual.id, usuarioActual.nombre, nuevoNivel,
     usuarioActual.peso, usuarioActual.altura, usuarioActual.objetivo);
   usuarioActual = obtenerUsuarioPorId(usuarioActual.id);
   actualizarInfoUsuario();
 
-  var card = document.createElement('div');
-  card.className = 'card-felicitaciones';
-
-  var titulo = document.createElement('p');
-  titulo.className = 'card-felicitaciones-titulo';
-  titulo.appendChild(document.createTextNode(t('felicitaciones') + ' '));
-  var strongNuevo = document.createElement('strong');
-  strongNuevo.textContent = t(nuevoNivel.toLowerCase());
-  titulo.appendChild(strongNuevo);
-  titulo.appendChild(document.createTextNode('!'));
+  var card = crear("div", "card-felicitaciones");
+  var titulo = crear("p", "card-felicitaciones-titulo");
+  titulo.appendChild(document.createTextNode(t("felicitaciones") + " "));
+  var strong = document.createElement("strong");
+  strong.textContent = t(nuevoNivel.toLowerCase());
+  titulo.appendChild(strong);
+  titulo.appendChild(document.createTextNode("!"));
   card.appendChild(titulo);
-
-  var sub = document.createElement('p');
-  sub.className = 'ia-texto';
-  sub.textContent = t('nivelSubido');
-  card.appendChild(sub);
-
-  resultadoIA.innerHTML = '';
+  card.appendChild(crear("p", "ia-texto", t("nivelSubido")));
+  resultadoIA.innerHTML = "";
   resultadoIA.appendChild(card);
 }
 
-// ------------------------------------------------------------
-// cancelarSubirNivel()
-// ------------------------------------------------------------
 function cancelarSubirNivel() {
-  resultadoIA.innerHTML = '';
-  var p = document.createElement('p');
-  p.className = 'ia-texto';
-  p.textContent = t('noSubir') + ' ' + t(usuarioActual.nivel.toLowerCase()) + '.';
-  resultadoIA.appendChild(p);
+  resultadoIA.innerHTML = "";
+  resultadoIA.appendChild(crear("p", "ia-texto", t("noSubir") + " " + t(usuarioActual.nivel.toLowerCase()) + "."));
 }
 
-// Exportar funciones al HTML (onclick, etc.)
 window.confirmarSubirNivel = confirmarSubirNivel;
 window.cancelarSubirNivel = cancelarSubirNivel;

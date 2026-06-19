@@ -35,6 +35,12 @@ function cambiarSeccion(idDeSeccion, botonPresionado) {
   if (idDeSeccion === "progreso" || idDeSeccion === "inicio") {
     refrescarHistorial();
   }
+  if (idDeSeccion === "progreso") {
+    // Auto-analisis al entrar a Progreso
+    if (typeof ejecutarAnalisisIA === "function") {
+      setTimeout(ejecutarAnalisisIA, 100);
+    }
+  }
   if (idDeSeccion === "inicio") {
     refrescarPlanSemanal();
   }

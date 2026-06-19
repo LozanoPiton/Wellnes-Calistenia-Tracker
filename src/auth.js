@@ -301,7 +301,7 @@ function actualizarInfoUsuario() {
     var alturaTexto = usuarioActual.altura ? usuarioActual.altura + ' cm' : '—';
     var objetivotTexto = usuarioActual.objetivo && usuarioActual.objetivo.trim() !== ''
         ? usuarioActual.objetivo
-        : '<span style="color:#6c7086;font-style:italic">' + t('sinObjetivo') + '</span>';
+        : '<span style="color:var(--text-muted);font-style:italic">' + t('sinObjetivo') + '</span>';
 
     var tarjeta = document.getElementById('tarjeta-bienvenida');
     tarjeta.innerHTML = '';
@@ -327,14 +327,14 @@ function actualizarInfoUsuario() {
     imgTarget.src = 'icons/target.svg';
     imgTarget.width = 16;
     imgTarget.height = 16;
-    imgTarget.style.cssText = 'vertical-align:middle';
+    imgTarget.className = 'icon-vmiddle';
     pObjetivo.appendChild(imgTarget);
     pObjetivo.appendChild(document.createTextNode(' '));
     if (usuarioActual.objetivo && usuarioActual.objetivo.trim() !== '') {
         pObjetivo.appendChild(document.createTextNode(usuarioActual.objetivo));
     } else {
         var spanSinObj = document.createElement('span');
-        spanSinObj.style.cssText = 'color:#6c7086;font-style:italic';
+        spanSinObj.className = 'texto-sin-objetivo';
         spanSinObj.textContent = t('sinObjetivo');
         pObjetivo.appendChild(spanSinObj);
     }
@@ -350,7 +350,7 @@ function actualizarInfoUsuario() {
         textoObjEl.textContent = usuarioActual.objetivo;
     } else {
         var spanSinObj2 = document.createElement('span');
-        spanSinObj2.style.cssText = 'color:#6c7086;font-style:italic';
+        spanSinObj2.className = 'texto-sin-objetivo';
         spanSinObj2.textContent = t('sinObjetivo');
         textoObjEl.appendChild(spanSinObj2);
     }
@@ -363,7 +363,7 @@ function actualizarInfoUsuario() {
         perfilObjEl.textContent = usuarioActual.objetivo;
     } else {
         var spanSinObj3 = document.createElement('span');
-        spanSinObj3.style.cssText = 'color:#6c7086;font-style:italic';
+        spanSinObj3.className = 'texto-sin-objetivo';
         spanSinObj3.textContent = t('sinObjetivo');
         perfilObjEl.appendChild(spanSinObj3);
     }

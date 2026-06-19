@@ -31,12 +31,12 @@ function mostrarMetaEjercicio() {
 
   var left = document.createElement('div');
   var strongNombre = document.createElement('strong');
-  strongNombre.style.color = '#f8fafc';
+  strongNombre.style.color = 'var(--text-primary)';
   strongNombre.textContent = nombre;
   left.appendChild(strongNombre);
   left.appendChild(document.createElement('br'));
   var spanDesc = document.createElement('span');
-  spanDesc.style.color = '#6c7086';
+  spanDesc.style.color = 'var(--text-muted)';
   spanDesc.textContent = desc;
   left.appendChild(spanDesc);
   flex.appendChild(left);
@@ -44,12 +44,12 @@ function mostrarMetaEjercicio() {
   var right = document.createElement('div');
   right.style.textAlign = 'right';
   var spanNivel = document.createElement('span');
-  spanNivel.style.cssText = 'color:#facc15;font-weight:700';
+  spanNivel.style.cssText = 'color:var(--warning);font-weight:700';
   spanNivel.textContent = t('nivelAbrev') + nivel;
   right.appendChild(spanNivel);
   right.appendChild(document.createElement('br'));
   var spanMeta = document.createElement('span');
-  spanMeta.style.cssText = 'color:#38bdf8;font-family:monospace';
+  spanMeta.style.cssText = 'color:var(--accent);font-family:monospace';
   spanMeta.textContent = t('meta') + ': ' + series + 'x' + reps;
   right.appendChild(spanMeta);
   flex.appendChild(right);
@@ -86,13 +86,13 @@ function guardarSesionClick() {
   if (series >= metaSeries && reps >= metaReps) {
     msgEl.appendChild(document.createElement('br'));
     var spanOk = document.createElement('span');
-    spanOk.style.cssText = 'color:#a6e3a1;font-weight:700';
+    spanOk.style.cssText = 'color:var(--success);font-weight:700';
     spanOk.textContent = t('metaCumplida');
     msgEl.appendChild(spanOk);
   } else {
     msgEl.appendChild(document.createElement('br'));
     var spanFalta = document.createElement('span');
-    spanFalta.style.color = '#f9e2af';
+    spanFalta.style.color = 'var(--warning)';
     spanFalta.textContent = t('meta') + ': ' + metaSeries + 'x' + metaReps + ' \u2014 ' + t('teFaltaron') + ' ' +
       Math.max(0, metaSeries - series) + ' ' + t('seriesAbrev') + ' ' + t('o') + ' ' + Math.max(0, metaReps - reps) + ' ' + t('repsAbrev');
     msgEl.appendChild(spanFalta);

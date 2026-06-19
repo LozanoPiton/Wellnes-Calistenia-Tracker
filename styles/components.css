@@ -7,11 +7,11 @@
    ------------------------------------------------------------ */
 
 .tarjeta {
-    background: #27273a;
+    background: var(--bg-card);
     padding: 20px;
     border-radius: 12px;
     margin-bottom: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-card);
 }
 
 /* ------------------------------------------------------------
@@ -19,8 +19,8 @@
    ------------------------------------------------------------ */
 
 .boton-ia {
-    background-color: #a6e3a1;
-    color: #1e1e2e;
+    background-color: var(--success);
+    color: var(--bg-body);
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
@@ -33,7 +33,7 @@
     margin-top: 20px;
     display: none;
     padding: 15px;
-    background: #1e1e2e;
+    background: var(--bg-body);
     border-radius: 5px;
 }
 
@@ -42,17 +42,17 @@
    ------------------------------------------------------------ */
 
 .formulario-ejercicio {
-    background-color: #1e293b;
+    background-color: var(--bg-card);
     padding: 25px;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-md);
     max-width: 500px;
     margin: 20px auto;
-    color: #f8fafc;
+    color: var(--text-primary);
 }
 
 .formulario-titulo {
-    color: #38bdf8;
+    color: var(--accent);
     margin-top: 0;
     margin-bottom: 20px;
     font-size: 1.4rem;
@@ -72,7 +72,8 @@
     margin-bottom: 25px;
 }
 
-.columna-input {
+.columna-input,
+.fila-inputs > * {
     flex: 1;
 }
 
@@ -88,17 +89,17 @@
     width: 100%;
     padding: 10px;
     border-radius: 6px;
-    border: 1px solid #475569;
-    background-color: #0f172a;
-    color: #fff;
+    border: 1px solid var(--border);
+    background-color: var(--bg-body);
+    color: var(--text-primary);
     box-sizing: border-box;
     font-family: inherit;
 }
 
 .btn-guardar-ejercicio {
     width: 100%;
-    background-color: #0284c7;
-    color: white;
+    background-color: var(--accent-hover);
+    color: var(--text-primary);
     padding: 12px;
     border: none;
     border-radius: 6px;
@@ -109,7 +110,7 @@
 }
 
 .btn-guardar-ejercicio:hover {
-    background-color: #0369a1;
+    background-color: var(--accent-hover);
 }
 
 /* ------------------------------------------------------------
@@ -118,8 +119,8 @@
 
 .btn-catalogo {
     background-color: transparent;
-    color: #a6e3a1;
-    border: 1px solid #a6e3a1;
+    color: var(--success);
+    border: 1px solid var(--success);
     padding: 6px 14px;
     border-radius: 6px;
     font-size: 0.8rem;
@@ -130,7 +131,7 @@
 }
 
 .btn-catalogo:hover {
-    background-color: rgba(166, 227, 161, 0.15);
+    background-color: color-mix(in srgb, var(--success) 15%, transparent);
 }
 
 /* ------------------------------------------------------------
@@ -143,20 +144,20 @@
 }
 
 .catalogo-titulo {
-    color: #a6e3a1;
+    color: var(--success);
     margin-bottom: 16px;
     font-size: 1.2rem;
 }
 
 .catalogo-grupo {
-    background: #1e293b;
+    background: var(--bg-card);
     border-radius: 10px;
     padding: 16px;
     margin-bottom: 14px;
 }
 
 .catalogo-grupo-titulo {
-    color: #f8fafc;
+    color: var(--text-primary);
     margin: 0 0 10px 0;
     font-size: 1rem;
     font-weight: 700;
@@ -170,10 +171,10 @@
 
 .catalogo-tabla th {
     text-align: left;
-    color: #64748b;
+    color: var(--text-muted);
     font-weight: 600;
     padding: 4px 8px;
-    border-bottom: 1px solid #334155;
+    border-bottom: 1px solid var(--border);
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -181,8 +182,8 @@
 
 .catalogo-tabla td {
     padding: 6px 8px;
-    border-bottom: 1px solid #1e293b;
-    color: #cbd5e1;
+    border-bottom: 1px solid var(--bg-card);
+    color: var(--text-secondary);
 }
 
 .catalogo-tabla tr:last-child td {
@@ -192,24 +193,24 @@
 .catalogo-nivel {
     width: 40px;
     text-align: center;
-    color: #facc15 !important;
+    color: var(--warning) !important;
     font-weight: 700;
 }
 
 .catalogo-nombre {
-    color: #f8fafc !important;
+    color: var(--text-primary) !important;
     font-weight: 500;
 }
 
 .catalogo-meta {
     width: 80px;
     text-align: center;
-    color: #38bdf8 !important;
+    color: var(--accent) !important;
     font-family: monospace;
 }
 
 .catalogo-desc {
-    color: #94a3b8 !important;
+    color: var(--text-muted) !important;
     font-style: italic;
 }
 
@@ -226,7 +227,7 @@
 .historial-item {
     padding: 8px 12px;
     margin-bottom: 6px;
-    background: #1e293b;
+    background: var(--bg-card);
     border-radius: 8px;
 }
 
@@ -241,13 +242,13 @@
 }
 
 .historial-item-fecha {
-    color: #6c7086;
+    color: var(--text-muted);
     margin-left: 8px;
     font-size: 0.8rem;
 }
 
 .historial-item-notas {
-    color: #a6adc8;
+    color: var(--text-secondary);
 }
 
 .historial-item-acciones {
@@ -266,13 +267,13 @@
 }
 
 .btn-historial-editar {
-    background: #313244;
-    color: #cdd6f4;
+    background: var(--bg-card-alt);
+    color: var(--text-primary);
 }
 
 .btn-historial-eliminar {
-    background: #313244;
-    color: #f38ba8;
+    background: var(--bg-card-alt);
+    color: var(--danger);
 }
 
 /* ------------------------------------------------------------
@@ -280,14 +281,14 @@
    ------------------------------------------------------------ */
 
 .edit-form {
-    background: #151520;
-    border: 1px solid #313244;
+    background: var(--bg-card-alt);
+    border: 1px solid var(--border);
     border-radius: 10px;
     padding: 16px;
 }
 
 .edit-form-titulo {
-    color: #cdd6f4;
+    color: var(--text-primary);
     margin: 0 0 10px 0;
 }
 
@@ -300,8 +301,8 @@
 .btn-guardar {
     flex: 1;
     padding: 10px;
-    background: #a6e3a1;
-    color: #1e1e2e;
+    background: var(--success);
+    color: var(--bg-body);
     border: none;
     border-radius: 8px;
     font-weight: bold;
@@ -312,8 +313,8 @@
 .btn-cancelar {
     flex: 1;
     padding: 10px;
-    background: #313244;
-    color: #cdd6f4;
+    background: var(--bg-card-alt);
+    color: var(--text-primary);
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -327,16 +328,16 @@
 .mensaje-sesion {
     padding: 12px;
     border-radius: 8px;
-    background: #1e293b;
-    color: #f8fafc;
+    background: var(--bg-card);
+    color: var(--text-primary);
 }
 
 .mensaje-sesion.ok {
-    border-left: 4px solid #4ade80;
+    border-left: 4px solid var(--success);
 }
 
 .mensaje-sesion.error {
-    border-left: 4px solid #f87171;
+    border-left: 4px solid var(--danger);
 }
 
 /* ------------------------------------------------------------
@@ -354,13 +355,13 @@
 }
 
 .btn-subir-nivel.confirmar {
-    background: #a6e3a1;
-    color: #1e1e2e;
+    background: var(--success);
+    color: var(--bg-body);
 }
 
 .btn-subir-nivel.rechazar {
-    background: #313244;
-    color: #cdd6f4;
+    background: var(--bg-card-alt);
+    color: var(--text-primary);
 }
 
 /* ------------------------------------------------------------
@@ -378,7 +379,7 @@
 }
 
 .resumen-diario-texto {
-    color: #a6adc8;
+    color: var(--text-secondary);
     margin-top: 2px;
     font-size: 0.85rem;
 }
@@ -386,7 +387,7 @@
 .resumen-diario-barra {
     margin-top: 8px;
     height: 8px;
-    background: #313244;
+    background: var(--bg-card-alt);
     border-radius: 4px;
     overflow: hidden;
 }
@@ -407,16 +408,16 @@
     justify-content: space-between;
     align-items: center;
     padding: 5px 0;
-    border-bottom: 1px solid #1e1e2e;
+    border-bottom: 1px solid var(--bg-body);
 }
 
 .resumen-diario-ejercicio-nombre {
-    color: #cdd6f4;
+    color: var(--text-primary);
     font-size: 0.85rem;
 }
 
 .resumen-diario-ejercicio-nivel {
-    color: #6c7086;
+    color: var(--text-muted);
     font-size: 0.75rem;
 }
 
@@ -425,33 +426,33 @@
    ------------------------------------------------------------ */
 
 .ia-titulo {
-    color: #a6e3a1;
+    color: var(--success);
     margin-top: 0;
 }
 
 .ia-subtitulo {
-    color: #cdd6f4;
+    color: var(--text-primary);
     margin: 10px 0 6px;
 }
 
 .ia-texto {
-    color: #a6adc8;
+    color: var(--text-secondary);
 }
 
 .ia-texto-dorado {
-    color: #f9e2af;
+    color: var(--warning);
 }
 
 .ia-texto-verde {
-    color: #a6e3a1;
+    color: var(--success);
 }
 
 .ia-texto-rojo {
-    color: #f38ba8;
+    color: var(--danger);
 }
 
 .ia-texto-gris {
-    color: #6c7086;
+    color: var(--text-muted);
 }
 
 .ia-lista-sesiones {
@@ -465,49 +466,86 @@
     align-items: center;
     padding: 4px 8px;
     margin: 2px 0;
-    background: #1e1e2e;
+    background: var(--bg-body);
     border-radius: 6px;
     font-size: 0.85rem;
 }
 
 .ia-item-sesion-fecha {
-    color: #6c7086;
+    color: var(--text-muted);
     font-size: 0.75rem;
 }
 
 .ia-card {
-    background: #1e1e2e;
+    background: var(--bg-body);
     border-radius: 8px;
     padding: 10px;
     margin-bottom: 8px;
 }
 
 .ia-card-nivel {
-    background: #1e1e2e;
-    border: 1px solid #a6e3a1;
+    background: var(--bg-body);
+    border: 1px solid var(--success);
     border-radius: 10px;
     padding: 14px;
     margin-top: 10px;
 }
 
 .ia-card-plateau {
-    background: #1e1e2e;
-    border: 1px solid #f38ba8;
+    background: var(--bg-body);
+    border: 1px solid var(--danger);
     border-radius: 8px;
     padding: 10px;
     margin-bottom: 8px;
 }
 
 .ia-card-plateau-titulo {
-    color: #f38ba8;
+    color: var(--danger);
     font-size: 0.85rem;
     margin-bottom: 6px;
 }
 
 .ia-ejercicio-estancado {
-    color: #cdd6f4;
+    color: var(--text-primary);
     font-size: 0.85rem;
     padding: 3px 0;
+}
+
+.ia-rec-local {
+    color: var(--accent);
+    font-size: 0.8rem;
+    margin: 2px 0 6px 16px;
+    font-style: italic;
+}
+
+/* ------------------------------------------------------------
+   RECOMENDACIONES DE EJERCICIOS (IA + local)
+   ------------------------------------------------------------ */
+
+.ia-card-recomendacion {
+    background: var(--bg-body);
+    border: 1px solid var(--accent-light);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+}
+
+.ia-rec-titulo {
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.ia-rec-ejercicio {
+    display: inline-block;
+    background: var(--bg-card-alt);
+    color: var(--accent);
+    font-size: 0.8rem;
+    padding: 3px 10px;
+    border-radius: 99px;
+    margin: 2px 4px 2px 0;
+    border: 1px solid var(--border);
 }
 
 /* ------------------------------------------------------------
@@ -533,18 +571,18 @@
 }
 
 .plan-grid-item.hoy {
-    background: #313244;
-    border: 1px solid #a6e3a1;
+    background: var(--bg-card-alt);
+    border: 1px solid var(--success);
 }
 
 .plan-grid-item.normal {
-    background: #1e1e2e;
-    border: 1px solid #313244;
+    background: var(--bg-body);
+    border: 1px solid var(--border);
 }
 
 .plan-grid-dia {
     font-weight: bold;
-    color: #cdd6f4;
+    color: var(--text-primary);
     font-size: 0.75rem;
 }
 
@@ -554,18 +592,18 @@
 }
 
 .plan-grid-grupo.activo {
-    color: #a6e3a1;
+    color: var(--success);
 }
 
 .plan-grid-grupo.inactivo {
-    color: #6c7086;
+    color: var(--text-muted);
 }
 
 .plan-ej-card {
-    background: #1e1e2e;
+    background: var(--bg-body);
     border-radius: 8px;
     padding: 10px 12px;
-    border: 1px solid #313244;
+    border: 1px solid var(--border);
 }
 
 .plan-ej-card-header {
@@ -575,28 +613,28 @@
 }
 
 .plan-ej-card-nombre {
-    color: #cdd6f4;
+    color: var(--text-primary);
 }
 
 .plan-ej-card-nivel {
-    color: #a6e3a1;
+    color: var(--success);
     font-size: 0.85rem;
     font-weight: bold;
 }
 
 .plan-ej-card-desc {
-    color: #6c7086;
+    color: var(--text-muted);
     font-size: 0.85rem;
     margin-top: 4px;
 }
 
 .banner-primera-vez {
-    background: #1e1e2e;
-    border: 1px solid #f9e2af;
+    background: var(--bg-body);
+    border: 1px solid var(--warning);
     border-radius: 8px;
     padding: 10px 12px;
     margin-bottom: 10px;
-    color: #f9e2af;
+    color: var(--warning);
     font-size: 0.9rem;
 }
 
@@ -612,7 +650,7 @@
 .editor-plan-td-dia {
     padding: 8px 12px;
     font-weight: bold;
-    color: #cdd6f4;
+    color: var(--text-primary);
     width: 90px;
 }
 
@@ -625,8 +663,8 @@
    ------------------------------------------------------------ */
 
 .card-felicitaciones {
-    background: #1e1e2e;
-    border: 1px solid #a6e3a1;
+    background: var(--bg-body);
+    border: 1px solid var(--success);
     border-radius: 10px;
     padding: 14px;
     margin-top: 10px;
@@ -634,7 +672,150 @@
 }
 
 .card-felicitaciones-titulo {
-    color: #a6e3a1;
+    color: var(--success);
     font-weight: bold;
     font-size: 1.1rem;
+}
+
+/* ------------------------------------------------------------
+   BARRA DE PROGRESO PARA ASCENSO
+   ------------------------------------------------------------ */
+
+.progreso-ascenso {
+    margin: 12px 0;
+}
+
+.progreso-ascenso-barra {
+    height: 10px;
+    background: var(--bg-card-alt);
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.progreso-ascenso-relleno {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-light), var(--accent));
+    border-radius: 99px;
+    transition: width 0.4s ease;
+}
+
+.progreso-ascenso-texto {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.progreso-ascenso-detalle {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* ------------------------------------------------------------
+   UTILITARIOS
+   ------------------------------------------------------------ */
+
+.icon-vmiddle {
+    vertical-align: middle;
+}
+
+.logo-img {
+    border-radius: 6px;
+}
+
+.texto-objetivo {
+    font-size: 1.1rem;
+}
+
+.texto-placeholder {
+    font-style: italic;
+}
+
+.texto-sin-objetivo {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.card-meta {
+    margin-top: 8px;
+    padding: 10px;
+    background: var(--bg-card-alt);
+    border-radius: 8px;
+    display: none;
+}
+
+.mt-8 { margin-top: 8px; }
+.mt-12 { margin-top: 12px; }
+.mt-15 { margin-top: 15px; }
+.mb-10 { margin-bottom: 10px; }
+
+/* ------------------------------------------------------------
+   IA — TEXTOS ADICIONALES
+   ------------------------------------------------------------ */
+
+.ia-texto-success { color: var(--success); }
+.ia-texto-warn { color: var(--warning); }
+.ia-texto-error { color: var(--danger); }
+.ia-texto-danger { color: var(--danger); }
+.ia-texto-muted { color: var(--text-muted); font-size: 0.8rem; }
+.ia-texto-exito { color: var(--success); font-weight: 600; }
+.ia-texto-preg { color: var(--text-primary); margin: 8px 0; }
+.ia-texto-sugerencia { color: var(--text-secondary); font-size: 0.8rem; margin-top: 6px; }
+.ia-texto-muted-vol { color: var(--text-muted); font-size: 0.8rem; margin-top: 4px; }
+
+/* ------------------------------------------------------------
+   IA — TARJETAS
+   ------------------------------------------------------------ */
+
+.ia-card-warn {
+  border: 1px solid var(--warning);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+  background: var(--bg-body);
+}
+
+.ia-card-error {
+  border: 1px solid var(--danger);
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 12px;
+}
+
+/* ------------------------------------------------------------
+   IA — INPUT API KEY
+   ------------------------------------------------------------ */
+
+.ia-flex-row {
+  display: flex;
+  gap: 8px;
+}
+
+.ia-input-key {
+  flex: 1;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg-card-alt);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+}
+
+.ia-btn-guardar-key {
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: none;
+  background: var(--success);
+  color: var(--bg-body);
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.ia-btn-guardado {
+  background: var(--text-muted);
 }
