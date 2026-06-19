@@ -12,18 +12,25 @@
     <link rel="stylesheet" href="styles/responsive.css" />
   </head>
   <body>
-
     <!-- ============================================================
          PANTALLA DE LOGIN / REGISTRO
          ============================================================ -->
     <div id="pantalla-auth" class="overlay-auth">
-
       <div id="modo-login" class="modal-auth">
-        <h1><img src="icons/hand.svg" width="24" height="24" class="icon-vmiddle" /> Bienvenido a Wellness</h1>
+        <h1>
+          <img
+            src="icons/hand.svg"
+            width="24"
+            height="24"
+            class="icon-vmiddle"
+          />
+          Bienvenido a Wellness
+        </h1>
         <p>Elegí tu usuario para empezar</p>
         <div id="lista-usuarios" class="lista-usuarios"></div>
         <button onclick="mostrarRegistro()" class="btn-link">
-          <img src="icons/plus.svg" width="16" height="16" /> Crear usuario nuevo
+          <img src="icons/plus.svg" width="16" height="16" /> Crear usuario
+          nuevo
         </button>
       </div>
 
@@ -34,12 +41,45 @@
          BARRA LATERAL
          ============================================================ -->
     <div class="barra-lateral" id="barra-lateral">
-      <div class="logo-area">
-        <div class="logo-icon"><img src="icons/logo_app.png" width="36" height="36" class="logo-img" /></div>
-        <div class="logo-text">
-          <h2 id="app-titulo">Wellness</h2>
-          <span class="logo-sub">Calistenia tracker</span>
-        </div>
+      <div
+        class="logo-contenedor"
+        style="text-align: center; padding: 10px; margin-bottom: 15px"
+      >
+        <img
+          src="logo_wellness.png"
+          alt="Wellness Logo"
+          style="
+            width: 100%;
+            max-width: 120px;
+            height: auto;
+            border-radius: 12px;
+            border: 2px solid #00d2ff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+          "
+        />
+        <h2
+          id="app-titulo"
+          style="
+            color: #fff;
+            font-size: 1.2rem;
+            margin-top: 8px;
+            letter-spacing: 1px;
+            font-weight: bold;
+            text-transform: uppercase;
+          "
+        >
+          Wellness
+        </h2>
+        <span
+          class="logo-sub"
+          style="
+            font-size: 0.8rem;
+            color: #888;
+            display: block;
+            margin-top: 2px;
+          "
+          >Calistenia Tracker</span
+        >
       </div>
 
       <div id="info-usuario" class="info-usuario" style="display: none">
@@ -54,24 +94,54 @@
 
       <span class="nav-label">Navegación</span>
 
-      <button id="menu-inicio" class="boton-nav activo" onclick="cambiarSeccion('inicio', this)">
-        <span class="nav-icon"><img src="icons/chart.svg" width="16" height="16" /></span>
+      <button
+        id="menu-inicio"
+        class="boton-nav activo"
+        onclick="cambiarSeccion('inicio', this)"
+      >
+        <span class="nav-icon"
+          ><img src="icons/chart.svg" width="16" height="16"
+        /></span>
         <span class="nav-text">Inicio</span>
       </button>
-      <button id="menu-entrenar" class="boton-nav" onclick="cambiarSeccion('entrenar', this)">
-        <span class="nav-icon"><img src="icons/muscle.svg" width="16" height="16" /></span>
+      <button
+        id="menu-entrenar"
+        class="boton-nav"
+        onclick="cambiarSeccion('entrenar', this)"
+      >
+        <span class="nav-icon"
+          ><img src="icons/muscle.svg" width="16" height="16"
+        /></span>
         <span class="nav-text">Entrenar</span>
       </button>
-      <button id="menu-progreso" class="boton-nav" onclick="cambiarSeccion('progreso', this)">
-        <span class="nav-icon"><img src="icons/robot.svg" width="16" height="16" /></span>
+      <button
+        id="menu-progreso"
+        class="boton-nav"
+        onclick="cambiarSeccion('progreso', this)"
+      >
+        <span class="nav-icon"
+          ><img src="icons/robot.svg" width="16" height="16"
+        /></span>
         <span class="nav-text">Progreso</span>
       </button>
-      <button id="menu-catalogo" class="boton-nav" onclick="cambiarSeccion('catalogo', this)">
-        <span class="nav-icon"><img src="icons/target.svg" width="16" height="16" /></span>
+      <button
+        id="menu-catalogo"
+        class="boton-nav"
+        onclick="cambiarSeccion('catalogo', this)"
+      >
+        <span class="nav-icon"
+          ><img src="icons/target.svg" width="16" height="16"
+        /></span>
         <span class="nav-text">Catálogo</span>
       </button>
-      <button id="menu-perfil" class="boton-nav" onclick="cambiarSeccion('perfil', this)">
-        <span class="nav-icon"><img src="icons/users.svg" width="16" height="16" /></span>
+      <button
+        id="menu-perfil"
+        class="boton-nav"
+        onclick="cambiarSeccion('perfil', this)"
+      >
+        <span class="nav-icon"
+          ><img src="icons/users.svg" width="16" height="16"
+        /></span>
         <span class="nav-text">Perfil</span>
       </button>
 
@@ -81,14 +151,27 @@
       </button>
 
       <div class="selector-idioma">
-        <span class="etiqueta-idioma"><img src="icons/globe.svg" width="14" height="14" class="icon-vmiddle" /> Idioma / Language:</span>
+        <span class="etiqueta-idioma"
+          ><img
+            src="icons/globe.svg"
+            width="14"
+            height="14"
+            class="icon-vmiddle"
+          />
+          Idioma / Language:</span
+        >
         <select id="select-lang">
           <option value="es">Español</option>
           <option value="en">English</option>
         </select>
       </div>
 
-      <button onclick="cerrarSesion()" class="boton-cambiar-usuario" id="btn-cambiar-usuario" style="display: none">
+      <button
+        onclick="cerrarSesion()"
+        class="boton-cambiar-usuario"
+        id="btn-cambiar-usuario"
+        style="display: none"
+      >
         <img src="icons/refresh.svg" width="14" height="14" /> Cambiar usuario
       </button>
     </div>
@@ -96,41 +179,95 @@
     <!-- ============================================================
          CONTENIDO PRINCIPAL
          ============================================================ -->
-    <div class="contenido-principal" id="contenido-principal" style="display: none">
-
+    <div
+      class="contenido-principal"
+      id="contenido-principal"
+      style="display: none"
+    >
       <!-- ---- SECCIÓN: Inicio ---- -->
       <div id="inicio" class="seccion activa">
         <h1 id="txt-bienvenida">Bienvenido de vuelta</h1>
         <div class="tarjeta" id="tarjeta-bienvenida"></div>
         <div class="tarjeta" id="tarjeta-objetivo">
-          <h3><img src="icons/target.svg" width="18" height="18" class="icon-vmiddle" /> Mi objetivo</h3>
+          <h3>
+            <img
+              src="icons/target.svg"
+              width="18"
+              height="18"
+              class="icon-vmiddle"
+            />
+            Mi objetivo
+          </h3>
           <p id="texto-objetivo" class="texto-objetivo"></p>
         </div>
         <div class="tarjeta" id="tarjeta-ultima-sesion">
-          <h3><img src="icons/muscle.svg" width="18" height="18" class="icon-vmiddle" /> Última sesión</h3>
-          <p id="texto-ultima-sesion" class="texto-placeholder">Todavía no registraste ninguna sesión</p>
+          <h3>
+            <img
+              src="icons/muscle.svg"
+              width="18"
+              height="18"
+              class="icon-vmiddle"
+            />
+            Última sesión
+          </h3>
+          <p id="texto-ultima-sesion" class="texto-placeholder">
+            Todavía no registraste ninguna sesión
+          </p>
         </div>
-        <div class="tarjeta" id="tarjeta-ejercicios-hoy" style="display:none">
-          <h3><img src="icons/target.svg" width="18" height="18" class="icon-vmiddle" /> Ejercicios recomendados para hoy</h3>
+        <div class="tarjeta" id="tarjeta-ejercicios-hoy" style="display: none">
+          <h3>
+            <img
+              src="icons/target.svg"
+              width="18"
+              height="18"
+              class="icon-vmiddle"
+            />
+            Ejercicios recomendados para hoy
+          </h3>
           <div id="texto-ejercicios-hoy"></div>
         </div>
-        <div class="tarjeta" id="tarjeta-resumen-diario" style="display:none">
-          <h3><img src="icons/chart.svg" width="18" height="18" class="icon-vmiddle" /> Resumen de hoy</h3>
+        <div class="tarjeta" id="tarjeta-resumen-diario" style="display: none">
+          <h3>
+            <img
+              src="icons/chart.svg"
+              width="18"
+              height="18"
+              class="icon-vmiddle"
+            />
+            Resumen de hoy
+          </h3>
           <div id="texto-resumen-diario"></div>
         </div>
         <div class="tarjeta" id="tarjeta-plan-semanal">
-          <h3><img src="icons/chart.svg" width="18" height="18" class="icon-vmiddle" /> Plan semanal</h3>
+          <h3>
+            <img
+              src="icons/chart.svg"
+              width="18"
+              height="18"
+              class="icon-vmiddle"
+            />
+            Plan semanal
+          </h3>
           <div id="texto-plan-hoy" class="mb-10"></div>
           <div id="texto-plan-completo"></div>
           <button onclick="mostrarEditorPlan()" class="btn-catalogo mt-12">
             <img src="icons/new.svg" width="14" height="14" /> Editar plan
           </button>
         </div>
-        <div class="tarjeta" id="tarjeta-editor-plan" style="display:none">
+        <div class="tarjeta" id="tarjeta-editor-plan" style="display: none">
           <h3>Editar plan semanal</h3>
           <div id="editor-plan-contenido"></div>
-          <button onclick="guardarEditorPlan()" class="btn-guardar-ejercicio mt-12">
-            <img src="icons/check.svg" width="16" height="16" class="icon-vmiddle" /> Guardar plan
+          <button
+            onclick="guardarEditorPlan()"
+            class="btn-guardar-ejercicio mt-12"
+          >
+            <img
+              src="icons/check.svg"
+              width="16"
+              height="16"
+              class="icon-vmiddle"
+            />
+            Guardar plan
           </button>
           <button onclick="cancelarEditorPlan()" class="btn-catalogo mt-8">
             Cancelar
@@ -143,24 +280,56 @@
         <h1>Entrenar</h1>
         <div class="tarjeta">
           <h3>Registrar sesión</h3>
-          <p>Seleccioná un ejercicio del catálogo y registrá cuánto hiciste hoy.</p>
+          <p>
+            Seleccioná un ejercicio del catálogo y registrá cuánto hiciste hoy.
+          </p>
           <div class="grupo-input">
             <label class="label-ejercicio">Ejercicio:</label>
-            <select id="select-ejercicio-sesion" class="select-ejercicio"></select>
+            <select
+              id="select-ejercicio-sesion"
+              class="select-ejercicio"
+            ></select>
             <div id="info-meta-ejercicio" class="card-meta"></div>
           </div>
           <div class="fila-inputs">
             <label class="label-ejercicio">Series:</label>
-            <input type="number" id="series-sesion" class="input-ejercicio" value="3" min="1" />
+            <input
+              type="number"
+              id="series-sesion"
+              class="input-ejercicio"
+              value="3"
+              min="1"
+            />
             <label class="label-ejercicio">Reps:</label>
-            <input type="number" id="reps-sesion" class="input-ejercicio" value="10" min="1" />
+            <input
+              type="number"
+              id="reps-sesion"
+              class="input-ejercicio"
+              value="10"
+              min="1"
+            />
           </div>
           <div class="grupo-input">
             <label class="label-ejercicio">Notas (opcional):</label>
-            <input type="text" id="notas-sesion" class="input-ejercicio" placeholder="Ej: última rep difícil" />
+            <input
+              type="text"
+              id="notas-sesion"
+              class="input-ejercicio"
+              placeholder="Ej: última rep difícil"
+            />
           </div>
-          <button onclick="guardarSesionClick()" class="btn-guardar-ejercicio" id="btn-guardar-sesion">
-            <img src="icons/check.svg" width="16" height="16" class="icon-vmiddle" /> Guardar sesión
+          <button
+            onclick="guardarSesionClick()"
+            class="btn-guardar-ejercicio"
+            id="btn-guardar-sesion"
+          >
+            <img
+              src="icons/check.svg"
+              width="16"
+              height="16"
+              class="icon-vmiddle"
+            />
+            Guardar sesión
           </button>
           <div id="resultado-sesion" class="mt-15"></div>
         </div>
@@ -171,7 +340,9 @@
         <h1 id="ia-titulo-seccion">Progreso</h1>
         <div class="tarjeta">
           <h3 id="ia-titulo-tarjeta">Análisis de entrenamiento</h3>
-          <p id="ia-descripcion">La IA analiza tus sesiones y te recomienda cómo mejorar.</p>
+          <p id="ia-descripcion">
+            La IA analiza tus sesiones y te recomienda cómo mejorar.
+          </p>
           <button class="boton-ia" id="boton-analizar">Analizar con IA</button>
           <div id="resultado-ia" class="resultado-oculto"></div>
         </div>
@@ -185,13 +356,29 @@
 
       <!-- ---- SECCIÓN: Catálogo ---- -->
       <div id="catalogo" class="seccion">
-        <h1><img src="icons/target.svg" width="20" height="20" class="icon-vmiddle" /> Catálogo de Ejercicios</h1>
+        <h1>
+          <img
+            src="icons/target.svg"
+            width="20"
+            height="20"
+            class="icon-vmiddle"
+          />
+          Catálogo de Ejercicios
+        </h1>
         <div id="catalogo-contenido"></div>
       </div>
 
       <!-- ---- SECCIÓN: Perfil ---- -->
       <div id="perfil" class="seccion">
-        <h1><img src="icons/users.svg" width="20" height="20" class="icon-vmiddle" /> Mi Perfil</h1>
+        <h1>
+          <img
+            src="icons/users.svg"
+            width="20"
+            height="20"
+            class="icon-vmiddle"
+          />
+          Mi Perfil
+        </h1>
 
         <!-- Vista -->
         <div class="tarjeta" id="perfil-vista">
@@ -207,7 +394,7 @@
         </div>
 
         <!-- Edicion -->
-        <div class="tarjeta" id="perfil-edicion" style="display:none">
+        <div class="tarjeta" id="perfil-edicion" style="display: none">
           <h3>Editar perfil</h3>
           <div class="grupo-input">
             <label class="label-ejercicio">Nombre:</label>
@@ -227,18 +414,31 @@
           </div>
           <div class="fila-inputs">
             <label class="label-ejercicio">Peso (kg):</label>
-            <input type="number" id="edit-peso" class="input-ejercicio" step="0.1" />
+            <input
+              type="number"
+              id="edit-peso"
+              class="input-ejercicio"
+              step="0.1"
+            />
             <label class="label-ejercicio">Altura (cm):</label>
             <input type="number" id="edit-altura" class="input-ejercicio" />
           </div>
-          <button onclick="guardarEditarPerfil()" class="btn-guardar-ejercicio mt-12">
-            <img src="icons/check.svg" width="16" height="16" class="icon-vmiddle" /> Guardar cambios
+          <button
+            onclick="guardarEditarPerfil()"
+            class="btn-guardar-ejercicio mt-12"
+          >
+            <img
+              src="icons/check.svg"
+              width="16"
+              height="16"
+              class="icon-vmiddle"
+            />
+            Guardar cambios
           </button>
           <button onclick="cancelarEditarPerfil()" class="btn-catalogo mt-8">
             Cancelar
           </button>
         </div>
-
       </div>
     </div>
 
