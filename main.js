@@ -175,7 +175,7 @@ Devuelve SOLO un JSON valido sin texto adicional, con esta estructura:
 });
 
 function crearVentana() {
-  const rutaIcono = path.join(__dirname, "icons", "logo_app.png");
+  const rutaIcono = path.join(__dirname, "logo_wellness.png");
   let icono = undefined;
   try {
     icono = nativeImage.createFromPath(rutaIcono);
