@@ -52,3 +52,40 @@
 [2026-09-13 04:12:37] [INFO] Analisis IA | iniciado | usuario=luis lozano
 [2026-09-13 04:12:37] [INFO] Analisis IA | completado con OpenRouter (1 recomendaciones de ejercicios) | usuario=luis lozano
 [2026-09-13 04:12:42] [INFO] App cerrada
+[2026-09-23 21:43:44] [INFO] App iniciada
+[2026-09-23 21:43:45] [IA] API key actualizada en memoria
+[2026-09-23 21:43:45] [INFO] App lista | Bienvenida
+[2026-09-23 21:43:48] [INFO] Login | luis lozano (Principiante) | usuario=luis lozano
+[2026-09-23 21:43:52] [INFO] App cerrada desde el boton
+[2026-09-23 21:48:28] [INFO] App iniciada
+[2026-09-23 21:48:29] [IA] API key actualizada en memoria
+[2026-09-23 21:48:29] [INFO] App lista | Bienvenida
+[2026-09-23 21:48:41] [INFO] Login | luis lozano (Principiante) | usuario=luis lozano
+[2026-09-23 21:48:48] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-23 21:48:53] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-23 21:48:54] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-23 21:48:56] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-23 21:48:56] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-23 21:48:57] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-23 21:48:57] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-23 21:48:57] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-23 21:48:58] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-23 21:48:58] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-23 21:49:00] [INFO] Analisis IA | error de IA: fetch failed | usuario=luis lozano
+[2026-09-23 21:49:02] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-23 21:49:03] [INFO] Analisis IA | error de IA: La IA no devolvio un JSON valido | usuario=luis lozano
+[2026-09-23 21:49:03] [INFO] Analisis IA | error de IA: La IA no devolvio un JSON valido | usuario=luis lozano
+[2026-09-23 21:49:04] [INFO] Analisis IA | error de IA: La IA no devolvio un JSON valido | usuario=luis lozano
+[2026-09-23 21:49:05] [INFO] Analisis IA | completado con OpenRouter (1 recomendaciones de ejercicios) | usuario=luis lozano
+[2026-09-23 21:49:10] [INFO] Analisis IA | completado con OpenRouter (1 recomendaciones de ejercicios) | usuario=luis lozano
+[2026-09-23 21:49:12] [INFO] Analisis IA | completado con OpenRouter (1 recomendaciones de ejercicios) | usuario=luis lozano
+[2026-09-23 21:49:14] [INFO] Analisis IA | completado con OpenRouter (0 recomendaciones de ejercicios) | usuario=luis lozano
+[2026-09-23 21:49:16] [INFO] Cambio de tema | claro | usuario=luis lozano
+[2026-09-23 21:49:17] [INFO] Cambio de tema | oscuro | usuario=luis lozano
+[2026-09-23 21:49:18] [INFO] Analisis IA | completado con OpenRouter (1 recomendaciones de ejercicios) | usuario=luis lozano
+[2026-09-23 21:49:18] [INFO] Analisis IA | completado con OpenRouter (0 recomendaciones de ejercicios) | usuario=luis lozano
+[2026-09-23 21:49:18] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-23 21:49:18] [INFO] Analisis IA | completado con OpenRouter (1 recomendaciones de ejercicios) | usuario=luis lozano
+[2026-09-23 21:49:24] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-23 21:49:31] [INFO] Analisis IA | completado con OpenRouter (1 recomendaciones de ejercicios) | usuario=luis lozano
+[2026-09-23 21:49:34] [INFO] App cerrada desde el boton
