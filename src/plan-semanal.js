@@ -336,6 +336,7 @@ function guardarEditorPlan() {
       guardarPlanSemanal(usuarioActual.id, i, select.value || null);
     }
   }
+  logEvento("Plan semanal actualizado");
   cancelarEditorPlan();
   refrescarPlanSemanal();
 }

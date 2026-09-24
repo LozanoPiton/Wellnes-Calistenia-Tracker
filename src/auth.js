@@ -67,6 +67,7 @@ function mostrarLogin(usuarios) {
             return function () {
                 if (confirm(t('confirmEliminar') + ' ' + nombre + '?')) {
                     eliminarUsuario(id);
+                    logEvento("Usuario eliminado", nombre);
                     var usuariosRestantes = obtenerUsuarios();
                     if (usuariosRestantes.length === 0) {
                         location.reload();
@@ -246,6 +247,7 @@ function crearUsuarioClick() {
     if (objetivo === '') objetivo = null;
 
     crearUsuario(nombre, nivelSeleccionado, peso, altura, objetivo);
+    logEvento("Usuario registrado", nombre + " (" + nivelSeleccionado + ")");
 
     nivelSeleccionado = null;
 
@@ -255,6 +257,7 @@ function crearUsuarioClick() {
 
 function seleccionarUsuario(id) {
     usuarioActual = obtenerUsuarioPorId(id);
+    logEvento("Login", usuarioActual.nombre + " (" + usuarioActual.nivel + ")");
 
     inicializarPlanSemanal(usuarioActual.id);
 
@@ -267,6 +270,7 @@ function seleccionarUsuario(id) {
 }
 
 function cerrarSesion() {
+    logEvento("Logout", usuarioActual ? usuarioActual.nombre : "sin sesion");
     usuarioActual = null;
     nivelSeleccionado = null;
 
@@ -401,6 +405,7 @@ function guardarEditarPerfil() {
     actualizarUsuario(usuarioActual.id, nombre, nivel, peso, altura, objetivo);
 
     usuarioActual = obtenerUsuarioPorId(usuarioActual.id);
+    logEvento("Perfil actualizado", nombre + " (nivel " + nivel + ")");
     actualizarInfoUsuario();
     cancelarEditarPerfil();
 }

@@ -258,6 +258,7 @@ function guardarEdicionSesion(id) {
   if (!series || !reps) { alert(t('completarCampos')); return; }
 
   actualizarSesion(id, series, reps, notas);
+  logEvento("Sesion editada", "id=" + id + " " + series + "x" + reps);
   refrescarHistorial();
   mostrarResumenDiario();
 }
@@ -270,6 +271,7 @@ function guardarEdicionSesion(id) {
 function eliminarSesionClick(id) {
   if (!confirm(t('confirmEliminarSesion'))) return;
   eliminarSesion(id);
+  logEvento("Sesion eliminada", "id=" + id);
   refrescarHistorial();
   mostrarResumenDiario();
 }

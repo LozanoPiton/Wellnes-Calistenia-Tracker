@@ -75,12 +75,33 @@
    - Crea ventana Electron (1000x650, min 850x500).
    - nodeIntegration: true, contextIsolation: false.
    - Oculta barra de menu (autoHideMenuBar).
-   - Carga GROQ_API_KEY desde .env si existe.
+   - Abre en fullscreen.
+   - Carga OPENROUTER_API_KEY desde .env si existe.
+   - Atajos de teclado: F11 alterna pantalla completa, Esc sale
+     de pantalla completa.
    - IPC handlers:
-     * groq-set-key: guarda API key en memoria
-     * groq-analyze: envia prompt con sesiones + catalogo a Groq,
+     * app-close: cierra la app (boton Salir del sidebar)
+     * log-write: escribe una linea en wellness.log
+     * ia-set-key: guarda API key en memoria
+     * ia-analyze: envia prompt con sesiones + catalogo a OpenRouter,
        devuelve JSON con observaciones, recomendaciones, tecnicas,
        planSugerido, ejerciciosRecomendados[]
+
+   LOG GENERAL (wellness.log)
+   --------------------------
+   - Archivo de log en la raiz (junto a wellness.db).
+   - Formato por linea: [AAAA-MM-DD HH:MM:SS] [NIVEL] mensaje
+   - Escribe el proceso principal via fs.appendFileSync.
+   - El renderer llama ipcRenderer.invoke("log-write", {mensaje}).
+   - Eventos registrados:
+     * Inicio/cierre de la app
+     * Registro, login, logout, eliminacion de usuario
+     * Edicion de perfil
+     * Sesiones guardadas, editadas y eliminadas
+     * Cambio de tema (claro/oscuro)
+     * Plan semanal actualizado
+     * Analisis IA (inicio, exito, errores, sin key)
+     * Ascenso de nivel
 
   3. clases.js
   ------------
@@ -108,11 +129,13 @@
        hasta un nivel (usado por IA para recomendar alternativas)
   - guardarDB() se llama tras cada escritura.
 
-  5. app.js
-  ---------
-  - Declara var usuarioActual = null (global).
-  - Al cargar, llama a iniciarDB(), poblarProgresiones(), y muestra
-    login.
+5. app.js
+   ---------
+   - Declara var usuarioActual = null (global).
+   - Define logEvento(accion, detalle): helper global que envia
+     eventos al proceso principal para escribirlos en wellness.log.
+   - Al cargar, llama a iniciarDB(), poblarProgresiones(), y muestra
+     login.
 
   6. auth.js
   ----------
@@ -167,11 +190,15 @@
 
    12. ia.js (472 lineas)
    ---------
-    - Analisis dual: Groq AI (si hay API key) + local (siempre).
-    - AI Coach via Groq (modelo llama-3.3-70b-versatile):
+    - Analisis dual: IA via OpenRouter (si hay API key) + local (siempre).
+    - Coach IA via OpenRouter (modelo gratis por defecto: openrouter/free,
+      un router que elige un modelo gratis disponible. Configurable con
+      OPENROUTER_MODEL en .env para fijar uno especifico):
+      * Usa la API compatible con OpenAI via fetch (sin SDK)
       * Recibe sesiones recientes, plan semanal y CATALOGO completo
       * Sugiere ejercicios alternativos del catalogo segun debilidades
-      * Cache: feedback basado en sesiones de hoy/ayer
+      * extraerJSON() en main.js: parsea la respuesta aunque venga
+        envuelta en ```json``` o con texto extra
     - Local (rule-based, siempre visible):
       * analizarNivel(): evalua si puede subir (60+ dias, 15+ sesiones,
         60%+ metas cumplidas). Barra de progreso visual.
@@ -219,12 +246,12 @@
     obtenerPlanSemanal() → SELECT FROM plan_semanal
     guardarPlanSemanal() → UPDATE plan_semanal
 
-  IA:
-    obtenerSesiones() → iaAnalizar() (via Groq API) + analisis local
-    → coach card (IA) + nivel/progreso/tendencia/estancamiento (local)
-    → HTML
-    La IA recibe el catalogo de ejercicios y puede recomendar alternativas
-    especificas segun debilidades detectadas.
+IA:
+     obtenerSesiones() → iaAnalizar() (via OpenRouter) + analisis local
+     → coach card (IA) + nivel/progreso/tendencia/estancamiento (local)
+     → HTML
+     La IA recibe el catalogo de ejercicios y puede recomendar alternativas
+     especificas segun debilidades detectadas.
 
   ====================================================================
   MODIFICAR O AGREGAR FUNCIONALIDAD
@@ -239,8 +266,8 @@
     en database.js.
    - Para cambiar requisitos de ascenso: editar valores en ia.js
      (diffDias >= 60, sesiones >= 15, porcentaje >= 60).
-   - Para cambiar modelo de IA: editar model + response_format en
-     groq.chat.completions.create() en main.js.
+   - Para cambiar modelo de IA: editar MODELO_IA en main.js o setear
+     OPENROUTER_MODEL en .env (ej: google/gemma-2-9b-it:free).
    - Para cambiar colores del tema: editar variables CSS en
      styles/variables.css (modo claro y body.dark-mode).
    - Para estilos: usar clases en vez de inline styles.

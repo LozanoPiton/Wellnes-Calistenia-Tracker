@@ -75,6 +75,7 @@ function guardarSesionClick() {
   }
 
   guardarSesion(usuarioActual.id, progresionId, series, reps, notas);
+  logEvento("Sesion guardada", option.getAttribute('data-nombre') + " " + series + "x" + reps);
 
   var metaReps = parseInt(option.getAttribute('data-reps'));
   var metaSeries = parseInt(option.getAttribute('data-series'));

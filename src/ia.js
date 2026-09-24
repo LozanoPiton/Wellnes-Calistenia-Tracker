@@ -1,5 +1,5 @@
 // ============================================================
-// ia.js  —  ANALISIS IA: Groq + FALLBACK LOCAL
+// ia.js  —  ANALISIS IA: OpenRouter + FALLBACK LOCAL
 // ============================================================
 // Depende de: database.js, auth.js, idiomas.js, app.js
 // ============================================================
@@ -21,9 +21,9 @@ function nivelMaximo() {
 }
 
 (function initKey() {
-  var saved = localStorage.getItem("groqKey");
+  var saved = localStorage.getItem("iaKey");
   if (saved) {
-    ipcRenderer.invoke("groq-set-key", saved);
+    ipcRenderer.invoke("ia-set-key", saved);
   }
 })();
 
@@ -34,6 +34,7 @@ function ejecutarAnalisisIA() {
   resultadoIA.style.display = "block";
   resultadoIA.innerHTML = "";
   resultadoIA.appendChild(crear("p", "ia-texto-dorado", t("analizando")));
+  logEvento("Analisis IA", "iniciado");
 
   setTimeout(function () {
     try {
@@ -59,16 +60,20 @@ function ejecutarAnalisisIA() {
       iaAnalizar(sesiones, planMap).then(function (respuesta) {
         resultadoIA.innerHTML = "";
         if (respuesta.error === "no-key") {
+          logEvento("Analisis IA", "sin API key de OpenRouter");
           container.appendChild(crearInputAPIKey());
         } else if (respuesta.error) {
+          logEvento("Analisis IA", "error de IA: " + respuesta.error);
           container.appendChild(errorMsg(respuesta.error));
         } else {
+          logEvento("Analisis IA", "completado con OpenRouter (" + (respuesta.ejerciciosRecomendados ? respuesta.ejerciciosRecomendados.length : 0) + " recomendaciones de ejercicios)");
           container.appendChild(renderizarIA(respuesta));
         }
         container.appendChild(analizarLocalCompleto(sesiones));
         resultadoIA.appendChild(container);
       }).catch(function (e) {
         resultadoIA.innerHTML = "";
+        logEvento("Analisis IA", "error: " + e.message);
         container.appendChild(errorMsg(e.message));
         container.appendChild(analizarLocalCompleto(sesiones));
         resultadoIA.appendChild(container);
@@ -114,7 +119,7 @@ async function iaAnalizar(sesiones, planSemanal) {
   var nivelMax = { "Principiante": 1, "Intermedio": 2, "Experto": 3 }[usuarioActual.nivel] || 1;
   var catalogo = obtenerTodasProgresiones(nivelMax);
 
-  return await ipcRenderer.invoke("groq-analyze", {
+  return await ipcRenderer.invoke("ia-analyze", {
     nivel: usuarioActual.nivel,
     diasDesdeRegistro: diffDias,
     objetivo: usuarioActual.objetivo || "",
@@ -195,12 +200,12 @@ function crearBotonSubir(nivel) {
 // ------------------------------------------------------------
 function crearInputAPIKey() {
   var div = crear("div", "ia-card-warn");
-  div.appendChild(crear("p", "ia-texto-warn", "No hay API key de Groq. Pega tu key para activar el analisis con IA:"));
+  div.appendChild(crear("p", "ia-texto-warn", "No hay API key de OpenRouter. Pega tu key para activar el analisis con IA:"));
 
   var inputRow = crear("div", "ia-flex-row");
   var input = document.createElement("input");
   input.type = "text";
-  input.placeholder = "gsk_...";
+  input.placeholder = "sk-or-v1-...";
   input.className = "ia-input-key";
   inputRow.appendChild(input);
 
@@ -208,8 +213,8 @@ function crearInputAPIKey() {
   btn.addEventListener("click", function () {
     var key = input.value.trim();
     if (key) {
-      localStorage.setItem("groqKey", key);
-      ipcRenderer.invoke("groq-set-key", key);
+      localStorage.setItem("iaKey", key);
+      ipcRenderer.invoke("ia-set-key", key);
       input.disabled = true;
       btn.textContent = "\u2713 Listo";
       btn.className = "ia-btn-guardar-key ia-btn-guardado";
@@ -218,7 +223,7 @@ function crearInputAPIKey() {
   });
   inputRow.appendChild(btn);
   div.appendChild(inputRow);
-  div.appendChild(crear("p", "ia-texto-muted", "La key se guarda localmente. Saca tuya en https://console.groq.com/keys"));
+  div.appendChild(crear("p", "ia-texto-muted", "La key se guarda localmente. Saca tuya en https://openrouter.ai/keys"));
   return div;
 }
 
@@ -447,6 +452,7 @@ function analizarEstancamiento(sesiones) {
 function confirmarSubirNivel(nuevoNivel) {
   actualizarUsuario(usuarioActual.id, usuarioActual.nombre, nuevoNivel,
     usuarioActual.peso, usuarioActual.altura, usuarioActual.objetivo);
+  logEvento("Nivel subido", usuarioActual.nombre + " -> " + nuevoNivel);
   usuarioActual = obtenerUsuarioPorId(usuarioActual.id);
   actualizarInfoUsuario();
 

@@ -1,7 +1,35 @@
 const { app, BrowserWindow, nativeImage, ipcMain } = require("electron");
 const path = require("path");
 const fs = require("fs");
-const Groq = require("groq-sdk");
+
+// ============================================================
+// LOG GENERAL DE LA APP
+// ============================================================
+// Escribe eventos en wellness.log (misma carpeta que wellness.db).
+// Formato: [AAAA-MM-DD HH:MM:SS] [NIVEL] mensaje
+// ============================================================
+const RUTA_LOG = path.join(__dirname, "wellness.log");
+
+function logEvento(nivel, mensaje) {
+  var fecha = new Date();
+  var stamp =
+    fecha.getFullYear() + "-" +
+    String(fecha.getMonth() + 1).padStart(2, "0") + "-" +
+    String(fecha.getDate()).padStart(2, "0") + " " +
+    String(fecha.getHours()).padStart(2, "0") + ":" +
+    String(fecha.getMinutes()).padStart(2, "0") + ":" +
+    String(fecha.getSeconds()).padStart(2, "0");
+  var linea = "[" + stamp + "] [" + nivel.toUpperCase() + "] " + mensaje + "\n";
+  try {
+    fs.appendFileSync(RUTA_LOG, linea, "utf8");
+  } catch (e) {
+    console.error("No se pudo escribir el log:", e.message);
+  }
+}
+
+ipcMain.handle("log-write", (event, data) => {
+  logEvento("INFO", (data && data.mensaje) || "");
+});
 
 // Cargar API key desde .env si existe
 var envPath = path.join(__dirname, ".env");
@@ -20,27 +48,63 @@ if (fs.existsSync(envPath)) {
   }
 }
 
-let groq = null;
+// ============================================================
+// IA: OPENROUTER (reemplazo de Groq/Gemini)
+// ============================================================
+// Usa la API compatible con OpenAI (chat/completions) via fetch.
+// Modelo por defecto: openrouter/free (router que elige un modelo
+// gratis disponible solo). Tambien podes fijar uno especifico via
+// OPENROUTER_MODEL, ej: google/gemma-4-31b-it:free o z-ai/glm-5.2:free.
+// Key gratuita en https://openrouter.ai/keys
+// ============================================================
+const MODELO_IA = process.env.OPENROUTER_MODEL || "openrouter/free";
+let iaKey = null;
 
-function initGroq(key) {
+function initIAKey(key) {
   if (key) {
-    if (!process.env.GROQ_API_KEY) process.env.GROQ_API_KEY = key;
-    groq = new Groq({ apiKey: key });
-  } else if (process.env.GROQ_API_KEY) {
-    groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+    iaKey = key;
+    return true;
   }
-  return groq;
+  if (iaKey) return true;
+  if (process.env.OPENROUTER_API_KEY) {
+    iaKey = process.env.OPENROUTER_API_KEY;
+    return true;
+  }
+  if (process.env.GROQ_API_KEY) {
+    iaKey = process.env.GROQ_API_KEY;
+    return true;
+  }
+  return false;
 }
 
-initGroq();
+initIAKey();
 
-ipcMain.handle("groq-set-key", async (event, key) => {
-  initGroq(key);
+ipcMain.handle("ia-set-key", async (event, key) => {
+  initIAKey(key);
+  logEvento("IA", "API key actualizada en memoria");
   return true;
 });
 
-ipcMain.handle("groq-analyze", async (event, data) => {
-  if (!groq) return { error: "no-key" };
+// Extrae JSON del texto de la respuesta, aunque venga envuelto
+function extraerJSON(texto) {
+  if (!texto) return { error: "Respuesta vacia de la IA" };
+  try { return JSON.parse(texto); } catch (e) {}
+
+  var reFence = /\`\`\`(?:json)?\s*([\s\S]*?)\`\`\`/i;
+  var m = texto.match(reFence);
+  if (m) { try { return JSON.parse(m[1]); } catch (e2) {} }
+
+  var inicio = texto.indexOf("{");
+  var fin = texto.lastIndexOf("}");
+  if (inicio >= 0 && fin > inicio) {
+    try { return JSON.parse(texto.substring(inicio, fin + 1)); } catch (e3) {}
+  }
+
+  return { error: "La IA no devolvio un JSON valido", raw: texto.slice(0, 300) };
+}
+
+ipcMain.handle("ia-analyze", async (event, data) => {
+  if (!initIAKey()) return { error: "no-key" };
 
   try {
     const prompt = `Sos un entrenador personal de calistenia. Lees las sesiones y das consejos ESPECIFICOS basados en los ejercicios que el usuario hizo RECIENTEMENTE. También recomendás ejercicios del catálogo según sus debilidades.
@@ -65,7 +129,7 @@ INSTRUCCIONES:
 5. NO evaluar nivel/tendencia/estancamiento (eso ya lo hace la app).
 6. Si ves que el usuario se estanca en ciertos ejercicios, recomendale ejercicios ALTERNATIVOS del CATÁLOGO que trabajen el mismo grupo muscular y sean de su nivel o un nivel inferior. Elegí nombres específicos del catálogo provisto.
 
-Devuelve SOLO este JSON:
+Devuelve SOLO un JSON valido sin texto adicional, con esta estructura:
 {
   "observaciones": "patron que notes en las sesiones RECIENTES, referenciando ejercicios especificos y fechas",
   "recomendaciones": [
@@ -82,14 +146,29 @@ Devuelve SOLO este JSON:
   ]
 }`;
 
-    const completion = await groq.chat.completions.create({
-      messages: [{ role: "user", content: prompt }],
-      model: "llama-3.3-70b-versatile",
-      response_format: { type: "json_object" },
+    const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer " + iaKey,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: MODELO_IA,
+        messages: [{ role: "user", content: prompt }],
+        temperature: 0.7,
+      }),
     });
 
-    const text = completion.choices[0].message.content;
-    return JSON.parse(text);
+    if (!res.ok) {
+      const errText = await res.text();
+      return { error: "OpenRouter " + res.status + ": " + errText.slice(0, 200) };
+    }
+
+    const json = await res.json();
+    const content = json.choices && json.choices[0] && json.choices[0].message
+      ? json.choices[0].message.content
+      : "";
+    return extraerJSON(content);
   } catch (e) {
     return { error: e.message };
   }
@@ -123,10 +202,26 @@ function crearVentana() {
     },
   });
 
+  ventana.webContents.on("before-input-event", (event, input) => {
+    if (input.type === "keyDown" && input.key === "F11") {
+      event.preventDefault();
+      ventana.setFullScreen(!ventana.isFullScreen());
+    } else if (input.type === "keyDown" && input.key === "Escape" && ventana.isFullScreen()) {
+      event.preventDefault();
+      ventana.setFullScreen(false);
+    }
+  });
+
   ventana.loadFile("index.html");
 }
 
+ipcMain.handle("app-close", () => {
+  logEvento("INFO", "App cerrada desde el boton");
+  app.quit();
+});
+
 app.whenReady().then(() => {
+  logEvento("INFO", "App iniciada");
   crearVentana();
 
   app.on("activate", () => {
@@ -135,5 +230,6 @@ app.whenReady().then(() => {
 });
 
 app.on("window-all-closed", () => {
+  logEvento("INFO", "App cerrada");
   if (process.platform !== "darwin") app.quit();
 });

@@ -24,6 +24,27 @@ var usuarioActual = null;
 // Se usa ahi nomas y despues se reinicia.
 var nivelSeleccionado = null;
 
+// ------------------------------------------------------------
+// LOG GENERAL DE LA APP
+// ------------------------------------------------------------
+// Escribe una linea en wellness.log via el proceso principal.
+// Uso: logEvento("Login de usuario", "Lozano");
+// ------------------------------------------------------------
+var { ipcRenderer } = require("electron");
+
+function logEvento(accion, detalle) {
+  var mensaje = accion;
+  if (detalle) mensaje += " | " + detalle;
+  if (usuarioActual) mensaje += " | usuario=" + usuarioActual.nombre;
+  ipcRenderer.invoke("log-write", { mensaje: mensaje });
+}
+window.logEvento = logEvento;
+
+function cerrarApp() {
+  ipcRenderer.invoke("app-close");
+}
+window.cerrarApp = cerrarApp;
+
 
 // ------------------------------------------------------------
 // INICIO: esto se ejecuta automaticamente al abrir la app
@@ -36,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 0) Inicializar tema (modo claro por defecto)
     initTema();
+    logEvento("App lista", "Bienvenida");
 
     // 1) Arrancamos la base de datos (ver database.js)
     //    "iniciarDB()" es async, osea que lleva tiempo.
@@ -131,6 +153,7 @@ function toggleTema() {
     document.body.classList.toggle('dark-mode');
     var esOscuro = document.body.classList.contains('dark-mode');
     localStorage.setItem('tema', esOscuro ? 'oscuro' : 'claro');
+    logEvento("Cambio de tema", esOscuro ? "oscuro" : "claro");
     actualizarBotonTema();
 }
 
