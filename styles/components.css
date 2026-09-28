@@ -99,7 +99,7 @@
 .btn-guardar-ejercicio {
     width: 100%;
     background-color: var(--accent-hover);
-    color: var(--text-primary);
+    color: #ffffff;
     padding: 12px;
     border: none;
     border-radius: 6px;

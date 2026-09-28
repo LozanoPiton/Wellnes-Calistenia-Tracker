@@ -35,6 +35,15 @@
     gap: 14px;
 }
 
+/* Titulo y subtitulo del logo: se adaptan al tema (antes eran blancos fijos) */
+#app-titulo {
+    color: var(--text-primary);
+}
+
+.logo-sub {
+    color: var(--text-muted);
+}
+
 .barra-lateral .logo-area .logo-icon {
     width: 40px;
     height: 40px;
@@ -297,6 +306,7 @@
     justify-content: center;
     border-radius: 6px;
     flex-shrink: 0;
+    color: var(--text-secondary);
 }
 
 .boton-tema:hover {

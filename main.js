@@ -20,11 +20,11 @@ function logEvento(nivel, mensaje) {
     String(fecha.getMinutes()).padStart(2, "0") + ":" +
     String(fecha.getSeconds()).padStart(2, "0");
   var linea = "[" + stamp + "] [" + nivel.toUpperCase() + "] " + mensaje + "\n";
-  try {
-    fs.appendFileSync(RUTA_LOG, linea, "utf8");
-  } catch (e) {
-    console.error("No se pudo escribir el log:", e.message);
-  }
+  // Escritura ASINCRONA: si el disco esta lento o la carpeta esta en
+  // OneDrive/antivirus, no congelamos la ventana esperando al disco.
+  fs.promises.appendFile(RUTA_LOG, linea, "utf8").catch(function (e) {
+    console.error("No se pudo escribir el log:", e && e.message);
+  });
 }
 
 ipcMain.handle("log-write", (event, data) => {
@@ -103,6 +103,22 @@ function extraerJSON(texto) {
   return { error: "La IA no devolvio un JSON valido", raw: texto.slice(0, 300) };
 }
 
+// Reintenta un fetch hasta N veces: en Windows el primer llamado a la red
+// suele fallar con "fetch failed" porque el stack de red todavia se esta
+// inicializando. El reintento resuelve el error sin tocar la interfaz.
+async function fetchConReintentos(url, opciones, intentos, esperaMs) {
+  let ultimoError = null;
+  for (let n = 1; n <= intentos; n++) {
+    try {
+      return await fetch(url, opciones);
+    } catch (e) {
+      ultimoError = e;
+      if (n < intentos) await new Promise((r) => setTimeout(r, esperaMs));
+    }
+  }
+  throw ultimoError;
+}
+
 ipcMain.handle("ia-analyze", async (event, data) => {
   if (!initIAKey()) return { error: "no-key" };
 
@@ -146,7 +162,7 @@ Devuelve SOLO un JSON valido sin texto adicional, con esta estructura:
   ]
 }`;
 
-    const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    const res = await fetchConReintentos("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
         "Authorization": "Bearer " + iaKey,
@@ -157,7 +173,7 @@ Devuelve SOLO un JSON valido sin texto adicional, con esta estructura:
         messages: [{ role: "user", content: prompt }],
         temperature: 0.7,
       }),
-    });
+    }, 3, 800);
 
     if (!res.ok) {
       const errText = await res.text();
@@ -175,7 +191,7 @@ Devuelve SOLO un JSON valido sin texto adicional, con esta estructura:
 });
 
 function crearVentana() {
-  const rutaIcono = path.join(__dirname, "logo_wellness.png");
+  const rutaIcono = path.join(__dirname, "icons", "logo_wellness.png");
   let icono = undefined;
   try {
     icono = nativeImage.createFromPath(rutaIcono);

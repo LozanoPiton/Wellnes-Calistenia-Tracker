@@ -24,6 +24,7 @@ var RUTA_DB = path.join(__dirname, 'wellness.db');
 // Se exporta a window para que otros modulos puedan usarla
 var db = null;
 window.db = null;
+var timerGuardarDB = null;
 
 
 // ------------------------------------------------------------
@@ -199,10 +200,35 @@ async function iniciarDB() {
 // ------------------------------------------------------------
 function guardarDB() {
     if (!db) return;
-    var datos = db.export();       // Exporta la DB como bytes
-    var buffer = Buffer.from(datos); // Convierte los bytes a buffer
-    fs.writeFileSync(RUTA_DB, buffer); // Escribe el archivo en disco
+    if (timerGuardarDB) clearTimeout(timerGuardarDB);
+    timerGuardarDB = setTimeout(function () {
+        timerGuardarDB = null;
+        guardarDBAhora();
+    }, 150);
 }
+
+// Escribe la DB al disco. Se agrupan las escrituras (debounce) para
+// no congelar la app cuando se hacen muchos cambios seguidos, y si
+// el disco esta ocupado (Windows/OneDrive) no tira un error que rompa
+// el flujo: los datos quedan en memoria y se reintentan en la proxima.
+function guardarDBAhora() {
+    if (!db) return;
+    try {
+        var datos = db.export();
+        fs.writeFileSync(RUTA_DB, Buffer.from(datos));
+    } catch (e) {
+        try { console.error("No se pudo guardar la base:", e.message); } catch (_) {}
+    }
+}
+
+// Si la app se cierra dentro de los 150ms del debounce, escribir igual.
+window.addEventListener('beforeunload', function () {
+    if (timerGuardarDB) {
+        clearTimeout(timerGuardarDB);
+        timerGuardarDB = null;
+        guardarDBAhora();
+    }
+});
 
 
 // ============================================================

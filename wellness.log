@@ -89,3 +89,275 @@
 [2026-09-23 21:49:24] [INFO] Analisis IA | iniciado | usuario=luis lozano
 [2026-09-23 21:49:31] [INFO] Analisis IA | completado con OpenRouter (1 recomendaciones de ejercicios) | usuario=luis lozano
 [2026-09-23 21:49:34] [INFO] App cerrada desde el boton
+[2026-09-26 20:40:57] [INFO] App iniciada
+[2026-09-26 20:40:58] [IA] API key actualizada en memoria
+[2026-09-26 20:40:58] [INFO] App lista | Bienvenida
+[2026-09-26 20:41:00] [INFO] Login | luis lozano (Principiante) | usuario=luis lozano
+[2026-09-26 20:42:01] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-26 20:42:05] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-26 20:42:09] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-26 20:42:10] [INFO] Analisis IA | error de IA: La IA no devolvio un JSON valido | usuario=luis lozano
+[2026-09-26 20:42:12] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-26 20:42:13] [INFO] Analisis IA | error de IA: fetch failed | usuario=luis lozano
+[2026-09-26 20:42:14] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-26 20:42:17] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-26 20:42:19] [INFO] Analisis IA | completado con OpenRouter (1 recomendaciones de ejercicios) | usuario=luis lozano
+[2026-09-26 20:42:26] [INFO] Analisis IA | completado con OpenRouter (1 recomendaciones de ejercicios) | usuario=luis lozano
+[2026-09-26 20:42:28] [INFO] Analisis IA | completado con OpenRouter (1 recomendaciones de ejercicios) | usuario=luis lozano
+[2026-09-26 20:42:37] [INFO] Analisis IA | completado con OpenRouter (1 recomendaciones de ejercicios) | usuario=luis lozano
+[2026-09-26 20:42:43] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-26 20:43:01] [INFO] Analisis IA | completado con OpenRouter (1 recomendaciones de ejercicios) | usuario=luis lozano
+[2026-09-26 20:43:19] [INFO] App cerrada desde el boton
+[2026-09-27 16:27:04] [INFO] App iniciada
+[2026-09-27 16:27:04] [IA] API key actualizada en memoria
+[2026-09-27 16:27:04] [INFO] App lista | Bienvenida
+[2026-09-27 16:27:08] [INFO] Login | luis lozano (Principiante) | usuario=luis lozano
+[2026-09-27 16:27:26] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-27 16:27:41] [INFO] Analisis IA | completado con OpenRouter (1 recomendaciones de ejercicios) | usuario=luis lozano
+[2026-09-27 16:27:42] [INFO] Logout | luis lozano | usuario=luis lozano
+[2026-09-27 16:27:43] [INFO] Login | luis lozano (Principiante) | usuario=luis lozano
+[2026-09-27 16:27:44] [INFO] App cerrada desde el boton
+[2026-09-27 16:55:01] [INFO] App iniciada
+[2026-09-27 16:55:02] [IA] API key actualizada en memoria
+[2026-09-27 16:55:02] [INFO] App lista | Bienvenida
+[2026-09-27 16:55:15] [INFO] Login | luis lozano (Principiante) | usuario=luis lozano
+[2026-09-27 16:55:57] [INFO] Plan semanal actualizado | usuario=luis lozano
+[2026-09-27 16:57:28] [INFO] Sesion guardada | Dominadas negativas 8x3 | usuario=luis lozano
+[2026-09-27 16:57:37] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-27 16:57:49] [INFO] Analisis IA | error de IA: fetch failed | usuario=luis lozano
+[2026-09-27 16:58:08] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-27 16:58:25] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-27 16:58:26] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-27 16:58:27] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-27 16:58:30] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-27 16:58:32] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-27 16:58:33] [INFO] Analisis IA | iniciado | usuario=luis lozano
+[2026-09-27 16:58:37] [INFO] Analisis IA | completado con OpenRouter (1 recomendaciones de ejercicios) | usuario=luis lozano
+[2026-09-27 16:58:41] [INFO] Analisis IA | completado con OpenRouter (1 recomendaciones de ejercicios) | usuario=luis lozano
+[2026-09-27 16:58:52] [INFO] Analisis IA | completado con OpenRouter (1 recomendaciones de ejercicios) | usuario=luis lozano
+[2026-09-27 16:59:05] [INFO] Analisis IA | completado con OpenRouter (1 recomendaciones de ejercicios) | usuario=luis lozano
+[2026-09-27 16:59:14] [INFO] Sesion editada | id=16 7x3 | usuario=luis lozano
+[2026-09-27 16:59:21] [INFO] Sesion eliminada | id=16 | usuario=luis lozano
+[2026-09-27 16:59:24] [INFO] Sesion eliminada | id=15 | usuario=luis lozano
+[2026-09-27 17:00:25] [INFO] Cambio de tema | claro | usuario=luis lozano
+[2026-09-27 17:00:27] [INFO] Cambio de tema | oscuro | usuario=luis lozano
+[2026-09-27 17:00:28] [INFO] Cambio de tema | claro | usuario=luis lozano
+[2026-09-27 17:00:37] [INFO] Cambio de tema | oscuro | usuario=luis lozano
+[2026-09-27 17:00:49] [INFO] Logout | luis lozano | usuario=luis lozano
+[2026-09-27 17:00:55] [INFO] Usuario eliminado | luis lozano
+[2026-09-27 17:00:55] [IA] API key actualizada en memoria
+[2026-09-27 17:00:55] [INFO] App lista | Bienvenida
+[2026-09-27 17:01:51] [INFO] Usuario registrado | Carmen (Intermedio)
+[2026-09-27 17:01:52] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 17:02:13] [INFO] Plan semanal actualizado | usuario=Carmen
+[2026-09-27 17:02:37] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 17:02:51] [INFO] App cerrada desde el boton
+[2026-09-27 17:06:37] [INFO] App iniciada
+[2026-09-27 17:06:37] [IA] API key actualizada en memoria
+[2026-09-27 17:06:37] [INFO] App lista | Bienvenida
+[2026-09-27 17:06:40] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 17:06:41] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 17:06:57] [INFO] Sesion guardada | Remo australiano piernas rectas 3x10 | usuario=Carmen
+[2026-09-27 17:06:59] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 17:07:10] [INFO] Analisis IA | error de IA: fetch failed | usuario=Carmen
+[2026-09-27 17:07:13] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 17:07:27] [INFO] Analisis IA | completado con OpenRouter (1 recomendaciones de ejercicios) | usuario=Carmen
+[2026-09-27 17:09:10] [INFO] App cerrada desde el boton
+[2026-09-27 21:37:40] [INFO] App iniciada
+[2026-09-27 21:37:41] [IA] API key actualizada en memoria
+[2026-09-27 21:37:41] [INFO] App lista | Bienvenida
+[2026-09-27 21:37:55] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 21:37:57] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:38:09] [INFO] Analisis IA | error de IA: fetch failed | usuario=Carmen
+[2026-09-27 21:38:10] [INFO] Perfil actualizado | Carmen (nivel Intermedio) | usuario=Carmen
+[2026-09-27 21:38:17] [INFO] Sesion guardada | Dominadas asistidas 3x10 | usuario=Carmen
+[2026-09-27 21:38:18] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:38:19] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:38:19] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:38:19] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:38:21] [INFO] Perfil actualizado | Carmen (nivel Intermedio) | usuario=Carmen
+[2026-09-27 21:38:25] [INFO] Perfil actualizado | Carmen (nivel Intermedio) | usuario=Carmen
+[2026-09-27 21:38:26] [INFO] Logout | Carmen | usuario=Carmen
+[2026-09-27 21:38:27] [INFO] Analisis IA | completado con OpenRouter (1 recomendaciones de ejercicios)
+[2026-09-27 21:38:27] [INFO] Analisis IA | error: Cannot read properties of null (reading 'nivel')
+[2026-09-27 21:38:28] [INFO] Analisis IA | completado con OpenRouter (2 recomendaciones de ejercicios)
+[2026-09-27 21:38:28] [INFO] Analisis IA | error: Cannot read properties of null (reading 'nivel')
+[2026-09-27 21:38:28] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 21:38:32] [INFO] App cerrada desde el boton
+[2026-09-27 21:39:23] [INFO] App iniciada
+[2026-09-27 21:39:23] [IA] API key actualizada en memoria
+[2026-09-27 21:39:23] [INFO] App lista | Bienvenida
+[2026-09-27 21:39:38] [INFO] App iniciada
+[2026-09-27 21:39:44] [INFO] App lista | Bienvenida
+[2026-09-27 21:39:45] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 21:39:47] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:39:48] [INFO] App cerrada
+[2026-09-27 21:39:49] [INFO] App cerrada
+[2026-09-27 21:40:15] [INFO] App iniciada
+[2026-09-27 21:40:16] [IA] API key actualizada en memoria
+[2026-09-27 21:40:16] [INFO] App lista | Bienvenida
+[2026-09-27 21:40:22] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 21:40:22] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 21:40:24] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:40:27] [INFO] Cambio de tema | claro | usuario=Carmen
+[2026-09-27 21:40:28] [INFO] Cambio de tema | oscuro | usuario=Carmen
+[2026-09-27 21:40:29] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:40:29] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:40:31] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:40:32] [INFO] Analisis IA | completado con OpenRouter (2 recomendaciones de ejercicios) | usuario=Carmen
+[2026-09-27 21:40:33] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:40:36] [INFO] Plan semanal actualizado | usuario=Carmen
+[2026-09-27 21:40:37] [INFO] Analisis IA | error de IA: La IA no devolvio un JSON valido | usuario=Carmen
+[2026-09-27 21:40:38] [INFO] Sesion guardada | Dominadas negativas 3x10 | usuario=Carmen
+[2026-09-27 21:40:39] [INFO] Cambio de tema | claro | usuario=Carmen
+[2026-09-27 21:40:39] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:40:39] [INFO] Analisis IA | completado con OpenRouter (2 recomendaciones de ejercicios) | usuario=Carmen
+[2026-09-27 21:40:44] [INFO] Analisis IA | completado con OpenRouter (2 recomendaciones de ejercicios) | usuario=Carmen
+[2026-09-27 21:40:50] [INFO] Analisis IA | completado con OpenRouter (2 recomendaciones de ejercicios) | usuario=Carmen
+[2026-09-27 21:40:54] [INFO] Analisis IA | completado con OpenRouter (3 recomendaciones de ejercicios) | usuario=Carmen
+[2026-09-27 21:41:22] [INFO] App iniciada
+[2026-09-27 21:41:22] [IA] API key actualizada en memoria
+[2026-09-27 21:41:22] [INFO] App lista | Bienvenida
+[2026-09-27 21:41:29] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 21:41:29] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:41:30] [INFO] Cambio de tema | oscuro | usuario=Carmen
+[2026-09-27 21:41:30] [INFO] Cambio de tema | claro | usuario=Carmen
+[2026-09-27 21:41:31] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:41:32] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:41:34] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:41:36] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:41:40] [INFO] Analisis IA | error de IA: La IA no devolvio un JSON valido | usuario=Carmen
+[2026-09-27 21:41:41] [INFO] Sesion guardada | Dominadas negativas 3x10 | usuario=Carmen
+[2026-09-27 21:41:42] [INFO] Cambio de tema | oscuro | usuario=Carmen
+[2026-09-27 21:41:43] [INFO] Analisis IA | completado con OpenRouter (2 recomendaciones de ejercicios) | usuario=Carmen
+[2026-09-27 21:41:46] [INFO] Analisis IA | completado con OpenRouter (2 recomendaciones de ejercicios) | usuario=Carmen
+[2026-09-27 21:41:51] [INFO] Analisis IA | error de IA: La IA no devolvio un JSON valido | usuario=Carmen
+[2026-09-27 21:41:51] [INFO] Analisis IA | error de IA: La IA no devolvio un JSON valido | usuario=Carmen
+[2026-09-27 21:42:38] [INFO] App iniciada
+[2026-09-27 21:42:39] [IA] API key actualizada en memoria
+[2026-09-27 21:42:39] [INFO] App lista | Bienvenida
+[2026-09-27 21:42:40] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 21:42:46] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:42:46] [INFO] Cambio de tema | claro | usuario=Carmen
+[2026-09-27 21:42:46] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:42:47] [INFO] Cambio de tema | oscuro | usuario=Carmen
+[2026-09-27 21:42:47] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:42:47] [INFO] Cambio de tema | claro | usuario=Carmen
+[2026-09-27 21:42:48] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:42:48] [INFO] Cambio de tema | oscuro | usuario=Carmen
+[2026-09-27 21:42:48] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:42:48] [INFO] Cambio de tema | claro | usuario=Carmen
+[2026-09-27 21:42:49] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:42:49] [INFO] Cambio de tema | oscuro | usuario=Carmen
+[2026-09-27 21:42:50] [INFO] Analisis IA | error de IA: La IA no devolvio un JSON valido | usuario=Carmen
+[2026-09-27 21:42:53] [INFO] Cambio de tema | claro | usuario=Carmen
+[2026-09-27 21:42:54] [INFO] Analisis IA | completado con OpenRouter (2 recomendaciones de ejercicios) | usuario=Carmen
+[2026-09-27 21:42:58] [INFO] Analisis IA | completado con OpenRouter (2 recomendaciones de ejercicios) | usuario=Carmen
+[2026-09-27 21:43:02] [INFO] Analisis IA | completado con OpenRouter (1 recomendaciones de ejercicios) | usuario=Carmen
+[2026-09-27 21:43:02] [INFO] Analisis IA | completado con OpenRouter (2 recomendaciones de ejercicios) | usuario=Carmen
+[2026-09-27 21:43:13] [INFO] Analisis IA | completado con OpenRouter (1 recomendaciones de ejercicios) | usuario=Carmen
+[2026-09-27 21:47:18] [INFO] App iniciada
+[2026-09-27 21:47:19] [IA] API key actualizada en memoria
+[2026-09-27 21:47:19] [INFO] App lista | Bienvenida
+[2026-09-27 21:47:19] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 21:47:20] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:47:27] [INFO] Cambio de tema | oscuro | usuario=Carmen
+[2026-09-27 21:47:29] [INFO] Analisis IA | completado con OpenRouter (2 recomendaciones de ejercicios) | usuario=Carmen
+[2026-09-27 21:47:50] [INFO] App iniciada
+[2026-09-27 21:47:51] [IA] API key actualizada en memoria
+[2026-09-27 21:47:51] [INFO] App lista | Bienvenida
+[2026-09-27 21:48:08] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 21:49:12] [INFO] App iniciada
+[2026-09-27 21:49:12] [IA] API key actualizada en memoria
+[2026-09-27 21:49:13] [INFO] App lista | Bienvenida
+[2026-09-27 21:49:14] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 21:50:39] [INFO] App iniciada
+[2026-09-27 21:50:40] [IA] API key actualizada en memoria
+[2026-09-27 21:50:40] [INFO] App lista | Bienvenida
+[2026-09-27 21:50:40] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 21:50:42] [INFO] Cambio de tema | claro | usuario=Carmen
+[2026-09-27 21:50:42] [INFO] Cambio de tema | oscuro | usuario=Carmen
+[2026-09-27 21:50:54] [INFO] App cerrada desde el boton
+[2026-09-27 21:52:11] [INFO] App iniciada
+[2026-09-27 21:52:11] [IA] API key actualizada en memoria
+[2026-09-27 21:52:11] [INFO] App lista | Bienvenida
+[2026-09-27 21:52:13] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 21:52:14] [INFO] Cambio de tema | claro | usuario=Carmen
+[2026-09-27 21:52:17] [INFO] Cambio de tema | oscuro | usuario=Carmen
+[2026-09-27 21:52:17] [INFO] Cambio de tema | claro | usuario=Carmen
+[2026-09-27 21:52:19] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:52:21] [INFO] App cerrada desde el boton
+[2026-09-27 21:52:39] [INFO] App iniciada
+[2026-09-27 21:52:39] [IA] API key actualizada en memoria
+[2026-09-27 21:52:39] [INFO] App lista | Bienvenida
+[2026-09-27 21:52:43] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 21:52:47] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 21:53:43] [INFO] App iniciada
+[2026-09-27 21:53:44] [IA] API key actualizada en memoria
+[2026-09-27 21:53:44] [INFO] App lista | Bienvenida
+[2026-09-27 21:53:47] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 21:53:51] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 21:54:01] [INFO] App iniciada
+[2026-09-27 21:54:02] [IA] API key actualizada en memoria
+[2026-09-27 21:54:02] [INFO] App lista | Bienvenida
+[2026-09-27 21:54:09] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 21:54:33] [INFO] App iniciada
+[2026-09-27 21:54:34] [IA] API key actualizada en memoria
+[2026-09-27 21:54:34] [INFO] App lista | Bienvenida
+[2026-09-27 21:54:36] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 21:54:39] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:54:39] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:54:42] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 21:54:42] [INFO] Cambio de tema | oscuro | usuario=Carmen
+[2026-09-27 21:54:42] [INFO] Cambio de tema | claro | usuario=Carmen
+[2026-09-27 21:54:51] [INFO] Analisis IA | error de IA: fetch failed | usuario=Carmen
+[2026-09-27 21:54:51] [INFO] Analisis IA | error de IA: fetch failed | usuario=Carmen
+[2026-09-27 21:55:14] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:55:42] [INFO] App iniciada
+[2026-09-27 21:55:43] [IA] API key actualizada en memoria
+[2026-09-27 21:55:43] [INFO] App lista | Bienvenida
+[2026-09-27 21:55:44] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 21:55:50] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 21:56:03] [INFO] App iniciada
+[2026-09-27 21:56:04] [IA] API key actualizada en memoria
+[2026-09-27 21:56:04] [INFO] App lista | Bienvenida
+[2026-09-27 21:56:05] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 21:56:09] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:56:12] [INFO] Cambio de tema | oscuro | usuario=Carmen
+[2026-09-27 21:56:14] [INFO] Cambio de tema | claro | usuario=Carmen
+[2026-09-27 21:56:18] [INFO] Analisis IA | completado con OpenRouter (2 recomendaciones de ejercicios) | usuario=Carmen
+[2026-09-27 21:56:21] [INFO] Cambio de tema | oscuro | usuario=Carmen
+[2026-09-27 21:56:29] [INFO] Cambio de tema | claro | usuario=Carmen
+[2026-09-27 21:56:50] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:56:52] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:56:52] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 21:57:19] [INFO] Analisis IA | completado con OpenRouter (0 recomendaciones de ejercicios) | usuario=Carmen
+[2026-09-27 21:57:28] [INFO] Analisis IA | completado con OpenRouter (2 recomendaciones de ejercicios) | usuario=Carmen
+[2026-09-27 21:57:49] [INFO] App cerrada desde el boton
+[2026-09-27 22:03:30] [INFO] App iniciada
+[2026-09-27 22:03:31] [IA] API key actualizada en memoria
+[2026-09-27 22:03:31] [INFO] App lista | Bienvenida
+[2026-09-27 22:03:33] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 22:03:37] [INFO] App cerrada desde el boton
+[2026-09-27 22:06:10] [INFO] App iniciada
+[2026-09-27 22:06:11] [IA] API key actualizada en memoria
+[2026-09-27 22:06:11] [INFO] App lista | Bienvenida
+[2026-09-27 22:06:13] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 22:06:16] [INFO] Cambio de tema | oscuro | usuario=Carmen
+[2026-09-27 22:06:17] [INFO] App cerrada desde el boton
+[2026-09-27 22:07:30] [INFO] App iniciada
+[2026-09-27 22:07:30] [IA] API key actualizada en memoria
+[2026-09-27 22:07:30] [INFO] App lista | Bienvenida
+[2026-09-27 22:07:32] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 22:07:35] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 22:07:36] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 22:07:47] [INFO] Analisis IA | error de IA: fetch failed | usuario=Carmen
+[2026-09-27 22:07:56] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 22:07:58] [INFO] App cerrada desde el boton
+[2026-09-27 22:10:05] [INFO] App iniciada
+[2026-09-27 22:10:06] [IA] API key actualizada en memoria
+[2026-09-27 22:10:06] [INFO] App lista | Bienvenida
+[2026-09-27 22:10:07] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-27 22:10:08] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-27 22:10:28] [INFO] Analisis IA | completado con OpenRouter (2 recomendaciones de ejercicios) | usuario=Carmen
+[2026-09-27 22:10:34] [INFO] App cerrada desde el boton
