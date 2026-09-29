@@ -1,9 +1,6 @@
 // ============================================================
 // historial.js  —  LISTA DE SESIONES + EDICION + ELIMINACION
 // ============================================================
-// Usa: obtenerSesiones, actualizarSesion, eliminarSesion (database.js)
-//      t (idiomas.js), mostrarResumenDiario (plan-semanal.js)
-// ============================================================
 
 // ------------------------------------------------------------
 // refrescarHistorial()
@@ -276,9 +273,7 @@ function eliminarSesionClick(id) {
   mostrarResumenDiario();
 }
 
-// ------------------------------------------------------------
-// Exportar funciones que usa el HTML u otros archivos
-// ------------------------------------------------------------
+
 window.refrescarHistorial = refrescarHistorial;
 window.editarSesionClick = editarSesionClick;
 window.eliminarSesionClick = eliminarSesionClick;

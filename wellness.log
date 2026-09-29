@@ -361,3 +361,18 @@
 [2026-09-27 22:10:08] [INFO] Analisis IA | iniciado | usuario=Carmen
 [2026-09-27 22:10:28] [INFO] Analisis IA | completado con OpenRouter (2 recomendaciones de ejercicios) | usuario=Carmen
 [2026-09-27 22:10:34] [INFO] App cerrada desde el boton
+[2026-09-28 16:30:19] [INFO] App iniciada
+[2026-09-28 16:30:20] [IA] API key actualizada en memoria
+[2026-09-28 16:30:20] [INFO] App lista | Bienvenida
+[2026-09-28 16:30:25] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-28 16:30:28] [INFO] Cambio de tema | claro | usuario=Carmen
+[2026-09-28 16:30:31] [INFO] Cambio de tema | oscuro | usuario=Carmen
+[2026-09-28 16:30:33] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-28 16:31:04] [INFO] Analisis IA | completado con OpenRouter (2 recomendaciones de ejercicios) | usuario=Carmen
+[2026-09-28 16:33:03] [INFO] App cerrada desde el boton
+[2026-09-28 16:34:18] [INFO] App iniciada
+[2026-09-28 16:34:18] [IA] API key actualizada en memoria
+[2026-09-28 16:34:18] [INFO] App lista | Bienvenida
+[2026-09-28 16:34:20] [INFO] Login | Carmen (Intermedio) | usuario=Carmen
+[2026-09-28 16:36:03] [INFO] Analisis IA | iniciado | usuario=Carmen
+[2026-09-28 16:36:05] [INFO] App cerrada desde el boton

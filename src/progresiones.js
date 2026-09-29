@@ -135,7 +135,7 @@ var CATALOGO = [
 // para no romper las sesiones existentes (FK).
 // ------------------------------------------------------------
 function poblarProgresiones() {
-  // Normalizar niveles existentes por si habia datos corruptos
+  
   db.run("UPDATE progresiones SET nivel = 3 WHERE nivel > 3");
   db.run("UPDATE progresiones SET nivel = 1 WHERE nivel < 1");
   guardarDB();

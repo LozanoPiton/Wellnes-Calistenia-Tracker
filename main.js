@@ -20,8 +20,7 @@ function logEvento(nivel, mensaje) {
     String(fecha.getMinutes()).padStart(2, "0") + ":" +
     String(fecha.getSeconds()).padStart(2, "0");
   var linea = "[" + stamp + "] [" + nivel.toUpperCase() + "] " + mensaje + "\n";
-  // Escritura ASINCRONA: si el disco esta lento o la carpeta esta en
-  // OneDrive/antivirus, no congelamos la ventana esperando al disco.
+
   fs.promises.appendFile(RUTA_LOG, linea, "utf8").catch(function (e) {
     console.error("No se pudo escribir el log:", e && e.message);
   });
@@ -49,13 +48,11 @@ if (fs.existsSync(envPath)) {
 }
 
 // ============================================================
-// IA: OPENROUTER (reemplazo de Groq/Gemini)
+// IA: OPENROUTER 
 // ============================================================
 // Usa la API compatible con OpenAI (chat/completions) via fetch.
 // Modelo por defecto: openrouter/free (router que elige un modelo
-// gratis disponible solo). Tambien podes fijar uno especifico via
-// OPENROUTER_MODEL, ej: google/gemma-4-31b-it:free o z-ai/glm-5.2:free.
-// Key gratuita en https://openrouter.ai/keys
+// gratis disponible solo).
 // ============================================================
 const MODELO_IA = process.env.OPENROUTER_MODEL || "openrouter/free";
 let iaKey = null;
@@ -103,9 +100,7 @@ function extraerJSON(texto) {
   return { error: "La IA no devolvio un JSON valido", raw: texto.slice(0, 300) };
 }
 
-// Reintenta un fetch hasta N veces: en Windows el primer llamado a la red
-// suele fallar con "fetch failed" porque el stack de red todavia se esta
-// inicializando. El reintento resuelve el error sin tocar la interfaz.
+
 async function fetchConReintentos(url, opciones, intentos, esperaMs) {
   let ultimoError = null;
   for (let n = 1; n <= intentos; n++) {

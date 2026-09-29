@@ -10,36 +10,19 @@
 // ============================================================
 
 // "require" importa librerias de Node.js
-var initSqlJs = require('sql.js');  // sql.js = SQLite en JS
-var fs = require('fs');             // fs = File System (archivos)
-var path = require('path');         // path = rutas de archivos
+var initSqlJs = require('sql.js');  
+var fs = require('fs');             
+var path = require('path');  
 
-// La ruta donde se guarda la base de datos
-// __dirname = carpeta del HTML (root del proyecto), no la de este archivo
-// en Electron renderer con nodeIntegration. Por eso va directo.
 var RUTA_DB = path.join(__dirname, 'wellness.db');
 
-// "db" es la conexion a la base de datos
-// Arranca como null y se llena cuando llamamos a iniciarDB()
-// Se exporta a window para que otros modulos puedan usarla
-var db = null;
 window.db = null;
 var timerGuardarDB = null;
-
 
 // ------------------------------------------------------------
 // iniciarDB()
 // ------------------------------------------------------------
-// Se llama una sola vez al abrir la app.
-// Hace 3 cosas:
-//   1. Carga el motor de sql.js
-//   2. Si ya existe wellness.db → lo abre
-//      Si no existe → lo crea desde cero
-//   3. Crea las tablas si no existen
-//
-// "async" significa que esta funcion es asincronica (tarda
-// un poco en ejecutarse porque tiene que cargar el WASM).
-// ============================================================
+
 async function iniciarDB() {
 
     // Cargamos el motor de sql.js
@@ -60,15 +43,6 @@ async function iniciarDB() {
     // TABLA: usuarios
     // ---------------------------------------------------------
     // Guarda la informacion de cada persona que usa la app.
-    //
-    // Columnas:
-    //   id       → numero unico (se auto-incrementa solo)
-    //   nombre   → el nombre de la persona
-    //   nivel    → Principiante, Intermedio o Experto
-    //   peso     → peso en kg (puede estar vacio = null)
-    //   altura   → altura en cm (puede estar vacio = null)
-    //   objetivo → meta del usuario (ej: "10 dominadas")
-    //   creado_en → fecha y hora de cuando se creo
     // ---------------------------------------------------------
     db.run('CREATE TABLE IF NOT EXISTS usuarios (' +
         'id        INTEGER PRIMARY KEY AUTOINCREMENT,' +
@@ -84,16 +58,6 @@ async function iniciarDB() {
     // TABLA: ejercicios
     // ---------------------------------------------------------
     // Guarda los ejercicios que cada usuario va registrando.
-    //
-    // Columnas:
-    //   id             → numero unico
-    //   usuario_id     → a que usuario pertenece este ejercicio
-    //   nombre         → ej: "Dominadas"
-    //   grupo_muscular → ej: "Espalda"
-    //   dificultad     → ej: "Intermedio"
-    //   series         → cuantas series
-    //   repeticiones   → cuantas repeticiones
-    //   creado_en      → fecha y hora
     // ---------------------------------------------------------
     db.run('CREATE TABLE IF NOT EXISTS ejercicios (' +
         'id             INTEGER PRIMARY KEY AUTOINCREMENT,' +
@@ -107,14 +71,6 @@ async function iniciarDB() {
         'FOREIGN KEY (usuario_id) REFERENCES usuarios(id)' +
     ')');
 
-    // ---------------------------------------------------------
-    // MIGRACION: si la base de datos es vieja y le faltan
-    // columnas, las agregamos aca.
-    // ---------------------------------------------------------
-    // "CREATE TABLE IF NOT EXISTS" no modifica tablas viejas.
-    // Entonces probamos si la columna "peso" existe y si no,
-    // la agregamos con ALTER TABLE.
-    // ---------------------------------------------------------
     try {
         db.exec('SELECT peso FROM usuarios LIMIT 1');
     } catch (e) {
@@ -128,7 +84,6 @@ async function iniciarDB() {
         db.run('ALTER TABLE ejercicios ADD COLUMN usuario_id INTEGER DEFAULT 0');
     }
 
-    // Migracion: columna objetivo
     try {
         db.exec('SELECT objetivo FROM usuarios LIMIT 1');
     } catch (e) {
@@ -180,12 +135,11 @@ async function iniciarDB() {
     db.run('CREATE TABLE IF NOT EXISTS plan_semanal (' +
         'id        INTEGER PRIMARY KEY AUTOINCREMENT,' +
         'usuario_id INTEGER NOT NULL,' +
-        'dia       INTEGER NOT NULL,' +   // 0=Lunes ... 6=Domingo
+        'dia       INTEGER NOT NULL,' + 
         'grupo_muscular TEXT,' +
         'FOREIGN KEY (usuario_id) REFERENCES usuarios(id)' +
     ')');
 
-    // Guardamos los cambios al disco
     guardarDB();
 }
 
@@ -207,10 +161,7 @@ function guardarDB() {
     }, 150);
 }
 
-// Escribe la DB al disco. Se agrupan las escrituras (debounce) para
-// no congelar la app cuando se hacen muchos cambios seguidos, y si
-// el disco esta ocupado (Windows/OneDrive) no tira un error que rompa
-// el flujo: los datos quedan en memoria y se reintentan en la proxima.
+
 function guardarDBAhora() {
     if (!db) return;
     try {
@@ -541,10 +492,6 @@ function obtenerTodasProgresiones(nivelMaximo) {
 }
 
 
-// En Electron con nodeIntegration, las funciones se comparten
-// a traves de window. Asi auth.js, ejercicios.js, etc.
-// pueden llamar a estas funciones de base de datos.
-// ============================================================
 window.iniciarDB = iniciarDB;
 window.crearUsuario = crearUsuario;
 window.obtenerUsuarios = obtenerUsuarios;

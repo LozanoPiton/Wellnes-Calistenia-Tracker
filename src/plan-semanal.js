@@ -1,11 +1,6 @@
 // ============================================================
 // plan-semanal.js  —  PLAN SEMANAL, RESUMEN DIARIO, EDITOR
 // ============================================================
-// Depende de: database.js (obtenerPlanSemanal, obtenerProgresionesPorGrupo,
-//             obtenerSesiones, guardarPlanSemanal),
-//             idiomas.js (t),
-//             app.js (usuarioActual)
-// ============================================================
 
 // ------------------------------------------------------------
 // refrescarPlanSemanal()
@@ -153,11 +148,7 @@ function refrescarPlanSemanal() {
 // mostrarResumenDiario()
 // ------------------------------------------------------------
 // Tarjeta que muestra cuantos ejercicios del plan de hoy se
-// completaron. Obtiene el grupo muscular del dia segun el plan
-// semanal, busca los ejercicios recomendados para ese grupo
-// (filtrados por nivel del usuario), y cuenta cuantos ya tienen
-// una sesion registrada hoy. Muestra X/Y con barra de progreso
-// y un check/cross por cada ejercicio.
+// completaron.
 // ------------------------------------------------------------
 function mostrarResumenDiario() {
   if (!usuarioActual) return;
@@ -167,7 +158,6 @@ function mostrarResumenDiario() {
     String(hoy.getMonth() + 1).padStart(2, '0') + '-' +
     String(hoy.getDate()).padStart(2, '0');
 
-  // indice del dia: 0=Lu..6=Do (getDay devuelve 0=Do, ajustamos)
   var hoyIndex = hoy.getDay() === 0 ? 6 : hoy.getDay() - 1;
   var plan = obtenerPlanSemanal(usuarioActual.id);
   if (plan.length === 0) return;
@@ -350,7 +340,7 @@ function cancelarEditorPlan() {
   document.getElementById('tarjeta-editor-plan').style.display = 'none';
 }
 
-// Exportar funciones al HTML (onclick, etc.)
+
 window.refrescarPlanSemanal = refrescarPlanSemanal;
 window.mostrarResumenDiario = mostrarResumenDiario;
 window.mostrarEditorPlan = mostrarEditorPlan;

@@ -1,8 +1,6 @@
 // ============================================================
 // ia.js  —  ANALISIS IA: OpenRouter + FALLBACK LOCAL
 // ============================================================
-// Depende de: database.js, auth.js, idiomas.js, app.js
-// ============================================================
 
 var botonIA = document.getElementById("boton-analizar");
 var resultadoIA = document.getElementById("resultado-ia");

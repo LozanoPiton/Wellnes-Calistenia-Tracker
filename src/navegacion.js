@@ -1,10 +1,7 @@
 // ============================================================
 // navegacion.js  —  CAMBIO ENTRE SECCIONES
 // ============================================================
-// Depende de: progresiones.js (mostrarCatalogo, poblarSelectEjercicios),
-//             historial.js (refrescarHistorial),
-//             plan-semanal.js (refrescarPlanSemanal)
-// ============================================================
+
 
 function cambiarSeccion(idDeSeccion, botonPresionado) {
   // Oculta todas las secciones

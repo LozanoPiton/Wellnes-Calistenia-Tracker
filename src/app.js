@@ -55,7 +55,6 @@ window.cerrarApp = cerrarApp;
 // ------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', function () {
 
-    // 0) Inicializar tema (modo claro por defecto)
     initTema();
     logEvento("App lista", "Bienvenida");
 

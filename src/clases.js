@@ -113,7 +113,7 @@ class Sesion {
 }
 
 
-// Exportamos las clases para que otros archivos las puedan usar
+
 window.Usuario = Usuario;
 window.Ejercicio = Ejercicio;
 window.Rutina = Rutina;
