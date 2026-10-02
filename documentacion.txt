@@ -188,7 +188,7 @@
   - editarSesionClick(): modal para modificar series/reps/notas.
   - eliminarSesionClick(): confirmacion y borrado.
 
-   12. ia.js (472 lineas)
+   12. ia.js
    ---------
     - Analisis dual: IA via OpenRouter (si hay API key) + local (siempre).
     - Coach IA via OpenRouter (modelo gratis por defecto: openrouter/free,
@@ -252,6 +252,167 @@ IA:
      → HTML
      La IA recibe el catalogo de ejercicios y puede recomendar alternativas
      especificas segun debilidades detectadas.
+
+  ====================================================================
+  PRUEBAS REALIZADAS
+  ====================================================================
+
+  Todas las pruebas fueron funcionales manuales, ejecutadas sobre la
+  version final del proyecto (rama main). Se verificaron:
+
+  PRUEBAS DE ARRANQUE E INICIALIZACION
+  ------------------------------------
+  - La app abre en pantalla completa y muestra el logo.
+  - Al iniciar se cargan las tablas de la base y se puebla el
+    catalogo de ejercicios (solo inserta lo que falta, nunca borra).
+  - Con usuarios existentes muestra el login; sin usuarios, el
+    registro.
+
+  PRUEBAS DE USUARIOS (auth)
+  --------------------------
+  - Registro de usuario nuevo: valida nombre y nivel, inserta en
+    usuarios y genera el plan semanal por defecto.
+  - Login: seleccionar un perfil y entrar, se refresca toda la
+    interfaz con sus datos.
+  - Editar perfil: modificar nivel/peso/altura/objetivo y verificar
+    que se actualiza en la base y en la interfaz.
+  - Eliminar usuario con confirmacion.
+
+  PRUEBAS DE SESIONES (entrenar + historial)
+  ------------------------------------------
+  - Guardar una sesion: elige ejercicio, carga series y reps, guarda
+    y muestra feedback contra la meta (cumplida/faltante).
+  - Editar una sesion: precarga los valores y actualiza con UPDATE.
+  - Eliminar una sesion: pide confirmacion y borra.
+  - El historial muestra los datos con JOIN de sesiones y
+    progresiones (ejercicio, fecha, meta, nivel).
+  - Se comprobo integridad: si un ejercicio del catalogo desaparece,
+    las sesiones antiguas no quedan colgadas (sincronizacion
+    incremental que nunca borra).
+
+  PRUEBAS DEL PLAN SEMANAL
+  ------------------------
+  - Muestra el grupo muscular del dia correcto (ajuste del indice de
+    getDay() para que lunes sea el dia cero).
+  - Lista ejercicios recomendados segun nivel.
+  - Resumen diario "X de Y" con barra de progreso.
+  - Edicion del plan y persistencia.
+
+  PRUEBAS DE IA
+  -------------
+  - Analisis automatico al entrar a Progreso y via boton.
+  - Con API key: respuesta del Coach IA (observaciones, tecnicas,
+    plan sugerido y ejercicios alternativos).
+  - Sin internet / primer llamado: se reintenta el fetch hasta 3
+    veces; si la red falla al iniciar ya no muestra error falso.
+  - Sin API key: muestra el campo para pegarla.
+  - Analisis local siempre presente: medidor de ascenso de nivel
+    (60 dias, 15 sesiones, 60% metas), tendencia semanal y
+    estancamiento.
+  - Confirmacion de ascenso de nivel y actualizacion en la base.
+
+  PRUEBAS DE INTERFAZ
+  -------------------
+  - Modo claro/oscuro: se cambia el tema y toda la interfaz se
+    repinta (variables CSS + body.dark-mode); preferencia persistida
+    en localStorage.
+  - Contraste del modo claro corregido: iconos de la barra lateral
+    recolorados y titulo/logo con contraste suficiente.
+  - Traduccion es/en al cambiar el selector de idioma.
+  - Navegacion entre las 5 secciones sin errores de consola.
+  - Cierre: al salir se conservan los datos en wellness.db.
+
+  ERRORES DETECTADOS Y CORRECCIONES APLICADAS
+  -------------------------------------------
+  - "No te deja seleccionar / se congela": causado por escrituras
+    bloqueantes al disco en cada clic y cada guardado. Se corrigio
+    agrupando las escrituras a la base (guardarDB con debounce de
+    150 ms) y escribiendo el log de forma asincrona
+    (fs.promises.appendFile).
+  - "Error IA: fetch failed" en el primer analisis al iniciar la
+    app en Windows: el stack de red tarda en inicializarse. Se
+    corrigio reintentando el fetch hasta 3 veces con espera.
+  - Iconos invisibles en modo claro: los SVGs tenian colores claros
+    para fondo oscuro. Se ajusto la paleta y el contraste de texto y
+    botones del tema claro.
+  - Se verifico la integridad de la base luego de los cambios
+    (usuarios y sesiones intactos).
+
+  ====================================================================
+  CIERRE DEL PROYECTO
+  ====================================================================
+
+  LOGROS ALCANZADOS
+  -----------------
+  - App de escritorio completa y funcional, con registro de
+    usuarios, catalogo de ejercicios por nivel, sesiones con
+    feedback, plan semanal, historial, perfil y analisis de progreso.
+  - Implementacion de IA en dos niveles: externa (OpenRouter,
+    recomendaciones y alternativas) y local por reglas que garantiza
+    respuesta sin internet.
+  - Interfaz con tema claro/oscuro, responsive y traduccion es/en.
+  - Todo local y privado: los datos nunca salen de la computadora.
+
+  DIFICULTADES ENCONTRADAS Y SOLUCIONES ADOPTADAS
+  -----------------------------------------------
+  - Congelamiento de la app por escrituras bloqueantes al disco
+    (carpeta en nube/antivirus). Solucion: escrituras agrupadas
+    (debounce) y log asincrono.
+  - Falla del primer llamado de red de la IA al iniciar la app en
+    Windows. Solucion: reintentos del fetch.
+  - Bajo contraste de iconos y textos en el modo claro. Solucion:
+    paleta ajustada y colores de texto/botones corregidos.
+  - Persistencia de bases viejas con tablas incompletas.
+    Solucion: migraciones con ALTER TABLE que agregan columnas
+    faltantes sin dañar el archivo.
+
+  APLICACION DE POO
+  -----------------
+  - Se definieron las clases Usuario, Ejercicio, Rutina y Sesion
+    (src/clases.js). Se instancian al leer la base de datos
+    (database.js), mapeando cada fila a un objeto de su clase.
+  - usuarioActual (app.js/auth.js) se maneja como objeto de la clase
+    Usuario: se accede a sus atributos (nombre, nivel, objetivo) y se
+    actualizan via sus datos.
+  - Encapsulamiento del acceso a datos: todo el SQL vive en
+    database.js, la interfaz no toca la base directamente.
+
+  RECOMENDACIONES PARA FUTURAS VERSIONES
+  --------------------------------------
+  - Agregar pruebas automatizadas (unitarias para database.js y
+    ia.js, y de integracion del flujo completo).
+  - Persistir la API key de la IA de forma mas segura (Electron
+    safeStorage / keytar) en lugar de localStorage.
+  - Soporte para exportar/importar el progreso (backup de la base).
+  - Notificaciones y recordatorios de entrenamiento.
+  - Version empaquetada instalable (electron-builder) para no
+    depender de Node.js en el equipo del usuario.
+
+  DESPLIEGUE / PROCEDIMIENTO DE EJECUCION
+  ---------------------------------------
+  - Reproducible desde el README: git clone, npm install y
+    npm run start.
+  - Para produccion se recomienda empaquetar la app con
+    electron-builder (ver recomendaciones).
+
+  MANTENIMIENTO
+  -------------
+  - Documentado en "MODIFICAR O AGREGAR FUNCIONALIDAD": catalogo en
+    progresiones.js, colores en variables.css, traducciones en
+    idiomas.js, plan en database.js, requisitos de ascenso en ia.js.
+  - La base se regenera sola si se borra wellness.db (se crea al
+    iniciar); el catalogo se re-puebla sin duplicar datos.
+
+  CONCLUSIONES
+  ------------
+  - El proyecto cumple el objetivo: una app local de gestion de
+    rutinas wellness que registra usuarios, ejercicios, sesiones,
+    plan semanal y progreso, con seguimiento ayudado por IA.
+  - El diseño en dos procesos (main/renderer) y la separacion por
+    modulos (database, ia, auth, plan) facilitan el mantenimiento y
+    la escalabilidad.
+  - El analisis de IA en dos niveles (externa + local) asegura que
+    el usuario siempre reciba utilidad, incluso sin internet.
 
   ====================================================================
   MODIFICAR O AGREGAR FUNCIONALIDAD
