@@ -26,7 +26,7 @@ graph TD
     user --> UC3
     user --> UC4
     user --> UC5
-    UC5 ..> UC6 : <<fallback / offline>>
+    UC5 ..> UC6 : fallback
 
 2. Diagrama de Clases
 Estructura de las clases principales orientadas a objetos aplicadas en la arquitectura del sistema (src/clases.js):
