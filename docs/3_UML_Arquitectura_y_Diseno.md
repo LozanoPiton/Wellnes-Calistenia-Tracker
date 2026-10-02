@@ -26,10 +26,12 @@ graph TD
     user --> UC3
     user --> UC4
     user --> UC5
-    UC5 -.-> UC6
+    UC5 -.-> UC6 
+```
+## 2. Diagrama de Clases
+Definición de clases orientadas a objetos (`src/clases.js`):
 
-2. Diagrama de Clases
-Estructura de las clases principales orientadas a objetos aplicadas en la arquitectura del sistema (src/clases.js):
+```mermaid
 classDiagram
     class Usuario {
         +int id
@@ -58,6 +60,7 @@ classDiagram
 
     Usuario "1" -- "0..*" Sesion : realiza
     Ejercicio "1" -- "0..*" Sesion : contiene
+```
 
 3. Arquitectura del Sistema (Electron Multi-Process)
 La aplicación utiliza la arquitectura nativa de Electron, dividida en tres capas de responsabilidad:
