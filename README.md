@@ -125,8 +125,8 @@ No se implementaron aún pruebas automatizadas (ver sección *Cierre*).
 
 ## Equipo
 
-- LozanoPiton
-- Liligs1
+- LozanoPiton = Luis Lozano
+- Liligs1 = Liliana Gutierres
 
 ## Evidencias / capturas
 

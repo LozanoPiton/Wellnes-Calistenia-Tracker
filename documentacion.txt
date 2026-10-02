@@ -106,7 +106,7 @@
   3. clases.js
   ------------
   - Define las clases Usuario, Ejercicio, Rutina, Sesion.
-  - NO se usan directamente (requisito de POO).
+  - NO se usan directamente.
 
   4. database.js
   --------------
@@ -393,7 +393,7 @@ IA:
   - Reproducible desde el README: git clone, npm install y
     npm run start.
   - Para produccion se recomienda empaquetar la app con
-    electron-builder (ver recomendaciones).
+    electron-builder.
 
   MANTENIMIENTO
   -------------
