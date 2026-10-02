@@ -12,13 +12,13 @@
 graph TD
     user((Atleta))
     
-    subgraph WELLNESS System
-        UC1(Registrar / Editar Perfil)
-        UC2(Consultar Catálogo)
-        UC3(Registrar Sesión)
-        UC4(Gestionar Plan Semanal)
-        UC5(Solicitar Diagnóstico IA)
-        UC6(Evaluación Heurística Local)
+    subgraph WELLNESS
+        UC1(Registrar Perfil)
+        UC2(Consultar Catalogo)
+        UC3(Registrar Sesion)
+        UC4(Gestionar Plan)
+        UC5(Solicitar IA)
+        UC6(Evaluacion Local)
     end
 
     user --> UC1
@@ -26,7 +26,7 @@ graph TD
     user --> UC3
     user --> UC4
     user --> UC5
-    UC5 ..> UC6 : fallback
+    UC5 -.-> UC6
 
 2. Diagrama de Clases
 Estructura de las clases principales orientadas a objetos aplicadas en la arquitectura del sistema (src/clases.js):
