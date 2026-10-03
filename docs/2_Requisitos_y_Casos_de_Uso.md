@@ -28,14 +28,15 @@ El seguimiento del entrenamiento de calistenia requiere medir el progreso por ni
 1. **RNF01 - Disponibilidad Offline:** Operatividad del 100% de funciones principales sin conexión a internet.
 2. **RNF02 - Portabilidad Desktop:** Ejecución nativa mediante marco de trabajo Electron en sistemas de escritorio.
 3. **RNF03 - Persistencia Embebida:** Uso de base de datos SQLite compilada a WebAssembly (`sql.js`).
-4. **RNF04 - Seguridad IPC:** Context Isolation habilitado y canales estrictos de comunicación entre Renderizador y Proceso Principal.
+4. **RNF04 - Seguridad IPC:** Comunicación entre Renderizador y Proceso Principal mediante canales IPC acotados (`log-write`, `ia-set-key`, `ia-analyze`, `app-close`) registrados en `ipcMain` e invocados con `ipcRenderer.invoke()`. La configuración actual es `nodeIntegration: true` y `contextIsolation: false` (sin `preload.js`).
 5. **RNF05 - Rendimiento:** Tiempos de respuesta inferiores a 200ms en consultas a la base de datos local.
 
 ---
 
 ## 3. Requisitos de Datos (Esquema de Base de Datos)
-El sistema utiliza cuatro entidades principales en `wellness.db`:
-* **`usuarios`**: `id`, `nombre`, `nivel`, `peso`, `altura`, `objetivo`.
-* **`progresiones`**: `id`, `grupo_muscular`, `nombre`, `nivel`, `reps_meta`, `series_meta`.
-* **`sesiones`**: `id`, `usuario_id`, `progresion_id`, `series_hechas`, `reps_hechas`, `fecha`.
-* **`plan_semanal`**: `usuario_id`, `dia_semana`, `grupo_muscular`.
+El sistema utiliza cinco entidades principales en `wellness.db`:
+* **`usuarios`**: `id`, `nombre`, `nivel`, `peso`, `altura`, `objetivo`, `creado_en`.
+* **`ejercicios`**: `id`, `usuario_id`, `nombre`, `grupo_muscular`, `dificultad`, `series`, `repeticiones`, `creado_en`.
+* **`progresiones`**: `id`, `grupo_muscular`, `nombre`, `nivel`, `reps_requeridas`, `series_requeridas`, `siguiente_id`, `descripcion`.
+* **`sesiones`**: `id`, `usuario_id`, `progresion_id`, `series_hechas`, `reps_hechas`, `notas`, `fecha`.
+* **`plan_semanal`**: `id`, `usuario_id`, `dia`, `grupo_muscular`.

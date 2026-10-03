@@ -16,12 +16,25 @@ El proyecto se desarrolló bajo el marco de trabajo **Scrum Adaptado**, utilizan
 
 ## 2. Hitos y Cronograma del Proyecto
 
-| Hito | Descripción | Entregables Clave |
+| Hito | Descripción | Entregables Clave | Fecha Planificada | Fecha Realizada |
+| :--- | :--- | :--- | :--- | :--- |
+| **Hito 1: Requisitos y Arquitectura** | Definición del alcance local y estructura base de Electron. | Documento de requisitos y maquetación inicial. | 2026-05-19 | 2026-05-19 |
+| **Hito 2: Persistencia y Core UI** | Integración de `sql.js` para la base de datos embebida y flujo SPA. | Tablas SQLite (`wellness.db`) y navegación funcional. | 2026-05-26 | 2026-05-26 |
+| **Hito 3: Módulos funcionales** | Desarrollo de autenticación, plan semanal, historial, ejercicios y navegación. | Módulos `src/*.js` funcionando. | 2026-05-27 – 2026-06-01 | 2026-05-27 – 2026-06-01 |
+| **Hito 4: Motor Dual de IA e IPC** | Implementación del motor de reglas local y conexión a OpenRouter. | Módulo `ia.js`, `main.js` con canales IPC y análisis heurístico. | 2026-06-08 – 2026-06-13 | 2026-06-08 – 2026-06-13 |
+| **Hito 5: Mejoras, correcciones y UX** | Correcciones de UI, contraste, asincronía y reintentos de IA. | Ajustes en CSS, `main.js` y módulos de vista. | 2026-06-17 – 2026-06-19 | 2026-06-17 – 2026-06-19 |
+| **Hito 6: Pruebas, Auditoría y Cierre** | Verificación funcional, registro de eventos y preparación académica. | Trazas en `wellness.log`, carpeta `/docs`, README y `documentacion.txt`. | 2026-09-23 – 2026-10-02 | 2026-09-23 – 2026-10-02 |
+
+**Diagrama Gantt (resumen por sprint):**
+
+| Sprint | Fechas | Actividades |
 | :--- | :--- | :--- |
-| **Hito 1: Requisitos y Arquitectura** | Definición del alcance local y estructura base de Electron. | Documento de requisitos y maquetación inicial. |
-| **Hito 2: Persistencia y Core UI** | Integración de `sql.js` para la base de datos embebida y flujo SPA. | Tablas SQLite (`wellness.db`) y navegación funcional. |
-| **Hito 3: Motor Dual de IA e IPC** | Implementación del motor de reglas local y conexión a OpenRouter. | Módulo `ia.js` y puente IPC de seguridad. |
-| **Hito 4: Pruebas, Auditoría y Cierre** | Verificación funcional, registro de eventos y preparación académica. | Trazas en `wellness.log`, carpeta `/docs` y capturas. |
+| Sprint 1 | 2026-05-19 – 2026-05-25 | Análisis, arquitectura, estructura base de Electron. |
+| Sprint 2 | 2026-05-26 – 2026-06-01 | Persistencia `sql.js`, SPA, autenticación y plan semanal. |
+| Sprint 3 | 2026-06-02 – 2026-06-08 | Historial, catálogo y navegación. |
+| Sprint 4 | 2026-06-09 – 2026-06-15 | Motor IA (OpenRouter + análisis local), canales IPC. |
+| Sprint 5 | 2026-06-16 – 2026-06-22 | Ajustes UX, estabilidad, correcciones. |
+| Cierre | 2026-09-23 – 2026-10-02 | Revisión final, documentación, auditoría y entrega. |
 
 ---
 

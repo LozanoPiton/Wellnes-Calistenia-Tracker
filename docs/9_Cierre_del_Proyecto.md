@@ -9,16 +9,16 @@
 
 ## 1. Resumen Ejecutivo del Proyecto
 
-El proyecto **WELLNESS - Calistenia Tracker** se concibió e implementó exitosamente como una aplicación de escritorio orientada a atletas y practicantes de entrenamiento funcional. La solución combina la persistencia de datos local para el seguimiento continuo del usuario con la potencia de la Inteligencia Artificial (Google Gemini) para ofrecer diagnósticos y recomendaciones de entrenamiento adaptadas al rendimiento individual.
+El proyecto **WELLNESS - Calistenia Tracker** se concibió e implementó exitosamente como una aplicación de escritorio orientada a atletas y practicantes de entrenamiento funcional. La solución combina la persistencia de datos local (SQLite vía `sql.js`) para el seguimiento continuo del usuario con la potencia de la Inteligencia Artificial (**OpenRouter**) para ofrecer diagnósticos y recomendaciones de entrenamiento adaptadas al rendimiento individual.
 
 ---
 
 ## 2. Logros Alcanzados
 
 * **Desarrollo Multiplataforma:** Implementación exitosa de la interfaz gráfica y lógica de control utilizando Electron, HTML5, CSS3 y JavaScript ES6.
-* **Integración de IA:** Conexión asíncrona mediante API con el modelo Gemini para la generación de recomendaciones dinámicas de rutinas.
+* **Integración de IA:** Conexión asíncrona mediante API con OpenRouter para la generación de recomendaciones dinámicas de rutinas, con análisis heurístico local de respaldo.
 * **Persistencia Offline:** Almacenamiento local estructurado de perfiles, métricas corporales (IMC) e historial de entrenamientos.
-* **Arquitectura Decoupled:** Aplicación rigurosa del aislamiento de contexto (`contextIsolation`) y comunicación entre procesos mediante IPC Bridges (`preload.js`).
+* **Arquitectura desacoplada:** Comunicación entre procesos mediante canales IPC acotados registrados en `ipcMain` e invocados desde el renderer a través de `ipcRenderer.invoke()`. La configuración actual es `nodeIntegration: true` y `contextIsolation: false` sin `preload.js`.
 * **Documentación Completa:** Elaboración de la suite completa de documentación académica (Requisitos, UML, Arquitectura, Pruebas, Seguridad y Manuales).
 
 ---
@@ -27,8 +27,8 @@ El proyecto **WELLNESS - Calistenia Tracker** se concibió e implementó exitosa
 
 | Dificultad Identificada | Impacto | Solución Implementada |
 | :--- | :--- | :--- |
-| **Seguridad en Electron:** Riesgo de exposición de APIs nativas de Node.js a la vista renderizada. | Alto | Se configuró `contextIsolation: true` y se utilizaron canales IPC seguros mediante `contextBridge`. |
-| **Gestión de Claves API:** Necesidad de proteger la clave de Gemini sin exponerla en el repositorio. | Medio | Se utilizó `dotenv` para cargar variables de entorno locales excluidas mediante `.gitignore`. |
+| **Seguridad en Electron:** Riesgo de exposición de APIs nativas de Node.js a la vista renderizada. | Alto | Se limitaron los canales IPC a una whitelist y se controla el acceso a funcionalidades sensibles. La configuración actual es `nodeIntegration: true`, `contextIsolation: false` y sin `preload.js`. |
+| **Gestión de Claves API:** Necesidad de proteger la clave de OpenRouter sin exponerla en el repositorio. | Medio | Las claves se leen desde `.env` (parseado manualmente en `main.js`), excluido del versionado, y pueden almacenarse en `localStorage` para facilitar el uso, permaneciendo en memoria en el proceso principal. |
 | **Consistencia de Datos:** Manejo de datos de sesiones sin depender de bases de datos relacionales pesadas. | Bajo | Implementación de objetos modelo en JavaScript (`Usuario`, `Sesion`, `Ejercicio`) con serialización en formato JSON. |
 
 ---
