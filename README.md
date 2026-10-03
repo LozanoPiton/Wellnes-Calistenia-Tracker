@@ -130,7 +130,32 @@ No se implementaron aún pruebas automatizadas (ver sección *Cierre*).
 
 ## Evidencias / capturas
 
-Pendiente: agregar capturas de pantalla de las principales pantallas (Login, Inicio, Entrenar, Progreso, Catálogo, Perfil, tema oscuro).
+### 1. Creación de Perfil
+![Creación de Perfil](docs/1Creacionperfil.png)
+
+### 2. Panel Principal (Inicio)
+![Inicio](docs/2inicio.png)
+
+### 3. Registro de Entrenamiento
+![Entrenar](docs/3entrenar.png)
+
+### 4. Seguimiento de Progreso e IA
+![Progreso](docs/4progreso.png)
+
+### 5. Catálogo de Ejercicios
+![Catálogo](docs/5catalogo.png)
+
+### 6. Mi Perfil
+![Perfil](docs/6perfil.png)
+
+### 7. Modo Oscuro
+![Modo Oscuro](docs/7ModoOscuro.png)
+
+### 8. Modo Claro
+![Modo Claro](docs/8ModoClaro.png)
+
+### 9. Cambio de Idioma
+![Cambiar Idioma](docs/9CambiarIdioma.png)
 
 ## Estado del proyecto
 
