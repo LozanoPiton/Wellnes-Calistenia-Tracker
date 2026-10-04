@@ -8,25 +8,25 @@
 
 ## 1. Arquitectura de Seguridad en Electron y Limitaciones Conocidas
 
-Electron ejecuta código Node.js junto con el motor de renderizado Chromium. La configuración aplicada en la ventana principal (`main.js`) responde a las necesidades de una aplicación de escritorio local de uso personal.
+Electron ejecuta código Node.js junto con el motor de renderizado Chromium. La configuración aplicada en la ventana principal (`main.js`) responde a las necesidades de una aplicación de escritorio local.
 
 ### 1.1. Configuración del Proceso Renderizador y Limitaciones Conocidas
 * La ventana principal se crea con `nodeIntegration: true` y `contextIsolation: false` en `webPreferences`.
-* **Acceso a Node.js en Renderer (Limitación de Arquitectura):** Al tener habilitado `nodeIntegration` y deshabilitado `contextIsolation`, el proceso de renderizado (la interfaz) cuenta con acceso general a las APIs nativas de Node.js. Se documenta formalmente como una **limitación conocida de la arquitectura actual**, asumida para simplificar la integración sin requerir un script `preload.js` ni `contextBridge`.
-* **Mitigación por Carga Local:** No se carga contenido remoto en la aplicación (`ventana.loadFile("index.html")`). Al ejecutar únicamente archivos HTML/JS locales del propio proyecto, se evita la exposición a scripts externos o navegación a sitios de terceros, mitigando el riesgo de ejecución remota de código (RCE).
+* **Acceso a Node.js en el Renderizador (limitación conocida):** Con `nodeIntegration: true` y `contextIsolation: false`, el proceso renderizador **tiene acceso general a las APIs nativas de Node.js** (incluido `require('electron')`, `fs`, `path`, entre otras). Esto constituye una **limitación de seguridad conocida** de la arquitectura actual de este proyecto.
+* **Comunicación IPC:** Aunque el renderer puede acceder directamente a Node.js, la aplicación utiliza `ipcRenderer.invoke()` para comunicarse con el proceso principal a través de canales explícitos (ver sección 1.2).
+* **Mitigación por carga local:** No se carga contenido remoto (`ventana.loadFile("index.html")`). La aplicación solo sirve archivos locales del propio proyecto, lo que reduce la superficie de ataque frente a scripts externos.
 
-### 1.2. Comunicación e Intercambio IPC
-Aunque la interfaz tiene acceso nativo, la lógica de comunicación para tareas del sistema operativo se centraliza mediante llamadas `ipcRenderer.invoke()` hacia los canales registrados con `ipcMain.handle()` en `main.js`:
+### 1.2. Canales IPC Acotados (Whitelist)
+La comunicación Renderizador → Proceso Principal se limita a una lista explícita de canales registrados con `ipcMain.handle()` en `main.js`:
 
 | Canal | Uso |
 | :--- | :--- |
-| `log-write` | Escritura asíncrona de mensajes de auditoría en `wellness.log`. |
+| `log-write` | Escritura de mensajes de auditoría en `wellness.log`. |
 | `ia-set-key` | Registro de la API Key de OpenRouter/GROQ en memoria principal. |
 | `ia-analyze` | Envío del contexto de entrenamiento y recepción del diagnóstico de IA. |
-| `app-close` | Cierre controlado de la aplicación desde el botón de la interfaz. |
+| `app-close` | Cierre de la aplicación desde el botón de la interfaz. |
 
----
-
+Desde la vista solo se invocan estos canales (`src/app.js`, `src/ia.js`). La existencia de acceso general a Node.js en el renderer se documenta como una **limitación aceptada** en la versión final entregada.
 ## 2. Integración y Protección de Claves API (OpenRouter IA)
 
 Para el módulo de sugerencias de entrenamiento personalizadas con IA, la aplicación se integra de manera asíncrona con la API de **OpenRouter** (`POST https://openrouter.ai/api/v1/chat/completions`), con respaldo en **GROQ** como proveedor alternativo.
@@ -39,7 +39,7 @@ Para el módulo de sugerencias de entrenamiento personalizadas con IA, la aplica
 
 ### 2.2. Manejo de Errores e Integración Fallback
 * La llamada a la API se realiza con reintentos para absorber fallos transitorios de red.
-* Si no hay conexión a internet o la API Key no está configurada, la aplicación no se bloquea: el módulo de IA local (`src/ia.js`) mantiene su análisis heurístico (tendencia semanal, ascenso de nivel y estancamiento) y la interfaz muestra el campo para cargar la clave.
+* Si no hay conexión a internet o la API Key no está configurada, la aplicación no se bloquea: el módulo de IA local (`main.js`) mantiene su análisis heurístico (tendencia semanal, ascenso de nivel y estancamiento) y la interfaz muestra el campo para cargar la clave.
 * La respuesta de la IA se normaliza tolerando JSON envuelto en bloques de código o texto adicional.
 
 ---
