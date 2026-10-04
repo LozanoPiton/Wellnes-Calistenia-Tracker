@@ -72,7 +72,7 @@ classDiagram
     }
 
     Usuario "1" -- "0..*" Sesion : registra
-    Rutina "1" --> "0..*" : listaEjercicios
+   Rutina "1" --> "0..*" Ejercicio : "listaEjercicios"
 ```
 
 ## 3. Arquitectura del Sistema (Electron Multi-Process)
