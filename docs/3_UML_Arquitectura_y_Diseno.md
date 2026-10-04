@@ -82,4 +82,6 @@ La aplicación utiliza la arquitectura nativa de Electron, dividida en dos capas
 
 2. **Proceso Renderizador (`index.html` + `src/*.js`):** Interfaz gráfica SPA (Single Page Application) donde se procesa la interacción del usuario, estilos, navegación y lógica de presentación.
 
-Los módulos del Renderizador se comunican con el proceso principal mediante **`ipcRenderer.invoke()`** a los canales registrados en `ipcMain` (`log-write`, `ia-set-key`, `ia-analyze`, `app-close`). En esta versión no se utiliza `preload.js` ni `contextBridge`: `nodeIntegration: true` y `contextIsolation: false` permiten el uso directo de `electron.ipcRenderer` desde los scripts del renderer (acceso a Node.js desde la UI). No se carga contenido remoto; toda la aplicación se sirve localmente.
+Los módulos del Renderizador se comunican con el proceso principal mediante ipcRenderer.invoke() a través de canales IPC registrados en main.js (como log-write, ia-set-key, ia-analyze, app-close).
+
+Limitación de Seguridad Conocida: En esta versión actual del sistema se utiliza nodeIntegration: true y contextIsolation: false, sin un archivo preload.js intermediario. Esto permite el acceso directo a Node.js desde los scripts del Renderizador. Se documenta como una deuda técnica y limitación de seguridad de la arquitectura actual a mitigar en futuras versiones. No se carga contenido remoto; toda la aplicación se sirve de forma local.
