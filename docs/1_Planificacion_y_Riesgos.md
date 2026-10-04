@@ -66,3 +66,6 @@ gantt
     Integración y Pruebas Funcionales                  :c1, 2026-07-03, 2026-07-09
     Integración Final y Seguridad (Electron)           :c2, 2026-07-06, 2026-07-10
     Pruebas Funcionales e Integradas                   :c3, 2026-07-06, 2026-07-09
+```
+
+![Diagrama de Gantt Final](../img/gantt.png) 
